@@ -1,6 +1,13 @@
 class designate::api (
-  $enabled        = true,
-  $auth_strategy  = 'noauth',
+  $enabled                    = true,
+  $auth_strategy              = 'noauth',
+  $keystone_host              = '127.0.0.1',
+  $keystone_port              = '35357',
+  $keystone_auth_admin_prefix = false,
+  $keystone_protocol          = 'http',
+  $keystone_user              = 'ceilometer',
+  $keystone_tenant            = 'services',
+  $keystone_password          = false,
 ){
   include designate::params
 

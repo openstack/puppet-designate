@@ -1,3 +1,5 @@
+# Class designate
+
 class designate(
   $package_ensure       = present,
   $verbose              = false,
@@ -9,38 +11,39 @@ class designate(
   $rabbit_virtualhost   = '/',
 ) {
 
+  include designate::params
   package { 'openstack-designate':
     ensure => $package_ensure,
     name   => $::designate::params::common_package_name,
   }
 
-  user { 'desginate':
-    name    => 'desginate',
-    gid     => 'desginate',
-    groups  => ['nova'],
+  user { 'designate':
+    name    => 'designate',
+    gid     => 'designate',
+    groups  => ['designate'],
     system  => true,
     require => Package['openstack-designate'],
   }
 
-  group { 'desginate':
-    name    => 'desginate',
+  group { 'designate':
+    name    => 'designate',
     require => Package['openstack-designate'],
   }
 
-  file { '/etc/desginate/':
+  file { '/etc/designate/':
     ensure  => directory,
-    owner   => 'desginate',
-    group   => 'desginate',
+    owner   => 'designate',
+    group   => 'designate',
     mode    => '0750',
   }
 
-  file { '/etc/desginate/desginate.conf':
-    owner   => 'desginate',
-    group   => 'desginate',
+  file { '/etc/designate/designate.conf':
+    owner   => 'designate',
+    group   => 'designate',
     mode    => '0640',
   }
 
-  Package['openstack-designate'] -> desginate_config<||>
+  Package['openstack-designate'] -> Designate_config<||>
 
   designate_config {
     'DEFAULT/rabbit_host'            : value => $rabbit_host;
