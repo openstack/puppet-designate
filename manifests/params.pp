@@ -2,7 +2,8 @@
 
 class designate::params {
 
-  $dbsync_command =  'designate-manage database-init && designate-manage database-sync'
+  $dbinit_command =  'designate-manage database-init'
+  $dbsync_command =  'designate-manage database-sync'
   $log_dir        =  '/var/named/data'
 
   case $::osfamily {
