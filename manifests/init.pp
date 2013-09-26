@@ -59,7 +59,7 @@ class designate(
   designate_config {
     'DEFAULT/debug'                  : value => $debug;
     'DEFAULT/verbose'                : value => $verbose;
-    'DEFAULT/log_dir'                : value => $::designate::params::log_dir;
+    'DEFAULT/logdir'                 : value => $::designate::params::log_dir;
     'DEFAULT/state_path'             : value => $::designate::params::state_path;
   }
 

@@ -24,18 +24,13 @@ class designate::db (
     }
   }
 
-  if $backend_package and !defined(Package[$backend_package]) {
-    package {'designate-backend-package':
-      ensure => present,
-      name   => $backend_package,
-    }
-  }
-
   designate_config {
     'storage:sqlalchemy/database_connection': value => $database_connection;
   }
 
-  Designate_config['storage:sqlalchemy/database_connection'] ~> Exec['designate-dbinit']
+  Designate_config['storage:sqlalchemy/database_connection'] ~>
+  Exec['designate-dbinit'] ~>
+  Exec['designate-dbsync']
 
   exec { 'designate-dbinit':
     command     => $::designate::params::dbinit_command,
@@ -44,7 +39,7 @@ class designate::db (
     refreshonly => true,
     logoutput   => on_failure,
     subscribe   => Designate_config['storage:sqlalchemy/database_connection']
-  } ~>
+  }
   exec { 'designate-dbsync':
     command     => $::designate::params::dbsync_command,
     path        => '/usr/bin',
