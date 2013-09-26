@@ -12,7 +12,7 @@ class designate(
 ) {
 
   include designate::params
-  package { 'openstack-designate':
+  package { 'designate-common':
     ensure => $package_ensure,
     name   => $::designate::params::common_package_name,
   }

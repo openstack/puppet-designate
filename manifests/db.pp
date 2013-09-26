@@ -35,7 +35,7 @@ class designate::db (
     'storage:sqlalchemy/database_connection': value => $database_connection;
   }
 
-  designate_config['storage:sqlalchemy/database_connection'] ~> Exec['designate-dbsync']
+  Designate_config['storage:sqlalchemy/database_connection'] ~> Exec['designate-dbsync']
 
   exec { 'designate-dbinit':
     command     => $::designate::params::dbinit_command,
@@ -43,7 +43,7 @@ class designate::db (
     user        => 'root',
     refreshonly => true,
     logoutput   => on_failure,
-    subscribe   => designate_config['storage:sqlalchemy/database_connection']
+    subscribe   => Designate_config['storage:sqlalchemy/database_connection']
   } ~>
   exec { 'designate-dbsync':
     command     => $::designate::params::dbsync_command,
@@ -51,7 +51,7 @@ class designate::db (
     user        => 'root',
     refreshonly => true,
     logoutput   => on_failure,
-    subscribe   => designate_config['storage:sqlalchemy/database_connection']
+    subscribe   => Designate_config['storage:sqlalchemy/database_connection']
   }
 
 }
