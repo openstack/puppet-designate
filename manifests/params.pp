@@ -4,7 +4,8 @@ class designate::params {
 
   $dbinit_command =  'designate-manage database-init'
   $dbsync_command =  'designate-manage database-sync'
-  $log_dir        =  '/var/named/data'
+  $state_path     =  '/var/named/data'
+  $log_dir        =  '/var/log/designate'
 
   case $::osfamily {
     'RedHat': {
