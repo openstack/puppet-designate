@@ -4,14 +4,14 @@ class designate::central (
 ) {
   include designate::params
 
-  package { 'designate-api':
+  package { 'designate-central':
     ensure => installed,
     name   => $::designate::params::central_package_name,
   }
 
-  Package['designate-common'] -> Service['designate-api']
+  Package['designate-common'] -> Service['designate-central']
 
-  service { 'designate-api':
+  service { 'designate-central':
     ensure     => $service_ensure,
     name       => $::designate::params::central_service_name,
     enable     => $enabled,
