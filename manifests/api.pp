@@ -1,5 +1,6 @@
 class designate::api (
   $enabled                    = true,
+  $service_ensure             = 'running',
   $auth_strategy              = 'noauth',
   $keystone_host              = '127.0.0.1',
   $keystone_port              = '35357',

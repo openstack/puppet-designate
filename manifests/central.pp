@@ -1,4 +1,5 @@
 class designate::central (
+  $service_ensure = 'running',
   $enabled        = true,
   $backend_driver = 'bind9',
 ) {
