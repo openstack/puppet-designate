@@ -36,7 +36,7 @@ class designate::db (
     command     => $::designate::params::dbinit_command,
     path        => '/usr/bin',
     user        => 'root',
-    refreshonly => true,
+    unless      => "/usr/bin/mysql designate -e 'select * from migrate_version'",
     logoutput   => on_failure,
     subscribe   => Designate_config['storage:sqlalchemy/database_connection']
   }
