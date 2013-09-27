@@ -35,8 +35,8 @@ class designate::db::mysql(
   validate_string($password)
 
   Class['mysql::server'] -> Class['designate::db::mysql']
-  Class['designate::db::mysql'] -> Exec<| title == 'designate-dbsync' |>
-  Mysql::Db[$dbname] ~> Exec<| title == 'designate-dbsync' |>
+  Class['designate::db::mysql'] -> Exec<| title == 'designate-dbinit' |>
+  Mysql::Db[$dbname] ~> Exec<| title == 'designate-dbinit' |>
 
   mysql::db { $dbname:
     user         => $user,
