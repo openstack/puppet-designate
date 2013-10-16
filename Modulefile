@@ -1,11 +1,11 @@
-name    'enovance-heat'
+name    'Unitedstack-Designate'
 version '0.0.1'
 source 'none'
-author 'enovance'
+author 'xingchao'
 license 'Apache License, Version 2.0'
-summary 'Install/configure Openstack Heat'
-description 'Install/configure Openstack Heat'
-project_page 'https://launchpad.net/Heat'
+summary 'Install/configure Openstack Designate'
+description 'Install/configure Openstack Designate'
+project_page 'https://launchpad.net/Designate'
 
 # Dependencies
 dependency 'puppetlabs/stdlib', '>= 3.2.0'
