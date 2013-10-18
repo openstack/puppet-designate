@@ -2,6 +2,7 @@
 
 class designate::agent (
   $service_ensure = 'running',
+  $backend_driver = 'bind9',
   $enabled        = true,
 ) {
   include designate::params
@@ -19,5 +20,9 @@ class designate::agent (
     enable     => $enabled,
     hasstatus  => true,
     hasrestart => true,
+  }
+
+  designate_config {
+    'service:agent/backend_driver'         : value => $backend_driver;
   }
 }
