@@ -1,3 +1,5 @@
+# Configure bind9 as backend
+
 class designate::backend::bind9 (
   $rndc_host        = '127.0.0.1',
   $rndc_port        = '953',

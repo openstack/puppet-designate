@@ -1,6 +1,6 @@
 # Configure dns for designate service
 
-class dns::designate (
+class designate::dns (
   $designatepath  = $designate::params::designatepath,
   $designatefile  = $designate::params::designatefile,
 ){

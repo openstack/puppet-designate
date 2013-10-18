@@ -1,3 +1,5 @@
+# designate central service
+
 class designate::central (
   $service_ensure = 'running',
   $enabled        = true,

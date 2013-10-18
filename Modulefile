@@ -5,7 +5,7 @@ author 'xingchao'
 license 'Apache License, Version 2.0'
 summary 'Install/configure Openstack Designate'
 description 'Install/configure Openstack Designate'
-project_page 'https://launchpad.net/Designate'
+project_page 'https://launchpad.net/designate'
 
 # Dependencies
 dependency 'puppetlabs/stdlib', '>= 3.2.0'

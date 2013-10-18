@@ -10,20 +10,23 @@ class designate::params {
 
   case $::osfamily {
     'RedHat': {
-       # package name
-       $common_package_name   = 'openstack-designate'
-       $api_package_name      = 'openstack-designate-api'
-       $central_package_name  = 'openstack-designate-central'
-       $agent_package_name    = 'openstack-designate-agent'
-       $sink_package_name     = 'openstack-designate-sink'
-       # service names
-       $agent_service_name   = 'openstack-designate-agent'
-       $api_service_name     = 'openstack-designate-api'
-       $central_service_name = 'openstack-designate-central'
-       $sink_service_name    = 'openstack-designate-sink'
-       # bind path
-       $designatepath        = "/var/named/data/bind9"
-       $designatefile        = "/var/named/data/bind9/zones.config"
+      # package name
+      $common_package_name   = 'openstack-designate'
+      $api_package_name      = 'openstack-designate-api'
+      $central_package_name  = 'openstack-designate-central'
+      $agent_package_name    = 'openstack-designate-agent'
+      $sink_package_name     = 'openstack-designate-sink'
+      # service names
+      $agent_service_name   = 'openstack-designate-agent'
+      $api_service_name     = 'openstack-designate-api'
+      $central_service_name = 'openstack-designate-central'
+      $sink_service_name    = 'openstack-designate-sink'
+      # bind path
+      $designatepath        = '/var/named/data/bind9'
+      $designatefile        = '/var/named/data/bind9/zones.config'
+    }
+    default: {
+      fail("Unsupported osfamily: ${::osfamily} operatingsystem")
     }
   }
 }
