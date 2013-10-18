@@ -1,6 +1,6 @@
-name    'Unitedstack-Designate'
+name    'unitedstack-designate'
 version '0.0.1'
-source 'none'
+source 'https://github.com/stackforge/puppet-designate'
 author 'xingchao'
 license 'Apache License, Version 2.0'
 summary 'Install/configure Openstack Designate'
