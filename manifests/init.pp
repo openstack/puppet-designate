@@ -12,7 +12,7 @@ class designate(
 ) {
 
   include designate::params
-  include dns
+  include ::dns
   package { 'designate-common':
     ensure => $package_ensure,
     name   => $::designate::params::common_package_name,
@@ -23,7 +23,7 @@ class designate(
     gid     => 'designate',
     groups  => ['designate','named'],
     system  => true,
-    require => [Package['openstack-designate'],Class['dns']],
+    require => [Package['openstack-designate'],Class['::dns']],
   }
 
   group { 'designate':
