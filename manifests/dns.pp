@@ -26,4 +26,10 @@ class designate::dns (
     require => Exec['create-designatefile'],
   }
 
+  file_line {'dns designate path':
+    path    => $dns::params::namedconf_path,
+    line    => "include \"${designatefile}\";",
+    require => Class['designate'],
+  }
+
 }
