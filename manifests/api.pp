@@ -46,7 +46,7 @@ class designate::api (
     'keystone_authtoken/auth_protocol'      : value => $keystone_protocol;
     'keystone_authtoken/admin_tenant_name'  : value => $keystone_tenant;
     'keystone_authtoken/admin_user'         : value => $keystone_user;
-    'keystone_authtoken/admin_password'     : value => $keystone_password;
+    'keystone_authtoken/admin_password'     : value => $keystone_password, secret => true;
   }
 
 }

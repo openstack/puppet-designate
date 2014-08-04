@@ -25,7 +25,7 @@ class designate::db (
   }
 
   designate_config {
-    'storage:sqlalchemy/database_connection': value => $database_connection;
+    'storage:sqlalchemy/database_connection': value => $database_connection, secret => true;
   }
 
   Exec['designate-dbinit'] ~> Exec['designate-dbsync']

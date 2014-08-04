@@ -51,7 +51,7 @@ class designate(
     'DEFAULT/rabbit_port'            : value => $rabbit_port;
     'DEFAULT/rabbit_hosts'           : value => "${rabbit_host}:${rabbit_port}";
     'DEFAULT/rabbit_userid'          : value => $rabbit_userid;
-    'DEFAULT/rabbit_password'        : value => $rabbit_password;
+    'DEFAULT/rabbit_password'        : value => $rabbit_password, secret => true;
     'DEFAULT/rabbit_virtualhost'     : value => $rabbit_virtualhost;
   }
 
