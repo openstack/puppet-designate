@@ -1,63 +1,55 @@
-# The designate::db::mysql class creates a MySQL database for designate.
-# It must be used on the MySQL server
+# == Class: designate::db::mysql
 #
-# == Parameters
+# Class that configures mysql for designate
 #
-#  [*password*]
-#    password to connect to the database. Mandatory.
+# === Parameters:
 #
-#  [*dbname*]
-#    name of the database. Optional. Defaults to designate.
+# [*password*]
+#   Password to use for the designate user
 #
-#  [*user*]
-#    user to connect to the database. Optional. Defaults to designate.
+# [*dbname*]
+#   (optional) The name of the database
+#   Defaults to 'designate'
 #
-#  [*host*]
-#    the default source host user is allowed to connect from.
-#    Optional. Defaults to 'localhost'
+# [*user*]
+#   (optional) The mysql user to create
+#   Defaults to 'designate'
 #
-#  [*allowed_hosts*]
-#    other hosts the user is allowd to connect from.
-#    Optional. Defaults to undef.
+# [*host*]
+#   (optional) The IP address of the mysql server
+#   Defaults to '127.0.0.1'
 #
-#  [*charset*]
-#    the database charset. Optional. Defaults to 'latin1'
+# [*charset*]
+#   (optional) The charset to use for the designate database
+#   Defaults to 'utf8'
+#
+# [*collate*]
+#   (optional) The collate to use for the designate database
+#   Defaults to 'utf8_unicode_ci'
+#
+# [*allowed_hosts*]
+#   (optional) Additional hosts that are allowed to access this DB
+#   Defaults to undef
 #
 class designate::db::mysql(
-  $password      = false,
+  $password,
   $dbname        = 'designate',
   $user          = 'designate',
-  $host          = 'localhost',
+  $host          = '127.0.0.1',
+  $charset       = 'utf8',
+  $collate       = 'utf8_unicode_ci',
   $allowed_hosts = undef,
-  $charset       = 'latin1',
 ) {
 
-  validate_string($password)
-
-  Class['mysql::server'] -> Class['designate::db::mysql']
-  Class['designate::db::mysql'] -> Exec<| title == 'designate-dbinit' |>
-  Mysql::Db[$dbname] ~> Exec<| title == 'designate-dbinit' |>
-
-  mysql::db { $dbname:
-    user         => $user,
-    password     => $password,
-    host         => $host,
-    charset      => $charset,
-    require      => Class['mysql::config'],
+  ::openstacklib::db::mysql { 'designate':
+    user          => $user,
+    password_hash => mysql_password($password),
+    dbname        => $dbname,
+    host          => $host,
+    charset       => $charset,
+    collate       => $collate,
+    allowed_hosts => $allowed_hosts,
   }
 
-  # Check allowed_hosts to avoid duplicate resource declarations
-  if is_array($allowed_hosts) and delete($allowed_hosts,$host) != [] {
-    $real_allowed_hosts = delete($allowed_hosts,$host)
-  } elsif is_string($allowed_hosts) and ($allowed_hosts != $host) {
-    $real_allowed_hosts = $allowed_hosts
-  }
-
-  if $real_allowed_hosts {
-    designate::db::mysql::host_access { $real_allowed_hosts:
-      user      => $user,
-      password  => $password,
-      database  => $dbname,
-    }
-  }
+  ::Openstacklib::Db::Mysql['designate'] ~> Exec<| title == 'designate-dbinit' |>
 }
