@@ -16,8 +16,8 @@ class designate::db (
 
   case $database_connection {
     /^mysql:\/\//: {
-      $backend_package = false
-      include mysql::python
+      require 'mysql::bindings'
+      require 'mysql::bindings::python'
     }
     default: {
       fail('Unsupported backend configured')
