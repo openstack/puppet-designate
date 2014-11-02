@@ -7,10 +7,10 @@ class designate::dns (
 
   include dns::params
   file { $designatepath:
-    ensure  => directory,
-    owner   => 'named',
-    group   => $dns::params::group,
-    mode    => '0770',
+    ensure => directory,
+    owner  => $::dns::params::user,
+    group  => $::dns::params::group,
+    mode   => '0770',
   }
 
   exec { 'create-designatefile':
@@ -20,14 +20,14 @@ class designate::dns (
   }
 
   file { $designatefile:
-    owner   => 'named',
-    group   => $dns::params::group,
+    owner   => $::dns::params::user,
+    group   => $::dns::params::group,
     mode    => '0660',
     require => Exec['create-designatefile'],
   }
 
   file_line {'dns designate path':
-    path    => $dns::params::namedconf_path,
+    path    => $::dns::params::namedconf_path,
     line    => "include  \"${designatefile}\";",
     match   => '^include  \"(.*)$',
     require => Class['designate'],

@@ -21,7 +21,7 @@ class designate(
   user { 'designate':
     name    => 'designate',
     gid     => 'designate',
-    groups  => ['designate','named'],
+    groups  => ['designate',$::dns::params::group],
     system  => true,
     require => [Package['openstack-designate'],Class['::dns']],
   }
