@@ -4,6 +4,7 @@ class designate(
   $package_ensure       = present,
   $verbose              = false,
   $debug                = false,
+  $root_helper          = 'sudo designate-rootwrap /etc/designate/rootwrap.conf',
   $rabbit_host          = '127.0.0.1',
   $rabbit_port          = '5672',
   $rabbit_userid        = 'guest',
@@ -66,7 +67,7 @@ class designate(
   designate_config {
     'DEFAULT/debug'                  : value => $debug;
     'DEFAULT/verbose'                : value => $verbose;
-    'DEFAULT/root_helper'            : value => '';
+    'DEFAULT/root_helper'            : value => $root_helper;
     'DEFAULT/logdir'                 : value => $::designate::params::log_dir;
     'DEFAULT/state_path'             : value => $::designate::params::state_path;
   }
