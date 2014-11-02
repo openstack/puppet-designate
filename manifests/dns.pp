@@ -1,9 +1,9 @@
 # Configure dns for designate service
 
 class designate::dns (
-  $designatepath  = $designate::params::designatepath,
-  $designatefile  = $designate::params::designatefile,
-){
+  $designatepath  = $::designate::params::designatepath,
+  $designatefile  = $::designate::params::designatefile,
+) inherits designate::params {
 
   include dns::params
   file { $designatepath:

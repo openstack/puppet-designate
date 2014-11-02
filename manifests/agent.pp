@@ -12,7 +12,8 @@ class designate::agent (
     name   => $::designate::params::agent_package_name,
   }
 
-  Package['designate-common'] -> Service['designate-agent']
+  Designate_config<||> ~> Service['designate-agent']
+  Package['designate-agent'] -> Designate_config<||>
 
   service { 'designate-agent':
     ensure     => $service_ensure,

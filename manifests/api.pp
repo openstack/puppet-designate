@@ -8,7 +8,7 @@ class designate::api (
   $keystone_port              = '35357',
   $keystone_protocol          = 'http',
   $keystone_tenant            = 'services',
-  $keystone_user              = 'ceilometer',
+  $keystone_user              = 'designate',
   $keystone_password          = false,
   $enable_api_v1              = true,
   $enable_api_v2              = false,
@@ -20,7 +20,8 @@ class designate::api (
     name   => $::designate::params::api_package_name,
   }
 
-  Package['designate-common'] -> Service['designate-api']
+  Designate_config<||> ~> Service['designate-api']
+  Package['designate-api'] -> Designate_config<||>
 
   service { 'designate-api':
     ensure     => $service_ensure,

@@ -11,7 +11,7 @@ class designate::sink (
     name   => $::designate::params::sink_package_name,
   }
 
-  Package['designate-common'] -> Service['designate-sink']
+  Package['designate-sink'] -> Service['designate-sink']
 
   service { 'designate-sink':
     ensure     => $service_ensure,

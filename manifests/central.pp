@@ -12,7 +12,8 @@ class designate::central (
     name   => $::designate::params::central_package_name,
   }
 
-  Package['designate-common'] -> Service['designate-central']
+  Designate_config<||> ~> Service['designate-central']
+  Package['designate-central'] -> Designate_config<||>
 
   service { 'designate-central':
     ensure     => $service_ensure,

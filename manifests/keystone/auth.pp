@@ -86,4 +86,3 @@ class designate::keystone::auth (
     }
   }
 }
-

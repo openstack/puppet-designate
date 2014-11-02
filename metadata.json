@@ -18,7 +18,15 @@
     },
     {
       "operatingsystem": "RedHat",
-      "operatingsystemrelease": ["6.5","7"]
+      "operatingsystemrelease": ["7"]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": ["8"]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": ["14.04"]
     }
   ],
   "description": "Installs and configures OpenStack Designate (DNS Services).",

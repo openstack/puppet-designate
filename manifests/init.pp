@@ -11,8 +11,8 @@ class designate(
   $rabbit_virtualhost   = '/',
 ) {
 
-  include designate::params
   include ::dns
+  include designate::params
   package { 'designate-common':
     ensure => $package_ensure,
     name   => $::designate::params::common_package_name,
@@ -23,28 +23,35 @@ class designate(
     gid     => 'designate',
     groups  => ['designate',$::dns::params::group],
     system  => true,
-    require => [Package['openstack-designate'],Class['::dns']],
+    require => [Package['designate-common'],Class['::dns']],
   }
 
   group { 'designate':
     name    => 'designate',
-    require => Package['openstack-designate'],
+    require => Package['designate-common'],
   }
 
   file { '/etc/designate/':
-    ensure  => directory,
-    owner   => 'designate',
-    group   => 'designate',
-    mode    => '0750',
+    ensure => directory,
+    owner  => 'designate',
+    group  => 'designate',
+    mode   => '0750',
+  }
+
+  file { '/var/lib/designate':
+    ensure => directory,
+    owner  => 'designate',
+    group  => $::dns::params::group,
+    mode   => '0750',
   }
 
   file { '/etc/designate/designate.conf':
-    owner   => 'designate',
-    group   => 'designate',
-    mode    => '0640',
+    owner => 'designate',
+    group => 'designate',
+    mode  => '0640',
   }
 
-  Package['openstack-designate'] -> Designate_config<||>
+  Package['designate-common'] -> Designate_config<||>
 
   designate_config {
     'DEFAULT/rabbit_host'            : value => $rabbit_host;
