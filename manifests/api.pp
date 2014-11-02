@@ -1,5 +1,53 @@
-# class designate::api
-
+# == Class designate::api
+#
+# Configure designate API service
+#
+# == Parameters
+#
+# [*enabled*]
+#   (optional) Whether to enable services.
+#   Defaults to true
+#
+# [*service_ensure*]
+#  (optional) Whether the designate api service will be running.
+#  Defaults to 'running'
+#
+# [*auth_strategy*]
+#  (optional) Authentication strategy to use, can be either "noauth" or "keystone"
+#  Defaults to 'noauth'
+#
+# [*keystone_host*]
+#  (optional) Host running auth service.
+#  Defaults to '127.0.0.1'
+#
+# [*keystone_port*]
+#  (optional) Port to use for auth service on auth_host.
+#  Defaults to '35357'
+#
+# [*keystone_protocol*]
+#  (optional) Protocol to use for auth.
+#  Defaults to 'http'
+#
+# [*keystone_tenant*]
+#  (optional) Tenant to authenticate to.
+#  Defaults to 'services'
+#
+# [*keystone_user*]
+#  (optional) User to authenticate as with keystone.
+#  Defaults to 'designate'
+#
+# [*keystone_password*]
+#  (optional) Password used to authentication.
+#  Defaults to false
+#
+# [*enable_api_v1*]
+#  (optional) Enable Designate API Version 1
+#  Defaults to true
+#
+# [*enable_api_v2*]
+#  (optional) Enable Designate API Version 2 (experimental)
+#  Defaults to false
+#
 class designate::api (
   $enabled                    = true,
   $service_ensure             = 'running',

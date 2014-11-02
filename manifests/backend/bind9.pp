@@ -1,5 +1,25 @@
+# == Class designate::backend::bind9
+#
 # Configure bind9 as backend
-
+#
+# == Parameters
+#
+# [*rndc_config_file*]
+#   (optional) Location of the rndc configuration file.
+#   Defaults to '/etc/rndc.conf'
+#
+# [*rndc_key_file*]
+#  (optional) Location of the rndc key file.
+#  Defaults to '/etc/rndc.key'
+#
+# [*rndc_host*]
+#  (optional) Host running DNS service.
+#  Defaults to '127.0.0.1'
+#
+# [*rndc_port*]
+#  (optional) Port to use for dns service on rndc_host.
+#  Defaults to '953'
+#
 class designate::backend::bind9 (
   $rndc_host        = '127.0.0.1',
   $rndc_port        = '953',

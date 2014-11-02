@@ -1,5 +1,17 @@
-# Designate sink
-
+# == Class designate::sink
+#
+# Configure designate sink service
+#
+# == Parameters
+#
+# [*enabled*]
+#   (optional) Whether to enable services.
+#   Defaults to true
+#
+# [*service_ensure*]
+#  (optional) Whether the designate api service will be running.
+#  Defaults to 'running'
+#
 class designate::sink (
   $service_ensure = 'running',
   $enabled        = true,

@@ -1,9 +1,12 @@
+# == Class designate::client
 #
 # Installs the designate python library.
 #
-# == parameters
+# == Parameters
+#
 #  [*ensure*]
-#    ensure state for pachage.
+#    (optional) Ensure state for pachage.
+#    Defaults to 'present'
 #
 class designate::client (
   $ensure = 'present'

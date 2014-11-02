@@ -1,5 +1,17 @@
+# == Class designate::dns
+#
 # Configure dns for designate service
-
+#
+# == Parameters
+#
+# [*designatepath*]
+#   (optional) Directory for maintaining designate's state
+#   Defailts to $designate::params::designatepath
+#
+# [*designatefile*]
+#   (optional) File for maintaining designate's state
+#   Defailts to $designate::params::designatefile
+#
 class designate::dns (
   $designatepath  = $::designate::params::designatepath,
   $designatefile  = $::designate::params::designatefile,

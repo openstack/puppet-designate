@@ -1,5 +1,21 @@
-# designate central service
-
+# == Class designate::central
+#
+# Configure designate central service
+#
+# == Parameters
+#
+# [*enabled*]
+#   (optional) Whether to enable services.
+#   Defaults to true
+#
+# [*service_ensure*]
+#  (optional) Whether the designate api service will be running.
+#  Defaults to 'running'
+#
+# [*backend_driver*]
+#  (optional) Driver used for backend communication (fake, rpc, bind9, powerdns)
+#  Defaults to 'bind9'
+#
 class designate::central (
   $service_ensure = 'running',
   $enabled        = true,

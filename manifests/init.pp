@@ -1,5 +1,45 @@
-# Class designate
-
+# == Class designate
+#
+# Configure designate service
+#
+# == Parameters
+#
+# [*service_ensure*]
+#  (optional) Whether the designate-common package will be present..
+#  Defaults to 'present'
+#
+# [*debug*]
+#   (optional) should the daemons log debug messages.
+#   Defaults to 'false'
+#
+# [*verbose*]
+#   (optional) should the daemons log verbose messages.
+#   Defaults to 'false'
+#
+# [*root_helper*]
+#   (optional) Command for designate rootwrap helper.
+#   Defaults to 'sudo designate-rootwrap /etc/designate/rootwrap.conf'.
+#
+# [*rabbit_host*]
+#   (optional) Location of rabbitmq installation.
+#   Defaults to '127.0.0.1'
+#
+# [*rabbit_port*]
+#   (optional) Port for rabbitmq instance.
+#   Defaults to '5672'
+#
+# [*rabbit_password*]
+#   (optional) Password used to connect to rabbitmq.
+#   Defaults to 'guest'
+#
+# [*rabbit_userid*]
+#   (optional) User used to connect to rabbitmq.
+#   Defaults to 'guest'
+#
+# [*rabbit_virtualhost*]
+#   (optional) The RabbitMQ virtual host.
+#   Defaults to '/'
+#
 class designate(
   $package_ensure       = present,
   $verbose              = false,
