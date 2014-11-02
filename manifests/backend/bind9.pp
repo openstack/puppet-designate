@@ -13,4 +13,12 @@ class designate::backend::bind9 (
     'backend:bind9/rndc_config_file'  : value => $rndc_config_file;
     'backend:bind9/rndc_key_file'     : value => $rndc_key_file;
   }
+
+  file_line {'dns allow-new-zones':
+    ensure  => present,
+    path    => "${::dns::params::namedconf_path}.options",
+    line    => 'allow-new-zones yes;',
+    require => Class['designate'],
+  }
+
 }
