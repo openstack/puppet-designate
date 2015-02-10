@@ -4,6 +4,14 @@
 #
 # == Parameters
 #
+# [*package_ensure*]
+#  (optional) The state of the package
+#  Defaults to 'present'
+#
+# [*common_package_name*]
+#  (optional) Name of the package containing shared resources
+#  Defaults to common_package_name from designate::params
+#
 # [*service_ensure*]
 #  (optional) Whether the designate-common package will be present..
 #  Defaults to 'present'
@@ -42,6 +50,7 @@
 #
 class designate(
   $package_ensure       = present,
+  $common_package_name  = undef,
   $verbose              = false,
   $debug                = false,
   $root_helper          = 'sudo designate-rootwrap /etc/designate/rootwrap.conf',
@@ -56,7 +65,7 @@ class designate(
   include designate::params
   package { 'designate-common':
     ensure => $package_ensure,
-    name   => $::designate::params::common_package_name,
+    name   => pick($common_package_name, $::designate::params::common_package_name),
   }
 
   user { 'designate':

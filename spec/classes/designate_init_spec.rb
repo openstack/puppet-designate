@@ -7,7 +7,7 @@ describe 'designate' do
 
   let :params do
     {
-      :package_ensure     => 'present',
+      :package_ensure     => 'installed',
       :debug              => 'False',
       :verbose            => 'False',
       :root_helper        => 'sudo designate-rootwrap /etc/designate/rootwrap.conf'
@@ -71,7 +71,7 @@ describe 'designate' do
 
     it 'installs designate common package' do
       should contain_package('designate-common').with(
-        :ensure => 'present',
+        :ensure => 'installed',
         :name   => platform_params[:common_package_name]
       )
     end
@@ -117,6 +117,22 @@ describe 'designate' do
 
     let :platform_params do
       { :common_package_name => 'openstack-designate' }
+    end
+
+    it_configures 'designate'
+  end
+
+  context 'with custom package name' do
+    let :facts do
+      { :osfamily => 'RedHat' }
+    end
+
+    let :platform_params do
+      { :common_package_name => 'designate-common-custom-name' }
+    end
+
+    before do
+      params.merge!({ :common_package_name => 'designate-common-custom-name' })
     end
 
     it_configures 'designate'

@@ -20,7 +20,7 @@ describe 'designate::agent' do
         )
         should contain_package('designate-agent').with(
           :name      => platform_params[:agent_package_name],
-          :ensure    => 'installed'
+          :ensure    => 'present'
         )
       end
 
@@ -62,6 +62,24 @@ describe 'designate::agent' do
         :agent_package_name => 'openstack-designate-agent',
         :agent_service_name => 'openstack-designate-agent'
       }
+    end
+
+    it_configures 'designate-agent'
+  end
+
+  context 'with custom package name' do
+    let :facts do
+      { :osfamily => 'RedHat' }
+    end
+
+    let :platform_params do
+      { :agent_package_name => 'designate-agent-custom-name',
+        :agent_service_name => 'openstack-designate-agent'
+      }
+    end
+
+    before do
+      params.merge!({ :agent_package_name => 'designate-agent-custom-name' })
     end
 
     it_configures 'designate-agent'

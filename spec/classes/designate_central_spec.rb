@@ -20,7 +20,7 @@ describe 'designate::central' do
         )
         should contain_package('designate-central').with(
           :name      => platform_params[:central_package_name],
-          :ensure    => 'installed'
+          :ensure    => 'present'
         )
       end
 
@@ -62,6 +62,24 @@ describe 'designate::central' do
         :central_package_name => 'openstack-designate-central',
         :central_service_name => 'openstack-designate-central'
       }
+    end
+
+    it_configures 'designate-central'
+  end
+
+  context 'with custom package name' do
+    let :facts do
+      { :osfamily => 'RedHat' }
+    end
+
+    let :platform_params do
+      { :central_package_name => 'designate-central-custom-name',
+        :central_service_name => 'openstack-designate-central'
+      }
+    end
+
+    before do
+      params.merge!({ :central_package_name => 'designate-central-custom-name' })
     end
 
     it_configures 'designate-central'

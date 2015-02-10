@@ -4,6 +4,14 @@
 #
 # == Parameters
 #
+# [*package_ensure*]
+#  (optional) The state of the package
+#  Defaults to 'present'
+#
+# [*sink_package_name*]
+#  (optional) Name of the package containing sink resources
+#  Defaults to sink_package_name from designate::params
+#
 # [*enabled*]
 #   (optional) Whether to enable services.
 #   Defaults to true
@@ -13,14 +21,16 @@
 #  Defaults to 'running'
 #
 class designate::sink (
-  $service_ensure = 'running',
-  $enabled        = true,
+  $package_ensure    = present,
+  $sink_package_name = undef,
+  $service_ensure    = 'running',
+  $enabled           = true,
 ) {
   include designate::params
 
   package { 'designate-sink':
-    ensure => installed,
-    name   => $::designate::params::sink_package_name,
+    ensure => $package_ensure,
+    name   => pick($sink_package_name, $::designate::params::sink_service_name),
   }
 
   Package['designate-sink'] -> Service['designate-sink']

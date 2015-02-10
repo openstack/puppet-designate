@@ -40,4 +40,20 @@ describe 'designate::client' do
 
     it_configures 'designate-client'
   end
+
+  context 'with custom package name' do
+    let :facts do
+      { :osfamily => 'RedHat' }
+    end
+
+    let :platform_params do
+      { :client_package_name => 'designate-client-custom-name' }
+    end
+
+    let :params do
+      { :client_package_name => 'designate-client-custom-name' }
+    end
+
+    it_configures 'designate-client'
+  end
 end
