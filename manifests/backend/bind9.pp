@@ -26,6 +26,8 @@ class designate::backend::bind9 (
   $rndc_config_file = '/etc/rndc.conf',
   $rndc_key_file    = '/etc/rndc.key'
 ) {
+  include ::designate
+  include ::dns
 
   designate_config {
     'backend:bind9/rndc_host'         : value => $rndc_host;
@@ -39,6 +41,18 @@ class designate::backend::bind9 (
     path    => "${::dns::params::namedconf_path}.options",
     line    => 'allow-new-zones yes;',
     require => Class['designate'],
+  }
+
+  Class['::dns'] -> User['designate']
+  User<| title == 'designate' |> {
+    groups +> $::dns::params::group,
+  }
+
+  file { '/var/lib/designate':
+    ensure => directory,
+    owner  => 'designate',
+    group  => $::dns::params::group,
+    mode   => '0750',
   }
 
 }

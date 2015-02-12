@@ -52,7 +52,6 @@ class designate(
   $rabbit_virtualhost   = '/',
 ) {
 
-  include ::dns
   include designate::params
   package { 'designate-common':
     ensure => $package_ensure,
@@ -62,9 +61,8 @@ class designate(
   user { 'designate':
     name    => 'designate',
     gid     => 'designate',
-    groups  => ['designate',$::dns::params::group],
     system  => true,
-    require => [Package['designate-common'],Class['::dns']],
+    require => Package['designate-common'],
   }
 
   group { 'designate':
@@ -76,13 +74,6 @@ class designate(
     ensure => directory,
     owner  => 'designate',
     group  => 'designate',
-    mode   => '0750',
-  }
-
-  file { '/var/lib/designate':
-    ensure => directory,
-    owner  => 'designate',
-    group  => $::dns::params::group,
     mode   => '0750',
   }
 
