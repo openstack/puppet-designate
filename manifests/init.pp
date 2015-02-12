@@ -60,6 +60,7 @@ class designate(
   }
 
   user { 'designate':
+    ensure  => 'present',
     name    => 'designate',
     gid     => 'designate',
     groups  => ['designate',$::dns::params::group],
@@ -68,6 +69,7 @@ class designate(
   }
 
   group { 'designate':
+    ensure  => 'present',
     name    => 'designate',
     require => Package['designate-common'],
   }

@@ -39,16 +39,18 @@ describe 'designate' do
 
     it 'configures designate group' do
       should contain_group('designate').with(
+        :ensure  => 'present',
         :name    => 'designate',
-        :require => 'Package[designate-common]'
+        :require => 'Package[designate-common]',
       )
     end
 
     it 'configures designate user' do
       should contain_user('designate').with(
+        :ensure  => 'present',
         :name    => 'designate',
         :gid     => 'designate',
-        :system  => true
+        :system  => true,
       )
     end
 
