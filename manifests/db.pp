@@ -29,27 +29,16 @@ class designate::db (
   }
 
   designate_config {
-    'storage:sqlalchemy/database_connection': value => $database_connection, secret => true;
+    'storage:sqlalchemy/connection': value => $database_connection, secret => true;
   }
 
-  Exec['designate-dbinit'] ~> Exec['designate-dbsync']
-
-  exec { 'designate-dbinit':
-    command     => $::designate::params::dbinit_command,
-    path        => '/usr/bin',
-    user        => 'root',
-    unless      => '/usr/bin/mysql designate -e "select * from migrate_version"',
-    refreshonly => true,
-    logoutput   => on_failure,
-    subscribe   => Designate_config['storage:sqlalchemy/database_connection']
-  }
   exec { 'designate-dbsync':
     command     => $::designate::params::dbsync_command,
     path        => '/usr/bin',
     user        => 'root',
     refreshonly => true,
     logoutput   => on_failure,
-    subscribe   => Designate_config['storage:sqlalchemy/database_connection']
+    subscribe   => Designate_config['storage:sqlalchemy/connection']
   }
 
 }

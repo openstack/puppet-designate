@@ -51,5 +51,5 @@ class designate::db::mysql(
     allowed_hosts => $allowed_hosts,
   }
 
-  ::Openstacklib::Db::Mysql['designate'] ~> Exec<| title == 'designate-dbinit' |>
+  ::Openstacklib::Db::Mysql['designate'] ~> Exec<| title == 'designate-dbsync' |>
 }

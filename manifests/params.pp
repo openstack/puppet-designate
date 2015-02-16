@@ -1,9 +1,7 @@
 # Params
 #
 class designate::params {
-
-  $dbinit_command      =  'designate-manage database-init'
-  $dbsync_command      =  'designate-manage database-sync'
+  $dbsync_command      =  'designate-manage database sync'
   $state_path          =  '/var/lib/designate'
   # bind path
   $designatepath        = "${state_path}/bind9"
