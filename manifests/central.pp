@@ -4,6 +4,14 @@
 #
 # == Parameters
 #
+# [*package_ensure*]
+#  (optional) The state of the package
+#  Defaults to 'present'
+#
+# [*central_package_name*]
+#  (optional) Name of the package containing central resources
+#  Defaults to central_package_name from designate::params
+#
 # [*enabled*]
 #   (optional) Whether to enable services.
 #   Defaults to true
@@ -17,15 +25,17 @@
 #  Defaults to 'bind9'
 #
 class designate::central (
-  $service_ensure = 'running',
-  $enabled        = true,
-  $backend_driver = 'bind9',
+  $package_ensure       = present,
+  $central_package_name = undef,
+  $service_ensure       = 'running',
+  $enabled              = true,
+  $backend_driver       = 'bind9',
 ) {
   include designate::params
 
   package { 'designate-central':
-    ensure => installed,
-    name   => $::designate::params::central_package_name,
+    ensure => $package_ensure,
+    name   => pick($central_package_name, $::designate::params::central_package_name),
   }
 
   Designate_config<||> ~> Service['designate-central']

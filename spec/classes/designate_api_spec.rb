@@ -27,7 +27,7 @@ describe 'designate::api' do
         )
         should contain_package('designate-api').with(
           :name      => platform_params[:api_package_name],
-          :ensure    => 'installed'
+          :ensure    => 'present'
         )
       end
 
@@ -78,6 +78,24 @@ describe 'designate::api' do
         :api_package_name => 'openstack-designate-api',
         :api_service_name => 'openstack-designate-api'
       }
+    end
+
+    it_configures 'designate-api'
+  end
+
+  context 'with custom package name' do
+    let :facts do
+      { :osfamily => 'RedHat' }
+    end
+
+    let :platform_params do
+      { :api_package_name => 'designate-api-custom-name',
+        :api_service_name => 'openstack-designate-api'
+      }
+    end
+
+    before do
+      params.merge!({ :api_package_name => 'designate-api-custom-name' })
     end
 
     it_configures 'designate-api'

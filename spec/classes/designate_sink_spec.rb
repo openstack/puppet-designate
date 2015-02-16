@@ -20,7 +20,7 @@ describe 'designate::sink' do
         )
         should contain_package('designate-sink').with(
           :name      => platform_params[:sink_package_name],
-          :ensure    => 'installed'
+          :ensure    => 'present'
         )
       end
     end
@@ -51,6 +51,24 @@ describe 'designate::sink' do
         :sink_package_name => 'openstack-designate-sink',
         :sink_service_name => 'openstack-designate-sink'
       }
+    end
+
+    it_configures 'designate-sink'
+  end
+
+   context 'with custom package name' do
+    let :facts do
+      { :osfamily => 'RedHat' }
+    end
+
+    let :platform_params do
+      { :sink_package_name => 'designate-sink-custom-name',
+        :sink_service_name => 'openstack-designate-sink'
+      }
+    end
+
+    before do
+      params.merge!({ :sink_package_name => 'designate-sink-custom-name' })
     end
 
     it_configures 'designate-sink'

@@ -4,6 +4,14 @@
 #
 # == Parameters
 #
+# [*package_ensure*]
+#  (optional) The state of the package
+#  Defaults to 'present'
+#
+# [*agent_package_name*]
+#  (optional) Name of the package containing agent resources
+#  Defaults to api_package_name from designate::params
+#
 # [*enabled*]
 #   (optional) Whether to enable services.
 #   Defaults to true
@@ -17,15 +25,17 @@
 #  Defaults to 'bind9'
 #
 class designate::agent (
-  $service_ensure = 'running',
-  $backend_driver = 'bind9',
-  $enabled        = true,
+  $package_ensure     = present,
+  $agent_package_name = undef,
+  $service_ensure     = 'running',
+  $backend_driver     = 'bind9',
+  $enabled            = true,
 ) {
   include designate::params
 
   package { 'designate-agent':
-    ensure => installed,
-    name   => $::designate::params::agent_package_name,
+    ensure => $package_ensure,
+    name   => pick($agent_package_name, $::designate::params::agent_package_name),
   }
 
   Designate_config<||> ~> Service['designate-agent']

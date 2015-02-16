@@ -4,6 +4,14 @@
 #
 # == Parameters
 #
+# [*package_ensure*]
+#  (optional) The state of the package
+#  Defaults to 'present'
+#
+# [*api_package_name*]
+#  (optional) Name of the package containing api resources
+#  Defaults to api_package_name from designate::params
+#
 # [*enabled*]
 #   (optional) Whether to enable services.
 #   Defaults to true
@@ -49,6 +57,8 @@
 #  Defaults to false
 #
 class designate::api (
+  $package_ensure             = present,
+  $api_package_name           = undef,
   $enabled                    = true,
   $service_ensure             = 'running',
   $auth_strategy              = 'noauth',
@@ -64,8 +74,8 @@ class designate::api (
   include designate::params
 
   package { 'designate-api':
-    ensure => installed,
-    name   => $::designate::params::api_package_name,
+    ensure => $package_ensure,
+    name   => pick($api_package_name, $::designate::params::api_package_name),
   }
 
   Designate_config<||> ~> Service['designate-api']
