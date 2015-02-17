@@ -6,11 +6,11 @@
 #
 # [*designatepath*]
 #   (optional) Directory for maintaining designate's state
-#   Defailts to $designate::params::designatepath
+#   Defaults to $designate::params::designatepath
 #
 # [*designatefile*]
 #   (optional) File for maintaining designate's state
-#   Defailts to $designate::params::designatefile
+#   Defaults to $designate::params::designatefile
 #
 class designate::dns (
   $designatepath  = $::designate::params::designatepath,
