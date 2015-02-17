@@ -14,7 +14,7 @@ class designate::db (
   $database_connection = 'mysql://designate:designate@localhost/designate'
 ) {
 
-  include designate::params
+  include ::designate::params
 
   Package<| title == 'designate-common' |> -> Class['designate::db']
 

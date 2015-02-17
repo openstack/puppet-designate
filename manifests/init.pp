@@ -61,7 +61,7 @@ class designate(
   $rabbit_virtualhost   = '/',
 ) {
 
-  include designate::params
+  include ::designate::params
   package { 'designate-common':
     ensure => $package_ensure,
     name   => pick($common_package_name, $::designate::params::common_package_name),

@@ -17,7 +17,7 @@ class designate::client (
   $client_package_name = undef,
 ) {
 
-  include designate::params
+  include ::designate::params
 
   package { 'python-designateclient':
     ensure => $package_ensure,
