@@ -18,10 +18,10 @@
 #     DEFAULT/bar:
 #       value: barValue
 #
-# [**designate_config**]
+# [*designate_config*]
 #   (optional) Allow configuration of designate.conf configurations.
 #
-# [**api_paste_ini_config**]
+# [*api_paste_ini_config*]
 #   (optional) Allow configuration of /etc/designate/api-paste.ini configurations.
 #
 #   NOTE: The configuration MUST NOT be already handled by this module
