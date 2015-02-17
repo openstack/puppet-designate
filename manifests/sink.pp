@@ -17,7 +17,7 @@
 #   Defaults to true
 #
 # [*service_ensure*]
-#  (optional) Whether the designate api service will be running.
+#  (optional) Whether the designate sink service will be running.
 #  Defaults to 'running'
 #
 class designate::sink (

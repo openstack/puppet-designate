@@ -10,14 +10,14 @@
 #
 # [*agent_package_name*]
 #  (optional) Name of the package containing agent resources
-#  Defaults to api_package_name from designate::params
+#  Defaults to agent_package_name from designate::params
 #
 # [*enabled*]
 #   (optional) Whether to enable services.
 #   Defaults to true
 #
 # [*service_ensure*]
-#  (optional) Whether the designate api service will be running.
+#  (optional) Whether the designate agent service will be running.
 #  Defaults to 'running'
 #
 # [*backend_driver*]
