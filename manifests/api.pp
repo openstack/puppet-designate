@@ -71,7 +71,7 @@ class designate::api (
   $enable_api_v1              = true,
   $enable_api_v2              = false,
 ){
-  include designate::params
+  include ::designate::params
 
   package { 'designate-api':
     ensure => $package_ensure,

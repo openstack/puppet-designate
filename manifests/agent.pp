@@ -31,7 +31,7 @@ class designate::agent (
   $backend_driver     = 'bind9',
   $enabled            = true,
 ) {
-  include designate::params
+  include ::designate::params
 
   package { 'designate-agent':
     ensure => $package_ensure,

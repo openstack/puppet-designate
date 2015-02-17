@@ -31,7 +31,7 @@ class designate::central (
   $enabled              = true,
   $backend_driver       = 'bind9',
 ) {
-  include designate::params
+  include ::designate::params
 
   package { 'designate-central':
     ensure => $package_ensure,

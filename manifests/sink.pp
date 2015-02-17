@@ -26,7 +26,7 @@ class designate::sink (
   $service_ensure    = 'running',
   $enabled           = true,
 ) {
-  include designate::params
+  include ::designate::params
 
   package { 'designate-sink':
     ensure => $package_ensure,

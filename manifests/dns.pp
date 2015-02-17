@@ -17,7 +17,7 @@ class designate::dns (
   $designatefile  = $::designate::params::designatefile,
 ) inherits designate::params {
 
-  include dns::params
+  include ::dns::params
   file { $designatepath:
     ensure => directory,
     owner  => $::dns::params::user,

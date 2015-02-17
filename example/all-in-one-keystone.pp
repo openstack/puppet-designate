@@ -6,9 +6,9 @@
 #
 node /designate/ {
 
-  include 'apt'
-  include 'rabbitmq'
-  include 'mysql::server'
+  include '::apt'
+  include '::rabbitmq'
+  include '::mysql::server'
 
   # Keystone parameters
   $keystone_db_host     = '127.0.0.1'
@@ -27,12 +27,12 @@ node /designate/ {
   $db_host               = '127.0.0.1'
 
   # == Keystone == #
-  class { 'keystone::db::mysql':
+  class { '::keystone::db::mysql':
     password      => $keystone_db_password,
     allowed_hosts =>  '%',
   }
 
-  class { 'keystone':
+  class { '::keystone':
     verbose             => true,
     validate_service    => true,
     catalog_type        => 'sql',
@@ -44,22 +44,22 @@ node /designate/ {
   }
 
   ## Adds the admin credential to keystone.
-  class { 'keystone::roles::admin':
+  class { '::keystone::roles::admin':
     email        => 'admin@example.com',
     password     =>  $keystone_password,
     admin_tenant => 'admin',
   }
 
   ## Installs the service user endpoint.
-  class { 'keystone::endpoint': }
+  class { '::keystone::endpoint': }
 
 
   # == Designate == #
-  class {'designate::db::mysql':
+  class {'::designate::db::mysql':
     password => $designate_db_password,
   }
 
-  class {'designate':
+  class {'::designate':
     rabbit_host     => $rabbit_host,
     rabbit_userid   => $rabbit_userid,
     rabbit_password => $rabbit_password,
@@ -69,23 +69,23 @@ node /designate/ {
     database_connection   => "mysql://designate:${designate_db_password}@${db_host}/designate"
   }
 
-  include 'designate::client'
-  class {'designate::api':
+  include '::designate::client'
+  class {'::designate::api':
     auth_strategy     => $auth_strategy,
     keystone_password => $keystone_password,
   }
 
-  class {'designate::central':
+  class {'::designate::central':
     backend_driver => $backend_driver,
   }
 
-  include 'designate::dns'
-  class {'designate::backend::bind9':
+  include '::designate::dns'
+  class {'::designate::backend::bind9':
     rndc_config_file => '',
     rndc_key_file    => '',
   }
 
-  class {'designate::keystone::auth':
+  class {'::designate::keystone::auth':
     password => $keystone_password,
   }
 }

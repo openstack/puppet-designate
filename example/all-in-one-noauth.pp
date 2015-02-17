@@ -1,8 +1,8 @@
 node /designate/ {
 
-  include 'apt'
-  include 'rabbitmq'
-  include 'mysql::server'
+  include '::apt'
+  include '::rabbitmq'
+  include '::mysql::server'
 
   # This example would install designate api and designate central service
   $rabbit_host           = '127.0.0.1'
@@ -14,15 +14,15 @@ node /designate/ {
   $db_host               = '127.0.0.1'
 
 
-  include 'designate::dns'
-  include 'designate::backend::bind9'
+  include '::designate::dns'
+  include '::designate::backend::bind9'
 
-  class {'designate::db::mysql':
+  class {'::designate::db::mysql':
     password => $designate_db_password,
   }
 
 
-  class {'designate':
+  class {'::designate':
     rabbit_host     => $rabbit_host,
     rabbit_userid   => $rabbit_userid,
     rabbit_password => $rabbit_password,
@@ -32,11 +32,11 @@ node /designate/ {
     database_connection   => "mysql://designate:${designate_db_password}@${db_host}/designate"
   }
 
-  class {'designate::api':
+  class {'::designate::api':
     auth_strategy => $auth_strategy,
   }
 
-  class {'designate::central':
+  class {'::designate::central':
     backend_driver => $backend_driver,
   }
 }
