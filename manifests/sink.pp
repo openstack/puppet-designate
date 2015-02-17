@@ -23,8 +23,8 @@
 class designate::sink (
   $package_ensure    = present,
   $sink_package_name = undef,
-  $service_ensure    = 'running',
   $enabled           = true,
+  $service_ensure    = 'running',
 ) {
   include ::designate::params
 

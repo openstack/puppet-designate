@@ -27,8 +27,8 @@
 class designate::central (
   $package_ensure       = present,
   $central_package_name = undef,
-  $service_ensure       = 'running',
   $enabled              = true,
+  $service_ensure       = 'running',
   $backend_driver       = 'bind9',
 ) {
   include ::designate::params
