@@ -37,8 +37,17 @@
 # [*tenant*]
 #    Tenant for designate user. Optional. Defaults to 'services'.
 #
-# [*protocol*]
+# [*public_protocol*]
 #    Protocol for public endpoint. Optional. Defaults to 'http'.
+#
+# [*admin_protocol*]
+#    Protocol for admin endpoint. Optional. Defaults to 'http'.
+#
+# [*internal_protocol*]
+#    Protocol for internal endpoint. Optional. Defaults to 'http'.
+#
+# [*version*]
+#    API version endpoint.  Optional. Defaults to 'v1'.
 #
 class designate::keystone::auth (
   $password           = false,

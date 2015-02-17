@@ -12,6 +12,7 @@ group :development, :test do
   gem 'puppet-lint-leading_zero-check'
   gem 'puppet-lint-variable_contains_upcase'
   gem 'puppet-lint-numericvariable'
+  gem 'puppet-lint-param-docs'
 
   gem 'rake', '10.1.1'
   gem 'rspec-puppet', '~> 1.0.1', :require => false
