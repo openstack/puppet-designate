@@ -27,9 +27,9 @@
 class designate::agent (
   $package_ensure     = present,
   $agent_package_name = undef,
+  $enabled            = true,
   $service_ensure     = 'running',
   $backend_driver     = 'bind9',
-  $enabled            = true,
 ) {
   include ::designate::params
 
