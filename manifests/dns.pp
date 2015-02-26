@@ -42,7 +42,7 @@ class designate::dns (
     path    => $::dns::params::namedconf_path,
     line    => "include  \"${designatefile}\";",
     match   => '^include  \"(.*)$',
-    require => Class['designate'],
+    require => Class['::designate'],
   }
 
 }
