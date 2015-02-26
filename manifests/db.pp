@@ -41,4 +41,7 @@ class designate::db (
     subscribe   => Designate_config['storage:sqlalchemy/connection']
   }
 
+  # Have to have a valid configuration file before running migrations
+  Designate_config<||> -> Exec['designate-dbsync']
+
 }
