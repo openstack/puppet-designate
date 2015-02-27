@@ -87,7 +87,7 @@ class designate::api (
     enable     => $enabled,
     hasstatus  => true,
     hasrestart => true,
-    require    => Class['designate::db'],
+    require    => Class['::designate::db'],
     subscribe  => Exec['designate-dbsync']
   }
 

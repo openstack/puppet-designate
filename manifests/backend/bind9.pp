@@ -40,7 +40,7 @@ class designate::backend::bind9 (
     ensure  => present,
     path    => "${::dns::params::namedconf_path}.options",
     line    => 'allow-new-zones yes;',
-    require => Class['designate'],
+    require => Class['::designate'],
   }
 
   Class['::dns'] -> User['designate']
