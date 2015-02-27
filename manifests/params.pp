@@ -1,8 +1,9 @@
 # Params
 #
 class designate::params {
-  $dbsync_command      =  'designate-manage database sync'
-  $state_path          =  '/var/lib/designate'
+  $dbsync_command          =  'designate-manage database sync'
+  $powerdns_dbsync_command =  'designate-manage powerdns sync'
+  $state_path              =  '/var/lib/designate'
   # bind path
   $designatepath        = "${state_path}/bind9"
   $designatefile        = "${state_path}/bind9/zones.config"
