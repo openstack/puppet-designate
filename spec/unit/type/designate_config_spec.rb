@@ -29,19 +29,19 @@ describe 'Puppet::Type.type(:designate_config)' do
 
   it 'should accept a valid value' do
     @designate_config[:value] = 'bar'
-    @designate_config[:value].should == 'bar'
+    expect(@designate_config[:value]).to eq('bar')
   end
 
   it 'should not accept a value with whitespace' do
     @designate_config[:value] = 'b ar'
-    @designate_config[:value].should == 'b ar'
+    expect(@designate_config[:value]).to eq('b ar')
   end
 
   it 'should accept valid ensure values' do
     @designate_config[:ensure] = :present
-    @designate_config[:ensure].should == :present
+    expect(@designate_config[:ensure]).to eq(:present)
     @designate_config[:ensure] = :absent
-    @designate_config[:ensure].should == :absent
+    expect(@designate_config[:ensure]).to eq(:absent)
   end
 
   it 'should not accept invalid ensure values' do
