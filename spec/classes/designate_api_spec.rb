@@ -18,36 +18,36 @@ describe 'designate::api' do
   shared_examples 'designate-api' do
     context 'with default parameters' do
       it 'installs designate-api package and service' do
-        should contain_service('designate-api').with(
+        is_expected.to contain_service('designate-api').with(
           :name      => platform_params[:api_service_name],
           :ensure    => 'running',
           :require   => 'Class[Designate::Db]',
           :enable    => 'true',
           :subscribe => 'Exec[designate-dbsync]'
         )
-        should contain_package('designate-api').with(
+        is_expected.to contain_package('designate-api').with(
           :name      => platform_params[:api_package_name],
           :ensure    => 'present'
         )
       end
 
       it 'configures designate-api with default parameters' do
-        should contain_designate_config('service:api/auth_strategy').with_value('noauth')
-        should contain_designate_config('service:api/enable_api_v1').with_value(true)
+        is_expected.to contain_designate_config('service:api/auth_strategy').with_value('noauth')
+        is_expected.to contain_designate_config('service:api/enable_api_v1').with_value(true)
 
-        should contain_designate_config('keystone_authtoken/auth_host').with_value('10.0.0.42')
-        should contain_designate_config('keystone_authtoken/auth_port').with_value('35357')
-        should contain_designate_config('keystone_authtoken/auth_protocol').with_value('https')
-        should contain_designate_config('keystone_authtoken/admin_tenant_name').with_value('_services_')
-        should contain_designate_config('keystone_authtoken/admin_user').with_value('designate')
-        should contain_designate_config('keystone_authtoken/admin_password').with_value('passw0rd')
+        is_expected.to contain_designate_config('keystone_authtoken/auth_host').with_value('10.0.0.42')
+        is_expected.to contain_designate_config('keystone_authtoken/auth_port').with_value('35357')
+        is_expected.to contain_designate_config('keystone_authtoken/auth_protocol').with_value('https')
+        is_expected.to contain_designate_config('keystone_authtoken/admin_tenant_name').with_value('_services_')
+        is_expected.to contain_designate_config('keystone_authtoken/admin_user').with_value('designate')
+        is_expected.to contain_designate_config('keystone_authtoken/admin_password').with_value('passw0rd')
 
       end
 
       context 'when using auth against keystone' do
         before { params.merge!(:auth_strategy => 'keystone') }
         it 'configures designate-api with keystone auth strategy' do
-          should contain_designate_config('service:api/auth_strategy').with_value('keystone')
+          is_expected.to contain_designate_config('service:api/auth_strategy').with_value('keystone')
         end
       end
     end

@@ -13,25 +13,25 @@ describe 'designate::agent' do
   shared_examples 'designate-agent' do
     context 'with default parameters' do
       it 'installs designate-agent package and service' do
-        should contain_service('designate-agent').with(
+        is_expected.to contain_service('designate-agent').with(
           :name      => platform_params[:agent_service_name],
           :ensure    => 'running',
           :enable    => 'true'
         )
-        should contain_package('designate-agent').with(
+        is_expected.to contain_package('designate-agent').with(
           :name      => platform_params[:agent_package_name],
           :ensure    => 'present'
         )
       end
 
       it 'configures designate-agent with default parameters' do
-        should contain_designate_config('service:agent/backend_driver').with_value('bind9')
+        is_expected.to contain_designate_config('service:agent/backend_driver').with_value('bind9')
       end
 
       context 'when using Power DNS backend driver' do
         before { params.merge!(:backend_driver => 'powerdns') }
         it 'configures designate-agent with pdns backend' do
-          should contain_designate_config('service:agent/backend_driver').with_value('powerdns')
+          is_expected.to contain_designate_config('service:agent/backend_driver').with_value('powerdns')
         end
       end
     end

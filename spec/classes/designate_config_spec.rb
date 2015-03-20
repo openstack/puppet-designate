@@ -17,14 +17,14 @@ describe 'designate::config' do
   end
 
   it 'configures arbitrary designate configurations' do
-    should contain_designate_config('DEFAULT/foo').with_value('fooValue')
-    should contain_designate_config('DEFAULT/bar').with_value('barValue')
-    should contain_designate_config('DEFAULT/baz').with_ensure('absent')
+    is_expected.to contain_designate_config('DEFAULT/foo').with_value('fooValue')
+    is_expected.to contain_designate_config('DEFAULT/bar').with_value('barValue')
+    is_expected.to contain_designate_config('DEFAULT/baz').with_ensure('absent')
   end
 
   it 'configures arbitrary designate api-paste configurations' do
-    should contain_designate_api_paste_ini('DEFAULT/foo2').with_value('fooValue')
-    should contain_designate_api_paste_ini('DEFAULT/bar2').with_value('barValue')
-    should contain_designate_api_paste_ini('DEFAULT/baz2').with_ensure('absent')
+    is_expected.to contain_designate_api_paste_ini('DEFAULT/foo2').with_value('fooValue')
+    is_expected.to contain_designate_api_paste_ini('DEFAULT/bar2').with_value('barValue')
+    is_expected.to contain_designate_api_paste_ini('DEFAULT/baz2').with_ensure('absent')
   end
 end

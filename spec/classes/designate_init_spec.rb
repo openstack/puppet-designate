@@ -35,10 +35,10 @@ describe 'designate' do
 
   shared_examples_for 'a designate base installation' do
 
-    it { should contain_class('designate::params') }
+    it { is_expected.to contain_class('designate::params') }
 
     it 'configures designate group' do
-      should contain_group('designate').with(
+      is_expected.to contain_group('designate').with(
         :ensure  => 'present',
         :name    => 'designate',
         :require => 'Package[designate-common]',
@@ -46,7 +46,7 @@ describe 'designate' do
     end
 
     it 'configures designate user' do
-      should contain_user('designate').with(
+      is_expected.to contain_user('designate').with(
         :ensure  => 'present',
         :name    => 'designate',
         :gid     => 'designate',
@@ -55,7 +55,7 @@ describe 'designate' do
     end
 
     it 'configures designate configuration folder' do
-      should contain_file('/etc/designate/').with(
+      is_expected.to contain_file('/etc/designate/').with(
         :ensure  => 'directory',
         :owner   => 'designate',
         :group   => 'designate',
@@ -64,7 +64,7 @@ describe 'designate' do
     end
 
     it 'configures designate configuration file' do
-      should contain_file('/etc/designate/designate.conf').with(
+      is_expected.to contain_file('/etc/designate/designate.conf').with(
         :owner   => 'designate',
         :group   => 'designate',
         :mode    => '0640'
@@ -72,16 +72,16 @@ describe 'designate' do
     end
 
     it 'installs designate common package' do
-      should contain_package('designate-common').with(
+      is_expected.to contain_package('designate-common').with(
         :ensure => 'installed',
         :name   => platform_params[:common_package_name]
       )
     end
 
     it 'configures debug and verbosity' do
-      should contain_designate_config('DEFAULT/debug').with_value( params[:debug] )
-      should contain_designate_config('DEFAULT/verbose').with_value( params[:verbose] )
-      should contain_designate_config('DEFAULT/root_helper').with_value( params[:root_helper] )
+      is_expected.to contain_designate_config('DEFAULT/debug').with_value( params[:debug] )
+      is_expected.to contain_designate_config('DEFAULT/verbose').with_value( params[:verbose] )
+      is_expected.to contain_designate_config('DEFAULT/root_helper').with_value( params[:root_helper] )
     end
 
   end
@@ -89,14 +89,14 @@ describe 'designate' do
   shared_examples_for 'rabbit without HA support' do
 
     it 'configures rabbit' do
-      should contain_designate_config('DEFAULT/rabbit_userid').with_value( params[:rabbit_userid] )
-      should contain_designate_config('DEFAULT/rabbit_password').with_value( params[:rabbit_password] )
-      should contain_designate_config('DEFAULT/rabbit_password').with_value( params[:rabbit_password] ).with_secret(true)
-      should contain_designate_config('DEFAULT/rabbit_virtualhost').with_value( params[:rabbit_virtualhost] )
+      is_expected.to contain_designate_config('DEFAULT/rabbit_userid').with_value( params[:rabbit_userid] )
+      is_expected.to contain_designate_config('DEFAULT/rabbit_password').with_value( params[:rabbit_password] )
+      is_expected.to contain_designate_config('DEFAULT/rabbit_password').with_value( params[:rabbit_password] ).with_secret(true)
+      is_expected.to contain_designate_config('DEFAULT/rabbit_virtualhost').with_value( params[:rabbit_virtualhost] )
     end
 
-    it { should contain_designate_config('DEFAULT/rabbit_host').with_value( params[:rabbit_host] ) }
-    it { should contain_designate_config('DEFAULT/rabbit_port').with_value( params[:rabbit_port] ) }
+    it { is_expected.to contain_designate_config('DEFAULT/rabbit_host').with_value( params[:rabbit_host] ) }
+    it { is_expected.to contain_designate_config('DEFAULT/rabbit_port').with_value( params[:rabbit_port] ) }
 
   end
 

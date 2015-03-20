@@ -8,11 +8,11 @@ describe 'designate::dns' do
   shared_examples 'designate-dns' do
 
     it 'configures designate configuration folder' do
-      should contain_file(params[:designatepath]).with(:ensure => 'directory')
+      is_expected.to contain_file(params[:designatepath]).with(:ensure => 'directory')
     end
 
     it 'configures designate configuration file' do
-      should contain_file(params[:designatefile])
+      is_expected.to contain_file(params[:designatefile])
     end
 
   end

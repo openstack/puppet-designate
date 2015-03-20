@@ -7,10 +7,10 @@ describe 'designate::client' do
 
   shared_examples 'designate-client' do
 
-    it { should contain_class('designate::params') }
+    it { is_expected.to contain_class('designate::params') }
 
     it 'installs designate client package' do
-      should contain_package('python-designateclient').with(
+      is_expected.to contain_package('python-designateclient').with(
         :ensure => 'present',
         :name   => platform_params[:client_package_name]
       )

@@ -13,12 +13,12 @@ describe 'designate::sink' do
   shared_examples 'designate-sink' do
     context 'with default parameters' do
       it 'installs designate-sink package and service' do
-        should contain_service('designate-sink').with(
+        is_expected.to contain_service('designate-sink').with(
           :name      => platform_params[:sink_service_name],
           :ensure    => 'running',
           :enable    => 'true'
         )
-        should contain_package('designate-sink').with(
+        is_expected.to contain_package('designate-sink').with(
           :name      => platform_params[:sink_package_name],
           :ensure    => 'present'
         )

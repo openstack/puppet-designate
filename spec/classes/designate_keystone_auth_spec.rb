@@ -15,24 +15,24 @@ describe 'designate::keystone::auth' do
         :tenant   => 'fooboozoo' }
     end
 
-    it { should contain_keystone_user('designate').with(
+    it { is_expected.to contain_keystone_user('designate').with(
       :ensure   => 'present',
       :password => 'desigpwd',
       :tenant   => 'fooboozoo'
     ) }
 
-    it { should contain_keystone_user_role('designate@fooboozoo').with(
+    it { is_expected.to contain_keystone_user_role('designate@fooboozoo').with(
       :ensure  => 'present',
       :roles   => 'admin'
     )}
 
-    it { should contain_keystone_service('designate').with(
+    it { is_expected.to contain_keystone_service('designate').with(
       :ensure      => 'present',
       :type        => 'dns',
       :description => 'Openstack DNSaas Service'
     ) }
 
-    it { should contain_keystone_endpoint('RegionOne/designate').with(
+    it { is_expected.to contain_keystone_endpoint('RegionOne/designate').with(
       :ensure       => 'present',
       :public_url   => "http://127.0.0.1:9001/v1",
       :admin_url    => "http://127.0.0.1:9001/v1",
@@ -61,7 +61,7 @@ describe 'designate::keystone::auth' do
         :admin_address    => '10.10.10.12' }
     end
 
-    it { should contain_keystone_endpoint('RegionOne/designate').with(
+    it { is_expected.to contain_keystone_endpoint('RegionOne/designate').with(
       :ensure       => 'present',
       :public_url   => "https://10.10.10.10:81/v1",
       :internal_url => "http://10.10.10.11:81/v1",
@@ -75,9 +75,9 @@ describe 'designate::keystone::auth' do
         :auth_name => 'designate1' }
     end
 
-    it { should contain_keystone_user('designate1') }
-    it { should contain_keystone_user_role('designate1@services') }
-    it { should contain_keystone_service('designate1') }
-    it { should contain_keystone_endpoint('RegionOne/designate1') }
+    it { is_expected.to contain_keystone_user('designate1') }
+    it { is_expected.to contain_keystone_user_role('designate1@services') }
+    it { is_expected.to contain_keystone_service('designate1') }
+    it { is_expected.to contain_keystone_endpoint('RegionOne/designate1') }
   end
 end
