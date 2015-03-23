@@ -16,6 +16,10 @@
 # [*configure_endpoint*]
 #   Should designate endpoint be configured? Optional. Defaults to 'true'.
 #
+# [*service_name*]
+#   (optional) Name of the service.
+#   Defaults to the value of auth_name.
+#
 # [*service_type*]
 #    Type of service. Optional. Defaults to 'metering'.
 #
@@ -53,6 +57,7 @@ class designate::keystone::auth (
   $password           = false,
   $email              = 'designate@localhost',
   $auth_name          = 'designate',
+  $service_name       = undef,
   $service_type       = 'dns',
   $public_address     = '127.0.0.1',
   $admin_address      = '127.0.0.1',
@@ -67,17 +72,20 @@ class designate::keystone::auth (
   $configure_endpoint = true
 ) {
 
+  $real_service_name = pick($service_name, $auth_name)
 
   Keystone_user_role["${auth_name}@${tenant}"] ~>
     Service <| name == 'designate-api' |>
 
-  keystone::resource::service_identity { $auth_name:
+  keystone::resource::service_identity { 'designate':
     configure_user      => true,
     configure_user_role => true,
     configure_endpoint  => $configure_endpoint,
+    service_name        => $real_service_name,
     service_type        => $service_type,
     service_description => 'Openstack DNSaas Service',
     region              => $region,
+    auth_name           => $auth_name,
     password            => $password,
     email               => $email,
     tenant              => $tenant,
