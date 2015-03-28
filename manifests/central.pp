@@ -36,6 +36,7 @@ class designate::central (
   package { 'designate-central':
     ensure => $package_ensure,
     name   => pick($central_package_name, $::designate::params::central_package_name),
+    tag    => 'openstack',
   }
 
   Designate_config<||> ~> Service['designate-central']

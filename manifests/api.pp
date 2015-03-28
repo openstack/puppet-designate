@@ -76,6 +76,7 @@ class designate::api (
   package { 'designate-api':
     ensure => $package_ensure,
     name   => pick($api_package_name, $::designate::params::api_package_name),
+    tag    => 'openstack',
   }
 
   Designate_config<||> ~> Service['designate-api']

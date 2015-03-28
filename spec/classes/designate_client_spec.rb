@@ -12,7 +12,8 @@ describe 'designate::client' do
     it 'installs designate client package' do
       is_expected.to contain_package('python-designateclient').with(
         :ensure => 'present',
-        :name   => platform_params[:client_package_name]
+        :name   => platform_params[:client_package_name],
+        :tag    => 'openstack'
       )
     end
   end

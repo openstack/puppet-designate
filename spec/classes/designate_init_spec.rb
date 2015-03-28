@@ -74,7 +74,8 @@ describe 'designate' do
     it 'installs designate common package' do
       is_expected.to contain_package('designate-common').with(
         :ensure => 'installed',
-        :name   => platform_params[:common_package_name]
+        :name   => platform_params[:common_package_name],
+        :tag    => 'openstack'
       )
     end
 

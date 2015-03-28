@@ -20,7 +20,8 @@ describe 'designate::sink' do
         )
         is_expected.to contain_package('designate-sink').with(
           :name      => platform_params[:sink_package_name],
-          :ensure    => 'present'
+          :ensure    => 'present',
+          :tag       => 'openstack'
         )
       end
     end

@@ -20,7 +20,8 @@ describe 'designate::central' do
         )
         is_expected.to contain_package('designate-central').with(
           :name      => platform_params[:central_package_name],
-          :ensure    => 'present'
+          :ensure    => 'present',
+          :tag       => 'openstack'
         )
       end
 

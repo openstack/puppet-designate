@@ -27,7 +27,8 @@ describe 'designate::api' do
         )
         is_expected.to contain_package('designate-api').with(
           :name      => platform_params[:api_package_name],
-          :ensure    => 'present'
+          :ensure    => 'present',
+          :tag       => 'openstack'
         )
       end
 

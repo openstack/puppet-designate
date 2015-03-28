@@ -65,6 +65,7 @@ class designate(
   package { 'designate-common':
     ensure => $package_ensure,
     name   => pick($common_package_name, $::designate::params::common_package_name),
+    tag    => 'openstack',
   }
 
   user { 'designate':

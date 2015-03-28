@@ -20,7 +20,8 @@ describe 'designate::agent' do
         )
         is_expected.to contain_package('designate-agent').with(
           :name      => platform_params[:agent_package_name],
-          :ensure    => 'present'
+          :ensure    => 'present',
+          :tag       => 'openstack'
         )
       end
 

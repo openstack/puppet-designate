@@ -36,6 +36,7 @@ class designate::agent (
   package { 'designate-agent':
     ensure => $package_ensure,
     name   => pick($agent_package_name, $::designate::params::agent_package_name),
+    tag    => 'openstack',
   }
 
   Designate_config<||> ~> Service['designate-agent']

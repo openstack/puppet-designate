@@ -22,6 +22,7 @@ class designate::client (
   package { 'python-designateclient':
     ensure => $package_ensure,
     name   => pick($client_package_name, $::designate::params::client_package_name),
+    tag    => 'openstack',
   }
 
 }
