@@ -80,4 +80,17 @@ describe 'designate::keystone::auth' do
     it { is_expected.to contain_keystone_service('designate1') }
     it { is_expected.to contain_keystone_endpoint('RegionOne/designate1') }
   end
+
+  describe 'when overriding service name' do
+    let :params do
+      { :service_name => 'designate_service',
+        :password => 'foo',
+        :auth_name => 'designate1' }
+    end
+
+    it { is_expected.to contain_keystone_user('designate1') }
+    it { is_expected.to contain_keystone_user_role('designate1@services') }
+    it { is_expected.to contain_keystone_service('designate_service') }
+    it { is_expected.to contain_keystone_endpoint('RegionOne/designate_service') }
+  end
 end
