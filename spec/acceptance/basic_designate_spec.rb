@@ -9,10 +9,33 @@ describe 'basic designate' do
       Exec { logoutput => 'on_failure' }
 
       # Common resources
-      include ::apt
-      class { '::openstack_extras::repo::debian::ubuntu':
-        release         => 'kilo',
-        package_require => true,
+      case $::osfamily {
+        'Debian': {
+          include ::apt
+          class { '::openstack_extras::repo::debian::ubuntu':
+            release         => 'kilo',
+            package_require => true,
+          }
+          $package_provider = 'apt'
+        }
+        'RedHat': {
+          class { '::openstack_extras::repo::redhat::redhat':
+            # Kilo is not GA yet, so let's use the testing repo
+            manage_rdo => false,
+            repo_hash  => {
+              'rdo-kilo-testing' => {
+                'baseurl'  => 'https://repos.fedorapeople.org/repos/openstack/openstack-kilo/testing/el7/',
+                # packages are not GA so not signed
+                'gpgcheck' => '0',
+                'priority' => 97,
+              },
+            },
+          }
+          $package_provider = 'yum'
+        }
+        default: {
+          fail("Unsupported osfamily (${::osfamily})")
+        }
       }
 
       class { '::mysql::server': }
@@ -20,6 +43,7 @@ describe 'basic designate' do
       class { '::rabbitmq':
         delete_guest_user => true,
         erlang_cookie     => 'secrete',
+        package_provider  => $package_provider,
       }
 
       rabbitmq_vhost { '/':
@@ -62,33 +86,40 @@ describe 'basic designate' do
         admin_url  => "https://${::fqdn}:35357/",
       }
 
-      # Designate resources
-      class { '::designate::db::mysql':
-        password => 'a_big_secret',
+      case $::osfamily {
+        'Debian': {
+          # Designate resources
+          class { '::designate::db::mysql':
+            password => 'a_big_secret',
+          }
+          class { '::designate::keystone::auth':
+            password => 'a_big_secret',
+          }
+          class { '::designate':
+            rabbit_userid       => 'designate',
+            rabbit_password     => 'an_even_bigger_secret',
+            rabbit_host         => '127.0.0.1',
+          }
+          class { '::designate::api':
+            enabled           => true,
+            auth_strategy     => 'keystone',
+            keystone_password => 'a_big_secret',
+          }
+          class { '::designate::backend::bind9':
+            rndc_config_file => '',
+            rndc_key_file    => '',
+          }
+          include ::designate::client
+          class { '::designate::agent': }
+          class { '::designate::db':
+            database_connection => 'mysql://designate:a_big_secret@127.0.0.1/designate?charset=utf8',
+          }
+          include ::designate::dns
+        }
+        'RedHat': {
+          warning("Designate packaging is not ready on ${::osfamily}.")
+        }
       }
-      class { '::designate::keystone::auth':
-        password => 'a_big_secret',
-      }
-      class { '::designate':
-        rabbit_userid       => 'designate',
-        rabbit_password     => 'an_even_bigger_secret',
-        rabbit_host         => '127.0.0.1',
-      }
-      class { '::designate::api':
-        enabled           => true,
-        auth_strategy     => 'keystone',
-        keystone_password => 'a_big_secret',
-      }
-      class { '::designate::backend::bind9':
-        rndc_config_file => '',
-        rndc_key_file    => '',
-      }
-      include ::designate::client
-      class { '::designate::agent': }
-      class { '::designate::db':
-        database_connection => 'mysql://designate:a_big_secret@127.0.0.1/designate?charset=utf8',
-      }
-      include ::designate::dns
       EOS
 
 
@@ -98,8 +129,10 @@ describe 'basic designate' do
       apply_manifest(pp, :catch_failures => true)
     end
 
-    describe port(9001) do
-      it { is_expected.to be_listening.with('tcp') }
+    if os[:family] == 'Debian'
+      describe port(9001) do
+        it { is_expected.to be_listening.with('tcp') }
+      end
     end
 
   end
