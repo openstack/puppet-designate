@@ -14,6 +14,7 @@ Puppet::Type.newtype(:designate_config) do
       value.capitalize! if value =~ /^(true|false)$/i
       value
     end
+    newvalues(/^[\S ]*$/)
 
     def is_to_s( currentvalue )
       if resource.secret?

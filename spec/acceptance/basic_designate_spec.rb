@@ -5,6 +5,22 @@ describe 'basic designate' do
   context 'default parameters' do
 
     it 'should work with no errors' do
+      ppp= <<-EOS
+      case $::osfamily {
+        'Debian': {
+          Exec { logoutput => 'on_failure' }
+          package { ['debconf-utils','debconf']: ensure => installed, } ->
+          exec { 'fix_empty_rabbit_password':
+            command  => '/bin/echo "designate-common designate/rabbit_password password password" | /usr/bin/debconf-set-selections',
+            unless   => '/usr/bin/debconf-get-selections | grep "designate/rabbit_password"',
+          }
+          exec { 'fix_empty_keystone_password':
+            command  => '/bin/echo "designate-common designate/admin-password password password" | /usr/bin/debconf-set-selections',
+            unless   => '/usr/bin/debconf-get-selections | grep "designate/admin-password"',
+          }
+        }
+      }
+      EOS
       pp= <<-EOS
       Exec { logoutput => 'on_failure' }
 
@@ -122,7 +138,9 @@ describe 'basic designate' do
       }
       EOS
 
-
+      # TODO : A fix on inifile must be filed, if the value is an empty string, the inifile provider
+      # configure the value with a newline.https://paste.debian.net/238471/
+      apply_manifest(ppp, :catch_failures => true)
       # Run it once, idempotency does not work
       # this is what we have each time we run puppet after first time:
       # http://paste.openstack.org/show/2ebHALkNguNsE0804Oev/
