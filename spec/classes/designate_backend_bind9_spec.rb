@@ -6,7 +6,10 @@ require 'spec_helper'
 describe 'designate::backend::bind9' do
 
   let :facts do
-    { :osfamily => 'Debian' }
+    {
+      :osfamily => 'Debian',
+      :concat_basedir => '/var/lib/puppet/concat',
+    }
   end
 
   context 'with default params' do
