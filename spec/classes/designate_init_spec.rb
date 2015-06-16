@@ -14,7 +14,16 @@ describe 'designate' do
     }
   end
 
-  let :rabbit_params do
+  let :rabbit_ha_params do
+    {
+      :rabbit_hosts       => [ '10.0.0.1:5672', '10.0.0.2:5672', '10.0.0.3:5672' ],
+      :rabbit_userid      => 'guest',
+      :rabbit_password    => '',
+      :rabbit_virtualhost => '/'
+    }
+  end
+
+  let :rabbit_non_ha_params do
     {
       :rabbit_host        => '127.0.0.1',
       :rabbit_port        => 5672,
@@ -27,8 +36,9 @@ describe 'designate' do
   shared_examples_for 'designate' do
 
     context 'with rabbit_host parameter' do
-      before { params.merge!( rabbit_params ) }
       it_configures 'a designate base installation'
+      it_configures 'rabbit without HA support'
+      it_configures 'rabbit with HA support'
     end
 
   end
@@ -88,6 +98,7 @@ describe 'designate' do
   end
 
   shared_examples_for 'rabbit without HA support' do
+    before { params.merge!( rabbit_non_ha_params ) }
 
     it 'configures rabbit' do
       is_expected.to contain_designate_config('DEFAULT/rabbit_userid').with_value( params[:rabbit_userid] )
@@ -97,7 +108,26 @@ describe 'designate' do
     end
 
     it { is_expected.to contain_designate_config('DEFAULT/rabbit_host').with_value( params[:rabbit_host] ) }
+    it { is_expected.to contain_designate_config('DEFAULT/rabbit_hosts').with_value( "#{params[:rabbit_host]}:#{params[:rabbit_port]}" ) }
     it { is_expected.to contain_designate_config('DEFAULT/rabbit_port').with_value( params[:rabbit_port] ) }
+    it { is_expected.to contain_designate_config('DEFAULT/rabbit_ha_queues').with_value( 'false' ) }
+
+  end
+
+  shared_examples_for 'rabbit with HA support' do
+    before { params.merge!( rabbit_ha_params ) }
+
+    it 'configures rabbit' do
+      is_expected.to contain_designate_config('DEFAULT/rabbit_userid').with_value( params[:rabbit_userid] )
+      is_expected.to contain_designate_config('DEFAULT/rabbit_password').with_value( params[:rabbit_password] )
+      is_expected.to contain_designate_config('DEFAULT/rabbit_password').with_value( params[:rabbit_password] ).with_secret(true)
+      is_expected.to contain_designate_config('DEFAULT/rabbit_virtualhost').with_value( params[:rabbit_virtualhost] )
+    end
+
+    it { is_expected.to contain_designate_config('DEFAULT/rabbit_host').with_ensure( 'absent' ) }
+    it { is_expected.to contain_designate_config('DEFAULT/rabbit_hosts').with_value( '10.0.0.1:5672,10.0.0.2:5672,10.0.0.3:5672' ) }
+    it { is_expected.to contain_designate_config('DEFAULT/rabbit_port').with_ensure( 'absent' ) }
+    it { is_expected.to contain_designate_config('DEFAULT/rabbit_ha_queues').with_value( 'true' ) }
 
   end
 
