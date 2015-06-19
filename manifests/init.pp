@@ -36,6 +36,11 @@
 #   (optional) Port for rabbitmq instance.
 #   Defaults to '5672'
 #
+# [*rabbit_hosts*]
+#   (Optional) Array of host:port (used with HA queues).
+#   If defined, will remove rabbit_host & rabbit_port parameters from config
+#   Defaults to undef.
+#
 # [*rabbit_password*]
 #   (optional) Password used to connect to rabbitmq.
 #   Defaults to 'guest'
@@ -56,6 +61,7 @@ class designate(
   $root_helper          = 'sudo designate-rootwrap /etc/designate/rootwrap.conf',
   $rabbit_host          = '127.0.0.1',
   $rabbit_port          = '5672',
+  $rabbit_hosts         = false,
   $rabbit_userid        = 'guest',
   $rabbit_password      = '',
   $rabbit_virtualhost   = '/',
@@ -98,12 +104,21 @@ class designate(
   Package['designate-common'] -> Designate_config<||>
 
   designate_config {
-    'DEFAULT/rabbit_host'            : value => $rabbit_host;
-    'DEFAULT/rabbit_port'            : value => $rabbit_port;
-    'DEFAULT/rabbit_hosts'           : value => "${rabbit_host}:${rabbit_port}";
     'DEFAULT/rabbit_userid'          : value => $rabbit_userid;
     'DEFAULT/rabbit_password'        : value => $rabbit_password, secret => true;
     'DEFAULT/rabbit_virtualhost'     : value => $rabbit_virtualhost;
+  }
+
+  if $rabbit_hosts {
+    designate_config { 'DEFAULT/rabbit_hosts':     value => join($rabbit_hosts, ',') }
+    designate_config { 'DEFAULT/rabbit_ha_queues': value => true }
+    designate_config { 'DEFAULT/rabbit_host':      ensure => absent }
+    designate_config { 'DEFAULT/rabbit_port':      ensure => absent }
+  } else {
+    designate_config { 'DEFAULT/rabbit_host':      value => $rabbit_host }
+    designate_config { 'DEFAULT/rabbit_port':      value => $rabbit_port }
+    designate_config { 'DEFAULT/rabbit_hosts':     value => "${rabbit_host}:${rabbit_port}" }
+    designate_config { 'DEFAULT/rabbit_ha_queues': value => false }
   }
 
   # default setting
