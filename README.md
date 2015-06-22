@@ -15,7 +15,7 @@ puppet-designate
 Overview
 --------
 
-The designate module is a part of [Stackforge](https://github.com/stackforge), an effort by the Openstack infrastructure team to provide continuous integration testing and code review for Openstack and Openstack community projects not part of the core software. The module itself is used to flexibly configure and manage the DNS service for Openstack.
+The designate module is a part of [OpenStack](https://github.com/openstack), an effort by the Openstack infrastructure team to provide continuous integration testing and code review for Openstack and Openstack community projects as part of the core software. The module itself is used to flexibly configure and manage the DNS service for Openstack.
 
 Module Description
 ------------------
@@ -86,13 +86,13 @@ Setup
 
 * Currently there is no available RPM packages for use, you need to package it from source.
  * First, clone the spec file from   https://github.com/NewpTone/designate-spec.git
- * Then, clone the source file from  https://github.com/stackforge/designate.git
+ * Then, clone the source file from  https://github.com/openstack/designate.git
  * Last, use rpmbuild to package it.
 
 Contributors
 ------------
 
-* https://github.com/stackforge/puppet-designate/graphs/contributors
+* https://github.com/openstack/puppet-designate/graphs/contributors
 
 Release Notes
 -------------
