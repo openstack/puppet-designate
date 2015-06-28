@@ -51,7 +51,23 @@ describe 'designate::keystone::auth' do
     end
   end
 
-  describe 'when overriding public_protocol, public_port and public address' do
+  describe 'when overriding endpoint URLs' do
+    let :params do
+      { :password         => 'desigpwd',
+        :public_url       => 'https://10.10.10.10:81/v2',
+        :internal_url     => 'https://10.10.10.11:81/v2',
+        :admin_url        => 'https://10.10.10.12:81/v2' }
+    end
+
+    it { is_expected.to contain_keystone_endpoint('RegionOne/designate').with(
+      :ensure       => 'present',
+      :public_url   => 'https://10.10.10.10:81/v2',
+      :internal_url => 'https://10.10.10.11:81/v2',
+      :admin_url    => 'https://10.10.10.12:81/v2'
+    ) }
+  end
+
+  describe 'with deprecated endpoint parameters' do
     let :params do
       { :password         => 'desigpwd',
         :public_protocol  => 'https',
