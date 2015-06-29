@@ -10,8 +10,12 @@
 #  [*database_connection*]
 #    the connection string. format: [driver]://[user]:[password]@[host]/[database]
 #
+#  [*sync_db*]
+#    Enable dbsync.
+#
 class designate::db (
-  $database_connection = 'mysql://designate:designate@localhost/designate'
+  $database_connection = 'mysql://designate:designate@localhost/designate',
+  $sync_db             = true,
 ) {
 
   include ::designate::params
@@ -30,18 +34,8 @@ class designate::db (
     'storage:sqlalchemy/connection': value => $database_connection, secret => true;
   }
 
-  exec { 'designate-dbsync':
-    command     => $::designate::params::dbsync_command,
-    path        => '/usr/bin',
-    user        => 'root',
-    refreshonly => true,
-    logoutput   => on_failure,
-    # Config and software must be installed before running dbsync, and if either
-    # one changes, then run it again.
-    subscribe   => [
-      Anchor['designate::install::end'],
-      Anchor['designate::config::end'],
-    ],
-    notify      => Anchor['designate::service::begin'],
+  if $sync_db {
+    include ::designate::db::sync
   }
+
 }
