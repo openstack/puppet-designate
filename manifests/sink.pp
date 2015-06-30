@@ -31,10 +31,8 @@ class designate::sink (
   package { 'designate-sink':
     ensure => $package_ensure,
     name   => pick($sink_package_name, $::designate::params::sink_service_name),
-    tag    => 'openstack',
+    tag    => ['openstack', 'designate-package'],
   }
-
-  Package['designate-sink'] -> Service['designate-sink']
 
   service { 'designate-sink':
     ensure     => $service_ensure,
@@ -42,5 +40,6 @@ class designate::sink (
     enable     => $enabled,
     hasstatus  => true,
     hasrestart => true,
+    tag        => ['openstack', 'designate-service'],
   }
 }

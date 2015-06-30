@@ -16,12 +16,13 @@ describe 'designate::central' do
         is_expected.to contain_service('designate-central').with(
           :name      => platform_params[:central_service_name],
           :ensure    => 'running',
-          :enable    => 'true'
+          :enable    => 'true',
+          :tag       => ['openstack', 'designate-service'],
         )
         is_expected.to contain_package('designate-central').with(
           :name      => platform_params[:central_package_name],
           :ensure    => 'present',
-          :tag       => 'openstack'
+          :tag       => ['openstack', 'designate-package'],
         )
       end
 

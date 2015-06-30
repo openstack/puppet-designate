@@ -71,21 +71,26 @@ class designate(
   package { 'designate-common':
     ensure => $package_ensure,
     name   => pick($common_package_name, $::designate::params::common_package_name),
-    tag    => 'openstack',
+    tag    => ['openstack', 'designate-package'],
+  }
+
+  if $package_ensure != 'absent' {
+    Package['designate-common'] -> User['designate']
+    Package['designate-common'] -> Group['designate']
   }
 
   user { 'designate':
-    ensure  => 'present',
-    name    => 'designate',
-    gid     => 'designate',
-    system  => true,
-    require => Package['designate-common'],
+    ensure => 'present',
+    name   => 'designate',
+    gid    => 'designate',
+    system => true,
+    before => Anchor['designate::install::end'],
   }
 
   group { 'designate':
-    ensure  => 'present',
-    name    => 'designate',
-    require => Package['designate-common'],
+    ensure => 'present',
+    name   => 'designate',
+    before => Anchor['designate::install::end'],
   }
 
   file { '/etc/designate/':
@@ -94,14 +99,6 @@ class designate(
     group  => 'designate',
     mode   => '0750',
   }
-
-  file { '/etc/designate/designate.conf':
-    owner => 'designate',
-    group => 'designate',
-    mode  => '0640',
-  }
-
-  Package['designate-common'] -> Designate_config<||>
 
   designate_config {
     'DEFAULT/rabbit_userid'          : value => $rabbit_userid;
@@ -130,4 +127,26 @@ class designate(
     'DEFAULT/state_path'             : value => $::designate::params::state_path;
   }
 
+  # Setup anchors for install, config and service phases of the module.  These
+  # anchors allow external modules to hook the begin and end of any of these
+  # phases.  Package or service management can also be replaced by ensuring the
+  # package is absent or turning off service management and having the
+  # replacement depend on the appropriate anchors.  When applicable, end tags
+  # should be notified so that subscribers can determine if installation,
+  # config or service state changed and act on that if needed.
+  anchor { 'designate::install::begin': } ->
+  Package<| tag == 'designate-package'|> ~>
+  anchor { 'designate::install::end': }
+  ->
+  anchor { 'designate::config::begin': } ->
+  Designate_config<||> ~>
+  anchor { 'designate::config::end': }
+  ->
+  anchor { 'designate::service::begin': } ~>
+  Service<| tag == 'designate-service' |> ~>
+  anchor { 'designate::service::end': }
+
+  # Package installation or config changes will always restart services.
+  Anchor['designate::install::end'] ~> Anchor['designate::service::begin']
+  Anchor['designate::config::end']  ~> Anchor['designate::service::begin']
 }

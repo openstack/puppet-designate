@@ -16,8 +16,6 @@ class designate::db (
 
   include ::designate::params
 
-  Package<| title == 'designate-common' |> -> Class['::designate::db']
-
   case $database_connection {
     /^mysql:\/\//: {
       require 'mysql::bindings'
@@ -38,10 +36,12 @@ class designate::db (
     user        => 'root',
     refreshonly => true,
     logoutput   => on_failure,
-    subscribe   => Designate_config['storage:sqlalchemy/connection']
+    # Config and software must be installed before running dbsync, and if either
+    # one changes, then run it again.
+    subscribe   => [
+      Anchor['designate::install::end'],
+      Anchor['designate::config::end'],
+    ],
+    notify      => Anchor['designate::service::begin'],
   }
-
-  # Have to have a valid configuration file before running migrations
-  Designate_config<||> -> Exec['designate-dbsync']
-
 }

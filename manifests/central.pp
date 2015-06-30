@@ -36,11 +36,8 @@ class designate::central (
   package { 'designate-central':
     ensure => $package_ensure,
     name   => pick($central_package_name, $::designate::params::central_package_name),
-    tag    => 'openstack',
+    tag    => ['openstack', 'designate-package'],
   }
-
-  Designate_config<||> ~> Service['designate-central']
-  Package['designate-central'] -> Designate_config<||>
 
   service { 'designate-central':
     ensure     => $service_ensure,
@@ -49,7 +46,7 @@ class designate::central (
     hasstatus  => true,
     hasrestart => true,
     require    => Class['::designate::db'],
-    subscribe  => Exec['designate-dbsync']
+    tag        => ['openstack', 'designate-service'],
   }
 
   designate_config {

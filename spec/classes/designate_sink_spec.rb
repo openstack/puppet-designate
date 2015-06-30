@@ -16,12 +16,13 @@ describe 'designate::sink' do
         is_expected.to contain_service('designate-sink').with(
           :name      => platform_params[:sink_service_name],
           :ensure    => 'running',
-          :enable    => 'true'
+          :enable    => 'true',
+          :tag       => ['openstack', 'designate-service'],
         )
         is_expected.to contain_package('designate-sink').with(
           :name      => platform_params[:sink_package_name],
           :ensure    => 'present',
-          :tag       => 'openstack'
+          :tag       => ['openstack', 'designate-package'],
         )
       end
     end

@@ -76,11 +76,8 @@ class designate::api (
   package { 'designate-api':
     ensure => $package_ensure,
     name   => pick($api_package_name, $::designate::params::api_package_name),
-    tag    => 'openstack',
+    tag    => ['openstack', 'designate-package'],
   }
-
-  Designate_config<||> ~> Service['designate-api']
-  Package['designate-api'] -> Designate_config<||>
 
   service { 'designate-api':
     ensure     => $service_ensure,
@@ -89,7 +86,7 @@ class designate::api (
     hasstatus  => true,
     hasrestart => true,
     require    => Class['::designate::db'],
-    subscribe  => Exec['designate-dbsync']
+    tag        => ['openstack', 'designate-service'],
   }
 
   # API Service

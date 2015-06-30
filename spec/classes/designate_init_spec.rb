@@ -51,7 +51,7 @@ describe 'designate' do
       is_expected.to contain_group('designate').with(
         :ensure  => 'present',
         :name    => 'designate',
-        :require => 'Package[designate-common]',
+        :before  => 'Anchor[designate::install::end]',
       )
     end
 
@@ -61,6 +61,7 @@ describe 'designate' do
         :name    => 'designate',
         :gid     => 'designate',
         :system  => true,
+        :before  => 'Anchor[designate::install::end]',
       )
     end
 
@@ -73,19 +74,12 @@ describe 'designate' do
       )
     end
 
-    it 'configures designate configuration file' do
-      is_expected.to contain_file('/etc/designate/designate.conf').with(
-        :owner   => 'designate',
-        :group   => 'designate',
-        :mode    => '0640'
-      )
-    end
-
     it 'installs designate common package' do
       is_expected.to contain_package('designate-common').with(
         :ensure => 'installed',
         :name   => platform_params[:common_package_name],
-        :tag    => 'openstack'
+        :tag    => ['openstack', 'designate-package'],
+        :before  => ['User[designate]', 'Group[designate]'],
       )
     end
 
@@ -93,6 +87,19 @@ describe 'designate' do
       is_expected.to contain_designate_config('DEFAULT/debug').with_value( params[:debug] )
       is_expected.to contain_designate_config('DEFAULT/verbose').with_value( params[:verbose] )
       is_expected.to contain_designate_config('DEFAULT/root_helper').with_value( params[:root_helper] )
+    end
+
+    it 'configures phase anchors' do
+      is_expected.to contain_anchor('designate::install::begin')
+      is_expected.to contain_anchor('designate::install::end').with(
+        :notify => ['Anchor[designate::service::begin]'],
+      )
+      is_expected.to contain_anchor('designate::config::begin')
+      is_expected.to contain_anchor('designate::config::end').with(
+        :notify => ['Anchor[designate::service::begin]'],
+      )
+      is_expected.to contain_anchor('designate::service::begin')
+      is_expected.to contain_anchor('designate::service::end')
     end
 
   end
