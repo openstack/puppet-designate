@@ -1,6 +1,8 @@
 puppet-designate
 ================
 
+6.0.0 - 2015.1 - Kilo
+
 #### Table of Contents
 
 1. [Overview - What is the designate module?](#overview)
