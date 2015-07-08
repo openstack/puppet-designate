@@ -23,6 +23,9 @@
 # [*service_type*]
 #    Type of service. Optional. Defaults to 'metering'.
 #
+# [*service_description*]
+#    Description for keystone service. Optional. Defaults to 'Openstack DNSaas Service'.
+#
 # [*region*]
 #    Region for endpoint. Optional. Defaults to 'RegionOne'.
 #
@@ -95,26 +98,27 @@
 #  }
 #
 class designate::keystone::auth (
-  $password           = false,
-  $email              = 'designate@localhost',
-  $auth_name          = 'designate',
-  $service_name       = undef,
-  $service_type       = 'dns',
-  $region             = 'RegionOne',
-  $tenant             = 'services',
-  $configure_endpoint = true,
-  $public_url         = 'http://127.0.0.1:9001/v1',
-  $admin_url          = 'http://127.0.0.1:9001/v1',
-  $internal_url       = 'http://127.0.0.1:9001/v1',
+  $password            = false,
+  $email               = 'designate@localhost',
+  $auth_name           = 'designate',
+  $service_name        = undef,
+  $service_type        = 'dns',
+  $service_description = 'Openstack DNSaas Service',
+  $region              = 'RegionOne',
+  $tenant              = 'services',
+  $configure_endpoint  = true,
+  $public_url          = 'http://127.0.0.1:9001/v1',
+  $admin_url           = 'http://127.0.0.1:9001/v1',
+  $internal_url        = 'http://127.0.0.1:9001/v1',
   # DEPRECATED PARAMETERS
-  $version            = undef,
-  $port               = undef,
-  $public_protocol    = undef,
-  $public_address     = undef,
-  $internal_protocol  = undef,
-  $internal_address   = undef,
-  $admin_protocol     = undef,
-  $admin_address      = undef,
+  $version             = undef,
+  $port                = undef,
+  $public_protocol     = undef,
+  $public_address      = undef,
+  $internal_protocol   = undef,
+  $internal_address    = undef,
+  $admin_protocol      = undef,
+  $admin_address       = undef,
 ) {
 
   if $version {
@@ -190,7 +194,7 @@ class designate::keystone::auth (
     configure_endpoint  => $configure_endpoint,
     service_name        => $real_service_name,
     service_type        => $service_type,
-    service_description => 'Openstack DNSaas Service',
+    service_description => $service_description,
     region              => $region,
     auth_name           => $auth_name,
     password            => $password,
