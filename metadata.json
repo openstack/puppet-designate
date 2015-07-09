@@ -1,10 +1,10 @@
 {
-  "name": "stackforge-designate",
-  "version": "5.0.0",
+  "name": "openstack-designate",
+  "version": "6.0.0",
   "author": "Xingchao Yu and StackForge Contributors",
   "summary": "Puppet module for OpenStack Designate",
   "license": "Apache-2.0",
-  "source": "git://github.com/stackforge/puppet-designate.git",
+  "source": "git://github.com/openstack/puppet-designate.git",
   "project_page": "https://launchpad.net/puppet-designate",
   "issues_url": "https://bugs.launchpad.net/puppet-designate",
   "requirements": [
@@ -32,9 +32,9 @@
   "description": "Installs and configures OpenStack Designate (DNS Services).",
   "dependencies": [
     { "name": "puppetlabs/inifile", "version_requirement": ">=1.0.0 <2.0.0" },
-    { "name": "stackforge/keystone", "version_requirement": ">=5.0.0 <6.0.0" },
+    { "name": "openstack/keystone", "version_requirement": ">=6.0.0 <7.0.0" },
     { "name": "puppetlabs/stdlib", "version_requirement": ">=4.0.0 <5.0.0" },
     { "name": "theforeman/dns", "version_requirement": ">=1.4.0 <4.0.0" },
-    { "name": "stackforge/openstacklib", "version_requirement": ">=5.0.0 <6.0.0" }
+    { "name": "openstack/openstacklib", "version_requirement": ">=6.0.0 <7.0.0" }
   ]
 }
