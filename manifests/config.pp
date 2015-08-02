@@ -27,13 +27,19 @@
 #   NOTE: The configuration MUST NOT be already handled by this module
 #   or Puppet catalog compilation will fail with duplicate resources.
 #
+# [*rootwrap_config*]
+#   (optional) Allow configuration of /etc/designate/rootwrap.conf.
+#
 class designate::config (
   $designate_config      = {},
   $api_paste_ini_config  = {},
+  $rootwrap_config       = {},
 ) {
   validate_hash($designate_config)
   validate_hash($api_paste_ini_config)
+  validate_hash($rootwrap_config)
 
   create_resources('designate_config', $designate_config)
   create_resources('designate_api_paste_ini', $api_paste_ini_config)
+  create_resources('designate_rootwrap_config', $rootwrap_config)
 }
