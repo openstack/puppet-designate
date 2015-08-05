@@ -53,6 +53,15 @@
 #   (optional) The RabbitMQ virtual host.
 #   Defaults to '/'
 #
+# [*notification_driver*]
+#   (optional) Driver used for issuing notifications
+#   Defaults to 'messaging'
+#
+# [*notification_topics*]
+#   (optional) Notification Topics
+#   Defaults to 'notifications'
+#
+
 class designate(
   $package_ensure       = present,
   $common_package_name  = undef,
@@ -65,6 +74,8 @@ class designate(
   $rabbit_userid        = 'guest',
   $rabbit_password      = '',
   $rabbit_virtualhost   = '/',
+  $notification_driver  = 'messaging',
+  $notification_topics  = 'notifications',
 ) {
 
   include ::designate::params
@@ -125,6 +136,8 @@ class designate(
     'DEFAULT/root_helper'            : value => $root_helper;
     'DEFAULT/logdir'                 : value => $::designate::params::log_dir;
     'DEFAULT/state_path'             : value => $::designate::params::state_path;
+    'DEFAULT/notification_driver'    : value => $notification_driver;
+    'DEFAULT/notification_topics'    : value => $notification_topics;
   }
 
   # Setup anchors for install, config and service phases of the module.  These

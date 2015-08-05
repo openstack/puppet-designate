@@ -89,6 +89,11 @@ describe 'designate' do
       is_expected.to contain_designate_config('DEFAULT/root_helper').with_value( params[:root_helper] )
     end
 
+    it 'configures notification' do
+      is_expected.to contain_designate_config('DEFAULT/notification_driver').with_value('messaging' )
+      is_expected.to contain_designate_config('DEFAULT/notification_topics').with_value('notifications')
+    end
+
     it 'configures phase anchors' do
       is_expected.to contain_anchor('designate::install::begin')
       is_expected.to contain_anchor('designate::install::end').with(

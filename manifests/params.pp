@@ -5,11 +5,11 @@ class designate::params {
   $powerdns_dbsync_command =  'designate-manage powerdns sync'
   $state_path              =  '/var/lib/designate'
   # bind path
-  $designatepath        = "${state_path}/bind9"
-  $designatefile        = "${state_path}/bind9/zones.config"
+  $designatepath           = "${state_path}/bind9"
+  $designatefile           = "${state_path}/bind9/zones.config"
   # Log dir
-  $log_dir             =  '/var/log/designate'
-  $client_package_name =  'python-designateclient'
+  $log_dir                 =  '/var/log/designate'
+  $client_package_name     =  'python-designateclient'
 
   case $::osfamily {
     'RedHat': {
