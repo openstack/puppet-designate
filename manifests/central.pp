@@ -24,12 +24,22 @@
 #  (optional) Driver used for backend communication (fake, rpc, bind9, powerdns)
 #  Defaults to 'bind9'
 #
+# [*managed_resource_email*]
+#  (optional) Email to use for managed resources like domains created by the FloatingIP API
+#  Defaults to 'hostmaster@example.com'
+#
+# [*managed_resource_tenant_id*]
+#  (optional) Tenant ID to own all managed resources - like auto-created records etc.
+#  Defaults to '123456'
+#
 class designate::central (
-  $package_ensure       = present,
-  $central_package_name = undef,
-  $enabled              = true,
-  $service_ensure       = 'running',
-  $backend_driver       = 'bind9',
+  $package_ensure             = present,
+  $central_package_name       = undef,
+  $enabled                    = true,
+  $service_ensure             = 'running',
+  $backend_driver             = 'bind9',
+  $managed_resource_email     = 'hostmaster@example.com',
+  $managed_resource_tenant_id = '123456',
 ) {
   include ::designate::params
 
@@ -50,6 +60,8 @@ class designate::central (
   }
 
   designate_config {
-    'service:central/backend_driver'         : value => $backend_driver;
+    'service:central/backend_driver'             : value => $backend_driver;
+    'service:central/managed_resource_email'     : value => $managed_resource_email;
+    'service:central/managed_resource_tenant_id' : value => $managed_resource_tenant_id;
   }
 }
