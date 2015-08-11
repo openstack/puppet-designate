@@ -3,9 +3,9 @@ fixtures:
     'concat': 'git://github.com/puppetlabs/puppetlabs-concat.git'
     'dns': 'git://github.com/theforeman/puppet-dns.git'
     'inifile': 'git://github.com/puppetlabs/puppetlabs-inifile.git'
-    'keystone': 'git://github.com/stackforge/puppet-keystone.git'
+    'keystone': 'git://github.com/openstack/puppet-keystone.git'
     'mysql': 'git://github.com/puppetlabs/puppetlabs-mysql.git'
-    'openstacklib': 'git://github.com/stackforge/puppet-openstacklib.git'
+    'openstacklib': 'git://github.com/openstack/puppet-openstacklib.git'
     'stdlib': 'git://github.com/puppetlabs/puppetlabs-stdlib.git'
     'powerdns': 'git://github.com/antonlindstrom/puppet-powerdns.git'
   symlinks:
