@@ -40,4 +40,9 @@ Puppet::Type.newtype(:designate_config) do
 
     defaultto false
   end
+
+  autorequire(:package) do
+    'designate-common'
+  end
+
 end

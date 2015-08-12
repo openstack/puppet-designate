@@ -40,4 +40,8 @@ Puppet::Type.newtype(:designate_api_paste_ini) do
     defaultto false
   end
 
+  autorequire(:package) do
+    'designate-common'
+  end
+
 end
