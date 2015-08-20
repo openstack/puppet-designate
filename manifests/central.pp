@@ -40,28 +40,20 @@ class designate::central (
   $backend_driver             = 'bind9',
   $managed_resource_email     = 'hostmaster@example.com',
   $managed_resource_tenant_id = '123456',
-) {
+) inherits designate {
   include ::designate::params
-
-  package { 'designate-central':
-    ensure => $package_ensure,
-    name   => pick($central_package_name, $::designate::params::central_package_name),
-    tag    => ['openstack', 'designate-package'],
-  }
-
-  service { 'designate-central':
-    ensure     => $service_ensure,
-    name       => $::designate::params::central_service_name,
-    enable     => $enabled,
-    hasstatus  => true,
-    hasrestart => true,
-    require    => Class['::designate::db'],
-    tag        => ['openstack', 'designate-service'],
-  }
 
   designate_config {
     'service:central/backend_driver'             : value => $backend_driver;
     'service:central/managed_resource_email'     : value => $managed_resource_email;
     'service:central/managed_resource_tenant_id' : value => $managed_resource_tenant_id;
+  }
+
+  designate::generic_service { 'central':
+    enabled        => $enabled,
+    manage_service => $service_ensure,
+    ensure_package => $package_ensure,
+    package_name   => pick($central_package_name, $::designate::params::central_package_name),
+    service_name   => $::designate::params::central_service_name,
   }
 }

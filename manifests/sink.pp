@@ -32,13 +32,15 @@ class designate::sink (
   $enabled                       = true,
   $service_ensure                = 'running',
   $enabled_notification_handlers = undef,
-) {
+) inherits designate {
   include ::designate::params
 
-  package { 'designate-sink':
-    ensure => $package_ensure,
-    name   => pick($sink_package_name, $::designate::params::sink_service_name),
-    tag    => ['openstack', 'designate-package'],
+  designate::generic_service { 'sink':
+    enabled        => $enabled,
+    manage_service => $service_ensure,
+    ensure_package => $package_ensure,
+    package_name   => pick($sink_package_name, $::designate::params::sink_package_name),
+    service_name   => $::designate::params::sink_service_name,
   }
 
   if $enabled_notification_handlers {
@@ -51,12 +53,4 @@ class designate::sink (
     }
   }
 
-  service { 'designate-sink':
-    ensure     => $service_ensure,
-    name       => $::designate::params::sink_service_name,
-    enable     => $enabled,
-    hasstatus  => true,
-    hasrestart => true,
-    tag        => ['openstack', 'designate-service'],
-  }
 }

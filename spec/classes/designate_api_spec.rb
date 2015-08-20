@@ -21,7 +21,6 @@ describe 'designate::api' do
         is_expected.to contain_service('designate-api').with(
           :name      => platform_params[:api_service_name],
           :ensure    => 'running',
-          :require   => 'Class[Designate::Db]',
           :enable    => 'true',
           :tag       => ['openstack', 'designate-service'],
         )

@@ -79,6 +79,14 @@ class designate(
 ) {
 
   include ::designate::params
+
+  exec { 'post-designate_config':
+    command     => '/bin/echo "designate config has changed"',
+    refreshonly => true,
+  }
+
+  Designate_config<| |> ~> Exec['post-designate_config']
+
   package { 'designate-common':
     ensure => $package_ensure,
     name   => pick($common_package_name, $::designate::params::common_package_name),
