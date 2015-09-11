@@ -23,7 +23,10 @@ describe 'designate::backend::powerdns' do
         'group'  => 'designate',
         'mode'   => '0750',
       )
-      is_expected.to contain_exec('designate-powerdns-dbsync').that_subscribes_to('Designate_config[backend:powerdns/connection]')
+    end
+
+    it 'includes designate::db::powerdns::sync' do
+      is_expected.to contain_class('designate::db::powerdns::sync')
     end
   end
 

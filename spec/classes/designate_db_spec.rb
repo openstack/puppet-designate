@@ -12,12 +12,10 @@ describe 'designate::db' do
         is_expected.to contain_designate_config('storage:sqlalchemy/connection').with_value('mysql://designate:designate@localhost/designate')
         is_expected.to contain_class('mysql::bindings')
         is_expected.to contain_class('mysql::bindings::python')
-        is_expected.to contain_exec('designate-dbsync').with(
-          :subscribe => ['Anchor[designate::install::end]',
-                         'Anchor[designate::config::end]'],
-          :notify => 'Anchor[designate::service::begin]',
-        )
+      end
 
+      it 'includes designate::db::sync' do
+        is_expected.to contain_class('designate::db::sync')
       end
     end
 

@@ -14,9 +14,14 @@
 #  (optional) Whether or not to automatically reconnect and retry transactions.
 #  Defaults to true
 #
+# [*sync_db*]
+#  Enable dbsync.
+#  Defaults to true
+#
 class designate::backend::powerdns (
   $database_connection,
   $use_db_reconnect = true,
+  $sync_db          = true,
 ) {
   include ::designate
   include ::powerdns
@@ -42,16 +47,8 @@ class designate::backend::powerdns (
     'backend:powerdns/use_db_reconnect': value => $use_db_reconnect;
   }
 
-  exec { 'designate-powerdns-dbsync':
-    command     => $::designate::params::powerdns_dbsync_command,
-    path        => '/usr/bin',
-    user        => 'root',
-    refreshonly => true,
-    logoutput   => on_failure,
-    subscribe   => Designate_config['backend:powerdns/connection'],
+  if $sync_db {
+    include ::designate::db::powerdns::sync
   }
 
-  # Have to have a valid configuration file before running migrations
-  Designate_config<||> -> Exec['designate-powerdns-dbsync']
-  Exec['designate-powerdns-dbsync'] ~> Service<| title == 'designate-central' |>
 }
