@@ -30,25 +30,18 @@ class designate::agent (
   $enabled            = true,
   $service_ensure     = 'running',
   $backend_driver     = 'bind9',
-) {
+) inherits designate {
   include ::designate::params
-
-  package { 'designate-agent':
-    ensure => $package_ensure,
-    name   => pick($agent_package_name, $::designate::params::agent_package_name),
-    tag    => ['openstack', 'designate-package'],
-  }
-
-  service { 'designate-agent':
-    ensure     => $service_ensure,
-    name       => $::designate::params::agent_service_name,
-    enable     => $enabled,
-    hasstatus  => true,
-    hasrestart => true,
-    tag        => ['openstack', 'designate-service'],
-  }
 
   designate_config {
     'service:agent/backend_driver'         : value => $backend_driver;
+  }
+
+  designate::generic_service { 'agent':
+    enabled        => $enabled,
+    manage_service => $service_ensure,
+    ensure_package => $package_ensure,
+    package_name   => pick($agent_package_name, $::designate::params::agent_package_name),
+    service_name   => $::designate::params::agent_service_name,
   }
 }

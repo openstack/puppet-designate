@@ -70,24 +70,8 @@ class designate::api (
   $keystone_password          = false,
   $enable_api_v1              = true,
   $enable_api_v2              = false,
-){
+) inherits designate {
   include ::designate::params
-
-  package { 'designate-api':
-    ensure => $package_ensure,
-    name   => pick($api_package_name, $::designate::params::api_package_name),
-    tag    => ['openstack', 'designate-package'],
-  }
-
-  service { 'designate-api':
-    ensure     => $service_ensure,
-    name       => $::designate::params::api_service_name,
-    enable     => $enabled,
-    hasstatus  => true,
-    hasrestart => true,
-    require    => Class['::designate::db'],
-    tag        => ['openstack', 'designate-service'],
-  }
 
   # API Service
   designate_config {
@@ -104,6 +88,14 @@ class designate::api (
     'keystone_authtoken/admin_tenant_name'  : value => $keystone_tenant;
     'keystone_authtoken/admin_user'         : value => $keystone_user;
     'keystone_authtoken/admin_password'     : value => $keystone_password, secret => true;
+  }
+
+  designate::generic_service { 'api':
+    enabled        => $enabled,
+    manage_service => $service_ensure,
+    ensure_package => $package_ensure,
+    package_name   => pick($api_package_name, $::designate::params::api_package_name),
+    service_name   => $::designate::params::api_service_name,
   }
 
 }
