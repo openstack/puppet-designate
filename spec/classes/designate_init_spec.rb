@@ -45,6 +45,7 @@ describe 'designate' do
 
   shared_examples_for 'a designate base installation' do
 
+    it { is_expected.to contain_class('designate::logging') }
     it { is_expected.to contain_class('designate::params') }
 
     it 'configures designate group' do
@@ -84,8 +85,6 @@ describe 'designate' do
     end
 
     it 'configures debug and verbosity' do
-      is_expected.to contain_designate_config('DEFAULT/debug').with_value( params[:debug] )
-      is_expected.to contain_designate_config('DEFAULT/verbose').with_value( params[:verbose] )
       is_expected.to contain_designate_config('DEFAULT/root_helper').with_value( params[:root_helper] )
     end
 
