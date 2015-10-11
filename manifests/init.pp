@@ -18,11 +18,28 @@
 #
 # [*debug*]
 #   (optional) should the daemons log debug messages.
-#   Defaults to 'false'
+#   Defaults to undef
 #
 # [*verbose*]
 #   (optional) should the daemons log verbose messages.
-#   Defaults to 'false'
+#   Defaults to undef
+#
+# [*use_syslog*]
+#   (Optional) Use syslog for logging.
+#   Defaults to undef
+#
+# [*use_stderr*]
+#   (optional) Use stderr for logging
+#   Defaults to undef
+#
+# [*log_facility*]
+#   (Optional) Syslog facility to receive log lines.
+#   Defaults to undef
+#
+# [*log_dir*]
+#   (optional) Directory where logs should be stored.
+#   If set to boolean false, it will not log to any directory.
+#   Defaults to undef
 #
 # [*root_helper*]
 #   (optional) Command for designate rootwrap helper.
@@ -65,8 +82,12 @@
 class designate(
   $package_ensure       = present,
   $common_package_name  = undef,
-  $verbose              = false,
-  $debug                = false,
+  $verbose              = undef,
+  $debug                = undef,
+  $log_dir              = undef,
+  $use_syslog           = undef,
+  $use_stderr           = undef,
+  $log_facility         = undef,
   $root_helper          = 'sudo designate-rootwrap /etc/designate/rootwrap.conf',
   $rabbit_host          = '127.0.0.1',
   $rabbit_port          = '5672',
@@ -78,6 +99,7 @@ class designate(
   $notification_topics  = 'notifications',
 ) {
 
+  include ::designate::logging
   include ::designate::params
 
   exec { 'post-designate_config':
@@ -139,10 +161,7 @@ class designate(
 
   # default setting
   designate_config {
-    'DEFAULT/debug'                  : value => $debug;
-    'DEFAULT/verbose'                : value => $verbose;
     'DEFAULT/root_helper'            : value => $root_helper;
-    'DEFAULT/logdir'                 : value => $::designate::params::log_dir;
     'DEFAULT/state_path'             : value => $::designate::params::state_path;
     'DEFAULT/notification_driver'    : value => $notification_driver;
     'DEFAULT/notification_topics'    : value => $notification_topics;
