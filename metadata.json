@@ -1,6 +1,6 @@
 {
   "name": "openstack-designate",
-  "version": "6.0.0",
+  "version": "6.1.0",
   "author": "Xingchao Yu and StackForge Contributors",
   "summary": "Puppet module for OpenStack Designate",
   "license": "Apache-2.0",
