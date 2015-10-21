@@ -18,7 +18,6 @@ describe 'designate::keystone::auth' do
     it { is_expected.to contain_keystone_user('designate').with(
       :ensure   => 'present',
       :password => 'desigpwd',
-      :tenant   => 'fooboozoo'
     ) }
 
     it { is_expected.to contain_keystone_user_role('designate@fooboozoo').with(
