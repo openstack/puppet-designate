@@ -142,21 +142,21 @@ class designate(
   }
 
   designate_config {
-    'DEFAULT/rabbit_userid'          : value => $rabbit_userid;
-    'DEFAULT/rabbit_password'        : value => $rabbit_password, secret => true;
-    'DEFAULT/rabbit_virtualhost'     : value => $rabbit_virtualhost;
+    'oslo_messaging_rabbit/rabbit_userid'          : value => $rabbit_userid;
+    'oslo_messaging_rabbit/rabbit_password'        : value => $rabbit_password, secret => true;
+    'oslo_messaging_rabbit/rabbit_virtualhost'     : value => $rabbit_virtualhost;
   }
 
   if $rabbit_hosts {
-    designate_config { 'DEFAULT/rabbit_hosts':     value => join($rabbit_hosts, ',') }
-    designate_config { 'DEFAULT/rabbit_ha_queues': value => true }
-    designate_config { 'DEFAULT/rabbit_host':      ensure => absent }
-    designate_config { 'DEFAULT/rabbit_port':      ensure => absent }
+    designate_config { 'oslo_messaging_rabbit/rabbit_hosts':     value => join($rabbit_hosts, ',') }
+    designate_config { 'oslo_messaging_rabbit/rabbit_ha_queues': value => true }
+    designate_config { 'oslo_messaging_rabbit/rabbit_host':      ensure => absent }
+    designate_config { 'oslo_messaging_rabbit/rabbit_port':      ensure => absent }
   } else {
-    designate_config { 'DEFAULT/rabbit_host':      value => $rabbit_host }
-    designate_config { 'DEFAULT/rabbit_port':      value => $rabbit_port }
-    designate_config { 'DEFAULT/rabbit_hosts':     value => "${rabbit_host}:${rabbit_port}" }
-    designate_config { 'DEFAULT/rabbit_ha_queues': value => false }
+    designate_config { 'oslo_messaging_rabbit/rabbit_host':      value => $rabbit_host }
+    designate_config { 'oslo_messaging_rabbit/rabbit_port':      value => $rabbit_port }
+    designate_config { 'oslo_messaging_rabbit/rabbit_hosts':     value => "${rabbit_host}:${rabbit_port}" }
+    designate_config { 'oslo_messaging_rabbit/rabbit_ha_queues': value => false }
   }
 
   # default setting
