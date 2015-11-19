@@ -32,6 +32,19 @@
 #  (optional) Tenant ID to own all managed resources - like auto-created records etc.
 #  Defaults to '123456'
 #
+# [*max_domain_name_len*]
+#  (optional) Maximum domain name length.
+#  Defaults to 255
+#
+# [*max_recordset_name_len*]
+#  (optional) Maximum record name length.
+#  warning('The max_record_name_len parameter is deprecated, use max_recordset_name_len instead.')
+#  Defaults to 255
+#
+# [*min_ttl*]
+#  (optional) Minimum TTL.
+#  Defaults to None
+#
 class designate::central (
   $package_ensure             = present,
   $central_package_name       = undef,
@@ -40,6 +53,9 @@ class designate::central (
   $backend_driver             = 'bind9',
   $managed_resource_email     = 'hostmaster@example.com',
   $managed_resource_tenant_id = '123456',
+  $max_domain_name_len        = '255',
+  $max_recordset_name_len     = '255',
+  $min_ttl                    = 'None',
 ) inherits designate {
   include ::designate::params
 
@@ -47,6 +63,9 @@ class designate::central (
     'service:central/backend_driver'             : value => $backend_driver;
     'service:central/managed_resource_email'     : value => $managed_resource_email;
     'service:central/managed_resource_tenant_id' : value => $managed_resource_tenant_id;
+    'service:central/max_domain_name_len'        : value => $max_domain_name_len;
+    'service:central/max_recordset_name_len'     : value => $max_recordset_name_len;
+    'service:central/min_ttl'                    : value => $min_ttl;
   }
 
   designate::generic_service { 'central':
