@@ -25,13 +25,12 @@ describe 'designate::keystone::auth' do
       :roles   => ['admin']
     )}
 
-    it { is_expected.to contain_keystone_service('designate').with(
+    it { is_expected.to contain_keystone_service('designate::dns').with(
       :ensure      => 'present',
-      :type        => 'dns',
       :description => 'Openstack DNSaas Service'
     ) }
 
-    it { is_expected.to contain_keystone_endpoint('RegionOne/designate').with(
+    it { is_expected.to contain_keystone_endpoint('RegionOne/designate::dns').with(
       :ensure       => 'present',
       :public_url   => "http://127.0.0.1:9001/v1",
       :admin_url    => "http://127.0.0.1:9001/v1",
@@ -58,7 +57,7 @@ describe 'designate::keystone::auth' do
         :admin_url        => 'https://10.10.10.12:81/v2' }
     end
 
-    it { is_expected.to contain_keystone_endpoint('RegionOne/designate').with(
+    it { is_expected.to contain_keystone_endpoint('RegionOne/designate::dns').with(
       :ensure       => 'present',
       :public_url   => 'https://10.10.10.10:81/v2',
       :internal_url => 'https://10.10.10.11:81/v2',
@@ -76,7 +75,7 @@ describe 'designate::keystone::auth' do
         :admin_address    => '10.10.10.12' }
     end
 
-    it { is_expected.to contain_keystone_endpoint('RegionOne/designate').with(
+    it { is_expected.to contain_keystone_endpoint('RegionOne/designate::dns').with(
       :ensure       => 'present',
       :public_url   => "https://10.10.10.10:81/v1",
       :internal_url => "http://10.10.10.11:81/v1",
@@ -92,8 +91,8 @@ describe 'designate::keystone::auth' do
 
     it { is_expected.to contain_keystone_user('designate1') }
     it { is_expected.to contain_keystone_user_role('designate1@services') }
-    it { is_expected.to contain_keystone_service('designate1') }
-    it { is_expected.to contain_keystone_endpoint('RegionOne/designate1') }
+    it { is_expected.to contain_keystone_service('designate1::dns') }
+    it { is_expected.to contain_keystone_endpoint('RegionOne/designate1::dns') }
   end
 
   describe 'when overriding service name' do
@@ -105,7 +104,7 @@ describe 'designate::keystone::auth' do
 
     it { is_expected.to contain_keystone_user('designate1') }
     it { is_expected.to contain_keystone_user_role('designate1@services') }
-    it { is_expected.to contain_keystone_service('designate_service') }
-    it { is_expected.to contain_keystone_endpoint('RegionOne/designate_service') }
+    it { is_expected.to contain_keystone_service('designate_service::dns') }
+    it { is_expected.to contain_keystone_endpoint('RegionOne/designate_service::dns') }
   end
 end
