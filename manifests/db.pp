@@ -57,13 +57,17 @@ class designate::db (
   include ::designate::params
 
   validate_re($database_connection,
-    '(mysql):\/\/(\S+:\S+@\S+\/\S+)?')
+    '(mysql(\+pymysql)?):\/\/(\S+:\S+@\S+\/\S+)?')
 
   case $database_connection {
-    /^mysql:\/\//: {
-      $backend_package = false
+    /^mysql(\+pymysql)?:\/\//: {
       require 'mysql::bindings'
       require 'mysql::bindings::python'
+      if $database_connection =~ /^mysql\+pymysql/ {
+        $backend_package = $::designate::params::pymysql_package_name
+      } else {
+        $backend_package = false
+      }
     }
     default: {
       fail('Unsupported backend configured')
