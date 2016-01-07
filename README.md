@@ -27,7 +27,11 @@ Setup
 
 **What the designate module affects:**
 
-* designate, the DNS service for Openstack.
+* [Designate](http://docs.openstack.org/developer/designate/), the DNS service for Openstack.
+
+### Installing designate
+
+    puppet module install openstack/designate
 
 Implementation
 --------------
