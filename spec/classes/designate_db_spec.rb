@@ -42,6 +42,22 @@ describe 'designate::db' do
       it_raises 'a Puppet::Error', /validate_re/
     end
 
+    context 'with specific parameters' do
+      let :params do
+        { :database_connection     => 'mysql+pymysql://designate:designate@localhost/designate',
+        }
+      end
+
+      it { is_expected.to contain_designate_config('storage:sqlalchemy/connection').with_value('mysql+pymysql://designate:designate@localhost/designate').with_secret(true) }
+    end
+
+    context 'with MySQL-python library as backend package' do
+      let :params do
+        { :database_connection     => 'mysql://designate:designate@localhost/designate', }
+      end
+
+      it { is_expected.to contain_package('python-mysqldb').with(:ensure => 'present') }
+    end
   end
 
   context 'on Debian platforms' do
@@ -50,6 +66,20 @@ describe 'designate::db' do
     end
 
     it_configures 'designate::db'
+
+    context 'using pymysql driver' do
+      let :params do
+        { :database_connection => 'mysql+pymysql://designate:designate@localhost/designate', }
+      end
+
+      it 'install the proper backend package' do
+        is_expected.to contain_package('designate-backend-package').with(
+          :ensure => 'present',
+          :name   => 'python-pymysql',
+          :tag    => 'openstack'
+        )
+      end
+    end
   end
 
   context 'on RedHat platforms' do
@@ -58,6 +88,14 @@ describe 'designate::db' do
     end
 
     it_configures 'designate::db'
+
+    context 'using pymysql driver' do
+      let :params do
+        { :database_connection  => 'mysql+pymysql://designate:designate@localhost/designate', }
+      end
+
+      it { is_expected.not_to contain_package('designate-backend-package') }
+    end
   end
 
 end

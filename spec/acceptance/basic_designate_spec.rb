@@ -55,7 +55,7 @@ describe 'basic designate' do
           include ::designate::client
           class { '::designate::agent': }
           class { '::designate::db':
-            database_connection => 'mysql://designate:a_big_secret@127.0.0.1/designate?charset=utf8',
+            database_connection => 'mysql+pymysql://designate:a_big_secret@127.0.0.1/designate?charset=utf8',
           }
           include ::designate::dns
         }

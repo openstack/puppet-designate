@@ -22,6 +22,7 @@ class designate::params {
       $api_service_name     = 'openstack-designate-api'
       $central_service_name = 'openstack-designate-central'
       $sink_service_name    = 'openstack-designate-sink'
+      $pymysql_package_name = undef
     }
     'Debian': {
       # package name
@@ -35,6 +36,7 @@ class designate::params {
       $api_service_name     = 'designate-api'
       $central_service_name = 'designate-central'
       $sink_service_name    = 'designate-sink'
+      $pymysql_package_name = 'python-pymysql'
     }
     default: {
       fail("Unsupported osfamily: ${::osfamily} operatingsystem")
