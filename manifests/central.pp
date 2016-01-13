@@ -10,7 +10,7 @@
 #
 # [*central_package_name*]
 #  (optional) Name of the package containing central resources
-#  Defaults to central_package_name from designate::params
+#  Defaults to $::designate::params::central_package_name
 #
 # [*enabled*]
 #   (optional) Whether to enable services.
@@ -47,7 +47,7 @@
 #
 class designate::central (
   $package_ensure             = present,
-  $central_package_name       = undef,
+  $central_package_name       = $::designate::params::central_package_name,
   $enabled                    = true,
   $service_ensure             = 'running',
   $backend_driver             = 'bind9',
@@ -57,7 +57,6 @@ class designate::central (
   $max_recordset_name_len     = '255',
   $min_ttl                    = 'None',
 ) inherits designate {
-  include ::designate::params
 
   designate_config {
     'service:central/backend_driver'             : value => $backend_driver;
@@ -72,7 +71,7 @@ class designate::central (
     enabled        => $enabled,
     manage_service => $service_ensure,
     ensure_package => $package_ensure,
-    package_name   => pick($central_package_name, $::designate::params::central_package_name),
+    package_name   => $central_package_name,
     service_name   => $::designate::params::central_service_name,
   }
 }

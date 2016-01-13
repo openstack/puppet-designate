@@ -10,7 +10,7 @@
 #
 # [*api_package_name*]
 #  (optional) Name of the package containing api resources
-#  Defaults to api_package_name from designate::params
+#  Defaults to $::designate::paramas::api_package_name
 #
 # [*enabled*]
 #   (optional) Whether to enable services.
@@ -58,7 +58,7 @@
 #
 class designate::api (
   $package_ensure             = present,
-  $api_package_name           = undef,
+  $api_package_name           = $::designate::params::api_package_name,
   $enabled                    = true,
   $service_ensure             = 'running',
   $auth_strategy              = 'noauth',
@@ -71,7 +71,6 @@ class designate::api (
   $enable_api_v1              = true,
   $enable_api_v2              = false,
 ) inherits designate {
-  include ::designate::params
 
   # API Service
   designate_config {
@@ -94,7 +93,7 @@ class designate::api (
     enabled        => $enabled,
     manage_service => $service_ensure,
     ensure_package => $package_ensure,
-    package_name   => pick($api_package_name, $::designate::params::api_package_name),
+    package_name   => $api_package_name,
     service_name   => $::designate::params::api_service_name,
   }
 
