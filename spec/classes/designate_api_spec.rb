@@ -50,6 +50,13 @@ describe 'designate::api' do
           is_expected.to contain_designate_config('service:api/auth_strategy').with_value('keystone')
         end
       end
+
+      context 'when using memcached with  keystone auth' do
+        before { params.merge!(:keystone_memcached_servers => [ '127.0.0.1:11211', '127.0.0.1:11212' ]) }
+        it 'configures designate-api with keystone memcached servers' do
+            is_expected.to contain_designate_config('keystone_authtoken/memcached_servers').with_value('127.0.0.1:11211,127.0.0.1:11212')
+        end
+      end
     end
   end
 

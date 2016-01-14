@@ -48,6 +48,11 @@
 #  (optional) Password used to authentication.
 #  Defaults to false
 #
+# [*keystone_memcached_servers*]
+#  (optional) Memcached Servers for keystone. Supply a list of memcached server
+#  IP's:Memcached Port.
+#  Defaults to false
+#
 # [*enable_api_v1*]
 #  (optional) Enable Designate API Version 1
 #  Defaults to true
@@ -68,6 +73,7 @@ class designate::api (
   $keystone_tenant            = 'services',
   $keystone_user              = 'designate',
   $keystone_password          = false,
+  $keystone_memcached_servers = false,
   $enable_api_v1              = true,
   $enable_api_v2              = false,
 ) inherits designate {
@@ -81,6 +87,12 @@ class designate::api (
   }
 
   # Keystone Middleware
+  if $keystone_memcached_servers {
+    designate_config { 'keystone_authtoken/memcached_servers'  : value => join(any2array($keystone_memcached_servers), ',') }
+  } else {
+    designate_config { 'keystone_authtoken/memcached_servers'  : ensure => absent, }
+  }
+
   designate_config {
     'keystone_authtoken/auth_host'          : value => $keystone_host;
     'keystone_authtoken/auth_port'          : value => $keystone_port;
