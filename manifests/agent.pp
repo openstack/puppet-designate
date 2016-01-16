@@ -10,7 +10,7 @@
 #
 # [*agent_package_name*]
 #  (optional) Name of the package containing agent resources
-#  Defaults to agent_package_name from designate::params
+#  Defaults to $::designate::params::agent_package_name
 #
 # [*enabled*]
 #   (optional) Whether to enable services.
@@ -26,12 +26,11 @@
 #
 class designate::agent (
   $package_ensure     = present,
-  $agent_package_name = undef,
+  $agent_package_name = $::designate::params::agent_package_name,
   $enabled            = true,
   $service_ensure     = 'running',
   $backend_driver     = 'bind9',
 ) inherits designate {
-  include ::designate::params
 
   designate_config {
     'service:agent/backend_driver'         : value => $backend_driver;
@@ -41,7 +40,7 @@ class designate::agent (
     enabled        => $enabled,
     manage_service => $service_ensure,
     ensure_package => $package_ensure,
-    package_name   => pick($agent_package_name, $::designate::params::agent_package_name),
+    package_name   => $agent_package_name,
     service_name   => $::designate::params::agent_service_name,
   }
 }

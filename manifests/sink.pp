@@ -10,7 +10,7 @@
 #
 # [*sink_package_name*]
 #  (optional) Name of the package containing sink resources
-#  Defaults to sink_package_name from designate::params
+#  Defaults to $::designate::params::sink_package_name
 #
 # [*enabled*]
 #  (optional) Whether to enable services.
@@ -28,18 +28,17 @@
 #
 class designate::sink (
   $package_ensure                = present,
-  $sink_package_name             = undef,
+  $sink_package_name             = $::designate::params::sink_package_name,
   $enabled                       = true,
   $service_ensure                = 'running',
   $enabled_notification_handlers = undef,
 ) inherits designate {
-  include ::designate::params
 
   designate::generic_service { 'sink':
     enabled        => $enabled,
     manage_service => $service_ensure,
     ensure_package => $package_ensure,
-    package_name   => pick($sink_package_name, $::designate::params::sink_package_name),
+    package_name   => $sink_package_name,
     service_name   => $::designate::params::sink_service_name,
   }
 

@@ -10,7 +10,7 @@
 #
 # [*common_package_name*]
 #  (optional) Name of the package containing shared resources
-#  Defaults to common_package_name from designate::params
+#  Defaults to $::designate::params::common_package_name
 #
 # [*service_ensure*]
 #  (optional) Whether the designate-common package will be present..
@@ -87,7 +87,7 @@
 
 class designate(
   $package_ensure       = present,
-  $common_package_name  = undef,
+  $common_package_name  = $::designate::params::common_package_name,
   $verbose              = undef,
   $debug                = undef,
   $log_dir              = undef,
@@ -105,7 +105,7 @@ class designate(
   $notification_topics  = 'notifications',
   #DEPRECATED PARAMETER
   $rabbit_virtualhost   = undef,
-) {
+) inherits designate::params {
 
   if $rabbit_virtualhost {
     warning('The parameter rabbit_virtualhost is deprecated, use rabbit_virtual_host.')
@@ -115,7 +115,6 @@ class designate(
   }
 
   include ::designate::logging
-  include ::designate::params
 
   exec { 'post-designate_config':
     command     => '/bin/echo "designate config has changed"',
@@ -126,7 +125,7 @@ class designate(
 
   package { 'designate-common':
     ensure => $package_ensure,
-    name   => pick($common_package_name, $::designate::params::common_package_name),
+    name   => $common_package_name,
     tag    => ['openstack', 'designate-package'],
   }
 
