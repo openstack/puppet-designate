@@ -5,40 +5,50 @@ require 'spec_helper'
 
 describe 'designate::db::sync' do
 
-  let :facts do
-    { :osfamily => 'Debian' }
-  end
-
-  it 'runs designate-dbsync' do
-    is_expected.to contain_exec('designate-dbsync').with(
-      :command     => 'designate-manage  database sync',
-      :path        => '/usr/bin',
-      :user        => 'root',
-      :refreshonly => 'true',
-      :logoutput   => 'on_failure',
-      :subscribe   => 'Anchor[designate::config::end]',
-      :notify      => 'Anchor[designate::service::begin]',
-    )
-  end
-
-  describe 'overriding extra_params' do
-    let :params do
-      {
-        :extra_params => '--config-file /etc/designate/designate.conf'
-      }
+  shared_examples_for 'designate-db-sync' do
+    context 'with default parameters' do
+      it 'runs designate-db-sync' do
+        is_expected.to contain_exec('designate-dbsync').with(
+          :command     => 'designate-manage  database sync',
+          :path        => '/usr/bin',
+          :user        => 'root',
+          :refreshonly => 'true',
+          :logoutput   => 'on_failure',
+          :subscribe   => 'Anchor[designate::config::end]',
+          :notify      => 'Anchor[designate::service::begin]',
+        )
+      end
     end
 
-    it {is_expected.to contain_exec('designate-dbsync').with(
-      :command     => 'designate-manage --config-file /etc/designate/designate.conf database sync',
-      :path        => '/usr/bin',
-      :user        => 'root',
-      :refreshonly => 'true',
-      :logoutput   => 'on_failure',
-      :subscribe   => 'Anchor[designate::config::end]',
-      :notify      => 'Anchor[designate::service::begin]',
-    )
-    }
+    context 'with parameter overrides' do
+      let :params do
+        {
+          :extra_params => '--config-file /etc/designate/designate.conf'
+        }
+      end
+      it 'runs designate manage with diffent config' do
+        is_expected.to contain_exec('designate-dbsync').with(
+          :command     => 'designate-manage --config-file /etc/designate/designate.conf database sync',
+          :path        => '/usr/bin',
+          :user        => 'root',
+          :refreshonly => 'true',
+          :logoutput   => 'on_failure',
+          :subscribe   => 'Anchor[designate::config::end]',
+          :notify      => 'Anchor[designate::service::begin]',
+        )
+      end
+    end
   end
 
+  on_supported_os({
+    :supported_os => OSDefaults.get_supported_os
+  }).each do |os,facts|
+    context "on #{os}" do
+      let (:facts) do
+        facts.merge!(OSDefaults.get_facts())
+      end
 
+      it_behaves_like 'designate-db-sync'
+    end
+  end
 end

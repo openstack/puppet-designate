@@ -47,6 +47,18 @@ describe 'designate' do
       it_configures 'rabbit with HA support'
     end
 
+    context 'with custom package name' do
+      let :platform_params do
+        { :common_package_name => 'designate-common-custom-name' }
+      end
+
+      before do
+        params.merge!({ :common_package_name => 'designate-common-custom-name' })
+      end
+
+      it_configures 'a designate base installation'
+    end
+
   end
 
   shared_examples_for 'a designate base installation' do
@@ -157,43 +169,23 @@ describe 'designate' do
 
   end
 
-  context 'on Debian platforms' do
-    let :facts do
-      { :osfamily => 'Debian' }
+  on_supported_os({
+    :supported_os => OSDefaults.get_supported_os
+  }).each do |os,facts|
+    context "on #{os}" do
+      let (:facts) do
+        facts.merge!(OSDefaults.get_facts())
+      end
+
+      let(:platform_params) do
+        case facts[:osfamily]
+        when 'Debian'
+          { :common_package_name => 'designate-common' }
+        when 'RedHat'
+          { :common_package_name => 'openstack-designate' }
+        end
+      end
+      it_behaves_like 'designate'
     end
-
-    let :platform_params do
-      { :common_package_name => 'designate-common' }
-    end
-
-    it_configures 'designate'
-  end
-
-  context 'on RedHat platforms' do
-    let :facts do
-      { :osfamily => 'RedHat' }
-    end
-
-    let :platform_params do
-      { :common_package_name => 'openstack-designate' }
-    end
-
-    it_configures 'designate'
-  end
-
-  context 'with custom package name' do
-    let :facts do
-      { :osfamily => 'RedHat' }
-    end
-
-    let :platform_params do
-      { :common_package_name => 'designate-common-custom-name' }
-    end
-
-    before do
-      params.merge!({ :common_package_name => 'designate-common-custom-name' })
-    end
-
-    it_configures 'designate'
   end
 end

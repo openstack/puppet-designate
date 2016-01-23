@@ -34,53 +34,46 @@ describe 'designate::sink' do
         end
       end
     end
+
+    context 'with custom package name' do
+      before :each do
+        params.merge!({ :sink_package_name => 'designate-sink-custom-name' })
+      end
+
+      it 'configures using custom name' do
+        is_expected.to contain_package('designate-sink').with(
+          :name      => 'designate-sink-custom-name',
+          :ensure    => 'present',
+          :tag       => ['openstack', 'designate-package'],
+        )
+      end
+    end
   end
 
-  context 'on Debian platforms' do
-    let :facts do
-      { :osfamily => 'Debian' }
-    end
+  on_supported_os({
+    :supported_os => OSDefaults.get_supported_os
+  }).each do |os,facts|
+    context "on #{os}" do
+      let (:facts) do
+        facts.merge!(OSDefaults.get_facts())
+      end
 
-    let :platform_params do
-      {
-        :sink_package_name => 'designate-sink',
-        :sink_service_name => 'designate-sink'
-      }
+      let(:platform_params) do
+        case facts[:osfamily]
+        when 'Debian'
+          {
+            :sink_package_name => 'designate-sink',
+            :sink_service_name => 'designate-sink'
+          }
+        when 'RedHat'
+          {
+            :sink_package_name => 'openstack-designate-sink',
+            :sink_service_name => 'openstack-designate-sink'
+          }
+        end
+      end
+      it_behaves_like 'designate-sink'
     end
-
-    it_configures 'designate-sink'
   end
 
-  context 'on RedHat platforms' do
-    let :facts do
-      { :osfamily => 'RedHat' }
-    end
-
-    let :platform_params do
-      {
-        :sink_package_name => 'openstack-designate-sink',
-        :sink_service_name => 'openstack-designate-sink'
-      }
-    end
-
-    it_configures 'designate-sink'
-  end
-
-   context 'with custom package name' do
-    let :facts do
-      { :osfamily => 'RedHat' }
-    end
-
-    let :platform_params do
-      { :sink_package_name => 'designate-sink-custom-name',
-        :sink_service_name => 'openstack-designate-sink'
-      }
-    end
-
-    before do
-      params.merge!({ :sink_package_name => 'designate-sink-custom-name' })
-    end
-
-    it_configures 'designate-sink'
-  end
 end
