@@ -26,6 +26,7 @@ describe 'designate::agent' do
         )
       end
 
+
       it 'configures designate-agent with default parameters' do
         is_expected.to contain_designate_config('service:agent/backend_driver').with_value('bind9')
       end
@@ -37,53 +38,45 @@ describe 'designate::agent' do
         end
       end
     end
+
+    context 'with custom package name' do
+      before do
+        params.merge!({ :agent_package_name => 'designate-agent-custom-name' })
+      end
+
+      it 'configures using custom name' do
+        is_expected.to contain_package('designate-agent').with(
+          :name      => 'designate-agent-custom-name',
+          :ensure    => 'present',
+          :tag       => ['openstack', 'designate-package'],
+        )
+      end
+    end
   end
 
-  context 'on Debian platforms' do
-    let :facts do
-      { :osfamily => 'Debian' }
+  on_supported_os({
+    :supported_os => OSDefaults.get_supported_os
+  }).each do |os,facts|
+    context "on #{os}" do
+      let (:facts) do
+        facts.merge!(OSDefaults.get_facts())
+      end
+
+      let(:platform_params) do
+        case facts[:osfamily]
+        when 'Debian'
+          {
+            :agent_package_name => 'designate-agent',
+            :agent_service_name => 'designate-agent'
+          }
+        when 'RedHat'
+          {
+            :agent_package_name => 'openstack-designate-agent',
+            :agent_service_name => 'openstack-designate-agent'
+          }
+        end
+      end
+      it_behaves_like 'designate-agent'
     end
-
-    let :platform_params do
-      {
-        :agent_package_name => 'designate-agent',
-        :agent_service_name => 'designate-agent'
-      }
-    end
-
-    it_configures 'designate-agent'
-  end
-
-  context 'on RedHat platforms' do
-    let :facts do
-      { :osfamily => 'RedHat' }
-    end
-
-    let :platform_params do
-      {
-        :agent_package_name => 'openstack-designate-agent',
-        :agent_service_name => 'openstack-designate-agent'
-      }
-    end
-
-    it_configures 'designate-agent'
-  end
-
-  context 'with custom package name' do
-    let :facts do
-      { :osfamily => 'RedHat' }
-    end
-
-    let :platform_params do
-      { :agent_package_name => 'designate-agent-custom-name',
-        :agent_service_name => 'openstack-designate-agent'
-      }
-    end
-
-    before do
-      params.merge!({ :agent_package_name => 'designate-agent-custom-name' })
-    end
-
-    it_configures 'designate-agent'
   end
 end

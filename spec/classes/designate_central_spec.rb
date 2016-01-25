@@ -42,53 +42,46 @@ describe 'designate::central' do
         end
       end
     end
+
+    context 'with custom package name' do
+      before do
+        params.merge!({ :central_package_name => 'designate-central-custom-name' })
+      end
+
+      it 'configures using custom name' do
+        is_expected.to contain_package('designate-central').with(
+          :name      => 'designate-central-custom-name',
+          :ensure    => 'present',
+          :tag       => ['openstack', 'designate-package'],
+        )
+      end
+    end
   end
 
-  context 'on Debian platforms' do
-    let :facts do
-      { :osfamily => 'Debian' }
-    end
+  on_supported_os({
+    :supported_os => OSDefaults.get_supported_os
+  }).each do |os,facts|
+    context "on #{os}" do
+      let (:facts) do
+        facts.merge!(OSDefaults.get_facts())
+      end
 
-    let :platform_params do
-      {
-        :central_package_name => 'designate-central',
-        :central_service_name => 'designate-central'
-      }
+      let(:platform_params) do
+        case facts[:osfamily]
+        when 'Debian'
+          {
+            :central_package_name => 'designate-central',
+            :central_service_name => 'designate-central'
+          }
+        when 'RedHat'
+          {
+            :central_package_name => 'openstack-designate-central',
+            :central_service_name => 'openstack-designate-central'
+          }
+        end
+      end
+      it_behaves_like 'designate-central'
     end
-
-    it_configures 'designate-central'
   end
 
-  context 'on RedHat platforms' do
-    let :facts do
-      { :osfamily => 'RedHat' }
-    end
-
-    let :platform_params do
-      {
-        :central_package_name => 'openstack-designate-central',
-        :central_service_name => 'openstack-designate-central'
-      }
-    end
-
-    it_configures 'designate-central'
-  end
-
-  context 'with custom package name' do
-    let :facts do
-      { :osfamily => 'RedHat' }
-    end
-
-    let :platform_params do
-      { :central_package_name => 'designate-central-custom-name',
-        :central_service_name => 'openstack-designate-central'
-      }
-    end
-
-    before do
-      params.merge!({ :central_package_name => 'designate-central-custom-name' })
-    end
-
-    it_configures 'designate-central'
-  end
 end

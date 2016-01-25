@@ -10,12 +10,9 @@ describe 'designate::db::powerdns::mysql' do
     { :password => "qwerty" }
   end
 
-  context 'on a Debian osfamily' do
-    let :facts do
-      { :osfamily => "Debian" }
-    end
 
-    context 'with only required parameters' do
+  shared_examples_for 'designate-db-powerdns-mysql' do
+    context 'with default params' do
       let :params do
         required_params
       end
@@ -31,73 +28,36 @@ describe 'designate::db::powerdns::mysql' do
       let :params do
         { :charset => 'latin1' }.merge(required_params)
       end
-
       it { is_expected.to contain_openstacklib__db__mysql('powerdns').with_charset(params[:charset]) }
     end
-  end
 
-  context 'on a RedHat osfamily' do
-    let :facts do
-      { :osfamily => 'RedHat' }
-    end
-
-    context 'with only required parameters' do
+    context 'overriding allowed_hosts param with string' do
       let :params do
-        required_params
+        { :allowed_hosts  => '127.0.0.1' }.merge(required_params)
       end
 
-      it { is_expected.to contain_openstacklib__db__mysql('powerdns').with(
-        :user          => 'powerdns',
-        :password_hash => '*AA1420F182E88B9E5F874F6FBE7459291E8F4601',
-        :charset       => 'utf8'
-      )}
+      it { is_expected.to contain_openstacklib__db__mysql('powerdns').with_allowed_hosts(params[:allowed_hosts]) }
     end
 
-    context 'when overriding charset' do
+    context 'overriding allowed_hosts param with array' do
       let :params do
-        { :charset => 'latin1' }.merge(required_params)
+        { :allowed_hosts  => ['127.0.0.1','%'] }.merge(required_params)
       end
 
-      it { is_expected.to contain_openstacklib__db__mysql('powerdns').with_charset(params[:charset]) }
+      it { is_expected.to contain_openstacklib__db__mysql('powerdns').with_allowed_hosts(params[:allowed_hosts]) }
     end
   end
 
-  describe "overriding allowed_hosts param to array" do
-    let :facts do
-      { :osfamily => "Debian" }
-    end
-    let :params do
-      {
-        :password       => 'designatepass',
-        :allowed_hosts  => ['127.0.0.1','%']
-      }
-    end
+  on_supported_os({
+    :supported_os => OSDefaults.get_supported_os
+  }).each do |os,facts|
+    context "on #{os}" do
+      let (:facts) do
+        facts.merge!(OSDefaults.get_facts())
+      end
 
+      it_behaves_like 'designate-db-powerdns-mysql'
+    end
   end
 
-  describe "overriding allowed_hosts param to string" do
-    let :facts do
-      { :osfamily => 'RedHat' }
-    end
-    let :params do
-      {
-        :password       => 'designatepass2',
-        :allowed_hosts  => '192.168.1.1'
-      }
-    end
-
-  end
-
-  describe "overriding allowed_hosts param equals to host param " do
-    let :facts do
-      { :osfamily => 'RedHat' }
-    end
-    let :params do
-      {
-        :password       => 'designatepass2',
-        :allowed_hosts  => '127.0.0.1'
-      }
-    end
-
-  end
 end

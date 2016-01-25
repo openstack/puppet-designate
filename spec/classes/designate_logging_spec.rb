@@ -123,20 +123,16 @@ describe 'designate::logging' do
       }
   end
 
-  context 'on Debian platforms' do
-    let :facts do
-      { :osfamily => 'Debian' }
+  on_supported_os({
+    :supported_os => OSDefaults.get_supported_os
+  }).each do |os,facts|
+    context "on #{os}" do
+      let (:facts) do
+        facts.merge!(OSDefaults.get_facts())
+      end
+
+      it_behaves_like 'designate-logging'
     end
-
-    it_configures 'designate-logging'
-  end
-
-  context 'on RedHat platforms' do
-    let :facts do
-      { :osfamily => 'RedHat' }
-    end
-
-    it_configures 'designate-logging'
   end
 
 end

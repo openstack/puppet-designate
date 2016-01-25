@@ -17,33 +17,29 @@ describe 'designate::dns' do
 
   end
 
-  context 'on Debian platforms' do
-    let :facts do
-      { :osfamily => 'Debian' }
+  on_supported_os({
+    :supported_os => OSDefaults.get_supported_os
+  }).each do |os,facts|
+    context "on #{os}" do
+      let (:facts) do
+        facts.merge!(OSDefaults.get_facts())
+      end
+
+      let(:params) do
+        case facts[:osfamily]
+        when 'Debian'
+          {
+            :designatepath => '/var/cache/bind/bind9',
+            :designatefile => '/var/cache/bind/bind9/zones.config'
+          }
+        when 'RedHat'
+          {
+            :designatepath => '/var/named/bind9',
+            :designatefile => '/var/named/bind9/zones.config'
+          }
+        end
+      end
+      it_behaves_like 'designate-dns'
     end
-
-    let :params do
-      {
-        :designatepath => '/var/cache/bind/bind9',
-        :designatefile => '/var/cache/bind/bind9/zones.config'
-      }
-    end
-
-    it_configures 'designate-dns'
-  end
-
-  context 'on RedHat platforms' do
-    let :facts do
-      { :osfamily => 'RedHat' }
-    end
-
-    let :params do
-      {
-        :designatepath => '/var/named/bind9',
-        :designatefile => '/var/named/bind9/zones.config'
-      }
-    end
-
-    it_configures 'designate-dns'
   end
 end

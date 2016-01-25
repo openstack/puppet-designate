@@ -60,13 +60,7 @@ describe 'designate::db' do
     end
   end
 
-  context 'on Debian platforms' do
-    let :facts do
-      { :osfamily => 'Debian' }
-    end
-
-    it_configures 'designate::db'
-
+  shared_examples_for 'designate::db on Debian' do
     context 'using pymysql driver' do
       let :params do
         { :database_connection => 'mysql+pymysql://designate:designate@localhost/designate', }
@@ -82,13 +76,8 @@ describe 'designate::db' do
     end
   end
 
-  context 'on RedHat platforms' do
-    let :facts do
-      { :osfamily => 'RedHat' }
-    end
 
-    it_configures 'designate::db'
-
+  shared_examples_for 'designate::db on RedHat' do
     context 'using pymysql driver' do
       let :params do
         { :database_connection  => 'mysql+pymysql://designate:designate@localhost/designate', }
@@ -98,4 +87,21 @@ describe 'designate::db' do
     end
   end
 
+  on_supported_os({
+    :supported_os   => OSDefaults.get_supported_os
+  }).each do |os,facts|
+    context "on #{os}" do
+      let (:facts) do
+        facts.merge!(OSDefaults.get_facts())
+      end
+
+      case facts[:osfamily]
+      when 'Debian'
+        it_configures 'designate::db on Debian'
+      when 'RedHat'
+        it_configures 'designate::db on RedHat'
+      end
+      it_configures 'designate::db'
+    end
+  end
 end
