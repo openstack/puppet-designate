@@ -17,12 +17,14 @@ class designate::params {
       $central_package_name  = 'openstack-designate-central'
       $agent_package_name    = 'openstack-designate-agent'
       $sink_package_name     = 'openstack-designate-sink'
+      $mdns_package_name     = 'openstack-designate-mdns'
       # service names
       $agent_service_name   = 'openstack-designate-agent'
       $api_service_name     = 'openstack-designate-api'
       $central_service_name = 'openstack-designate-central'
       $sink_service_name    = 'openstack-designate-sink'
       $pymysql_package_name = undef
+      $mdns_service_name    = 'openstack-designate-mdns'
     }
     'Debian': {
       # package name
@@ -31,12 +33,14 @@ class designate::params {
       $central_package_name  = 'designate-central'
       $agent_package_name    = 'designate-agent'
       $sink_package_name     = 'designate-sink'
+      $mdns_package_name     = 'designate-mdns'
       # service names
       $agent_service_name   = 'designate-agent'
       $api_service_name     = 'designate-api'
       $central_service_name = 'designate-central'
       $sink_service_name    = 'designate-sink'
       $pymysql_package_name = 'python-pymysql'
+      $mdns_service_name    = 'designate-mdns'
     }
     default: {
       fail("Unsupported osfamily: ${::osfamily} operatingsystem")
