@@ -17,7 +17,7 @@ puppet-designate
 Overview
 --------
 
-The designate module is a part of [OpenStack](https://github.com/openstack), an effort by the Openstack infrastructure team to provide continuous integration testing and code review for Openstack and Openstack community projects as part of the core software. The module itself is used to flexibly configure and manage the DNS service for Openstack.
+The designate module is a part of [OpenStack](https://github.com/openstack), an effort by the OpenStack infrastructure team to provide continuous integration testing and code review for OpenStack and OpenStack community projects as part of the core software. The module itself is used to flexibly configure and manage the DNS service for OpenStack.
 
 Module Description
 ------------------
@@ -27,7 +27,7 @@ Setup
 
 **What the designate module affects:**
 
-* [Designate](http://docs.openstack.org/developer/designate/), the DNS service for Openstack.
+* [Designate](http://docs.openstack.org/developer/designate/), the DNS service for OpenStack.
 
 ### Installing designate
 
