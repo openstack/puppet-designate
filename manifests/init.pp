@@ -70,6 +70,33 @@
 #   (optional) The RabbitMQ virtual host.
 #   Defaults to '/'
 #
+# [*rabbit_use_ssl*]
+#   (optional) Connect over SSL for RabbitMQ
+#   Defaults to false
+#
+# [*kombu_ssl_ca_certs*]
+#   (optional) SSL certification authority file (valid only if SSL enabled).
+#   Defaults to $::os_service_default
+#
+# [*kombu_ssl_certfile*]
+#   (optional) SSL cert file (valid only if SSL enabled).
+#   Defaults to $::os_service_default
+#
+# [*kombu_ssl_keyfile*]
+#   (optional) SSL key file (valid only if SSL enabled).
+#   Defaults to $::os_service_default
+#
+# [*kombu_ssl_version*]
+#   (optional) SSL version to use (valid only if SSL enabled).
+#   Valid values are TLSv1, SSLv23 and SSLv3. SSLv2 may be
+#   available on some distributions.
+#   Defaults to $::os_service_default
+#
+# [*kombu_reconnect_delay*]
+#   (optional) How long to wait before reconnecting in response to an AMQP
+#   consumer cancel notification.
+#   Defaults to $::os_service_default
+#
 # [*notification_driver*]
 #   (optional) Driver used for issuing notifications
 #   Defaults to 'messaging'
@@ -86,25 +113,31 @@
 #
 
 class designate(
-  $package_ensure       = present,
-  $common_package_name  = $::designate::params::common_package_name,
-  $verbose              = undef,
-  $debug                = undef,
-  $log_dir              = undef,
-  $use_syslog           = undef,
-  $use_stderr           = undef,
-  $log_facility         = undef,
-  $root_helper          = 'sudo designate-rootwrap /etc/designate/rootwrap.conf',
-  $rabbit_host          = '127.0.0.1',
-  $rabbit_port          = '5672',
-  $rabbit_hosts         = false,
-  $rabbit_userid        = 'guest',
-  $rabbit_password      = '',
-  $rabbit_virtual_host  = '/',
-  $notification_driver  = 'messaging',
-  $notification_topics  = 'notifications',
+  $package_ensure        = present,
+  $common_package_name   = $::designate::params::common_package_name,
+  $verbose               = undef,
+  $debug                 = undef,
+  $log_dir               = undef,
+  $use_syslog            = undef,
+  $use_stderr            = undef,
+  $log_facility          = undef,
+  $root_helper           = 'sudo designate-rootwrap /etc/designate/rootwrap.conf',
+  $rabbit_host           = '127.0.0.1',
+  $rabbit_port           = '5672',
+  $rabbit_hosts          = false,
+  $rabbit_userid         = 'guest',
+  $rabbit_password       = '',
+  $rabbit_virtual_host   = '/',
+  $rabbit_use_ssl        = false,
+  $kombu_ssl_ca_certs    = $::os_service_default,
+  $kombu_ssl_certfile    = $::os_service_default,
+  $kombu_ssl_keyfile     = $::os_service_default,
+  $kombu_ssl_version     = $::os_service_default,
+  $kombu_reconnect_delay = $::os_service_default,
+  $notification_driver   = 'messaging',
+  $notification_topics   = 'notifications',
   #DEPRECATED PARAMETER
-  $rabbit_virtualhost   = undef,
+  $rabbit_virtualhost    = undef,
 ) inherits designate::params {
 
   if $rabbit_virtualhost {
@@ -112,6 +145,19 @@ class designate(
     $rabbit_virtual_host_real = $rabbit_virtualhost
   } else {
     $rabbit_virtual_host_real = $rabbit_virtual_host
+  }
+
+  if !is_service_default($kombu_ssl_ca_certs) and !$rabbit_use_ssl {
+    fail('The kombu_ssl_ca_certs parameter requires rabbit_use_ssl to be set to true')
+  }
+  if !is_service_default($kombu_ssl_certfile) and !$rabbit_use_ssl {
+    fail('The kombu_ssl_certfile parameter requires rabbit_use_ssl to be set to true')
+  }
+  if !is_service_default($kombu_ssl_keyfile) and !$rabbit_use_ssl {
+    fail('The kombu_ssl_keyfile parameter requires rabbit_use_ssl to be set to true')
+  }
+  if (is_service_default($kombu_ssl_certfile) and ! is_service_default($kombu_ssl_keyfile)) or (is_service_default($kombu_ssl_keyfile) and ! is_service_default($kombu_ssl_certfile)) {
+    fail('The kombu_ssl_certfile and kombu_ssl_keyfile parameters must be used together')
   }
 
   include ::designate::logging
@@ -159,6 +205,12 @@ class designate(
     'oslo_messaging_rabbit/rabbit_userid'          : value => $rabbit_userid;
     'oslo_messaging_rabbit/rabbit_password'        : value => $rabbit_password, secret => true;
     'oslo_messaging_rabbit/rabbit_virtual_host'    : value => $rabbit_virtual_host_real;
+    'oslo_messaging_rabbit/rabbit_use_ssl'         : value => $rabbit_use_ssl;
+    'oslo_messaging_rabbit/kombu_ssl_ca_certs'     : value => $kombu_ssl_ca_certs;
+    'oslo_messaging_rabbit/kombu_ssl_certfile'     : value => $kombu_ssl_certfile;
+    'oslo_messaging_rabbit/kombu_ssl_keyfile'      : value => $kombu_ssl_keyfile;
+    'oslo_messaging_rabbit/kombu_ssl_version'      : value => $kombu_ssl_version;
+    'oslo_messaging_rabbit/kombu_reconnect_delay'  : value => $kombu_reconnect_delay;
   }
 
   if $rabbit_hosts {

@@ -17,7 +17,7 @@ describe 'designate::generic_service' do
     end
 
     let :facts do
-      { :osfamily => 'Debian' }
+      OSDefaults.get_facts({ :osfamily => 'Debian' })
     end
 
     let :title do

@@ -39,12 +39,61 @@ describe 'designate' do
     }
   end
 
+  let :rabbit_use_ssl do
+    {
+      :rabbit_host           => '127.0.0.1',
+      :rabbit_port           => 5672,
+      :rabbit_userid         => 'guest',
+      :rabbit_password       => '',
+      :rabbit_virtual_host   => '/',
+      :rabbit_use_ssl        => true,
+      :kombu_ssl_ca_certs    => 'ca goes here',
+      :kombu_ssl_certfile    => 'cert goes here',
+      :kombu_ssl_keyfile     => 'key goes here',
+      :kombu_ssl_version     => 'TLSv1',
+      :kombu_reconnect_delay => '1.0',
+    }
+  end
+
+  let :rabbit_use_ssl_cert_no_key do
+    {
+      :rabbit_host           => '127.0.0.1',
+      :rabbit_port           => 5672,
+      :rabbit_userid         => 'guest',
+      :rabbit_password       => '',
+      :rabbit_virtual_host   => '/',
+      :rabbit_use_ssl        => true,
+      :kombu_ssl_ca_certs    => 'ca goes here',
+      :kombu_ssl_certfile    => 'cert goes here',
+      :kombu_ssl_version     => 'TLSv1',
+      :kombu_reconnect_delay => '1.0',
+    }
+  end
+
+  let :rabbit_use_ssl_key_no_cert do
+    {
+      :rabbit_host           => '127.0.0.1',
+      :rabbit_port           => 5672,
+      :rabbit_userid         => 'guest',
+      :rabbit_password       => '',
+      :rabbit_virtual_host   => '/',
+      :rabbit_use_ssl        => true,
+      :kombu_ssl_ca_certs    => 'ca goes here',
+      :kombu_ssl_keyfile     => 'key goes here',
+      :kombu_ssl_version     => 'TLSv1',
+      :kombu_reconnect_delay => '1.0',
+    }
+  end
+
   shared_examples_for 'designate' do
 
     context 'with rabbit_host parameter' do
       it_configures 'a designate base installation'
       it_configures 'rabbit without HA support'
       it_configures 'rabbit with HA support'
+      it_configures 'rabbit with SSL support'
+      it_configures 'rabbit with SSL no key'
+      it_configures 'rabbit with SSL no cert'
     end
 
     context 'with custom package name' do
@@ -160,13 +209,45 @@ describe 'designate' do
 
   end
 
+  shared_examples_for 'rabbit with SSL support' do
+    before { params.merge!( rabbit_use_ssl ) }
+
+    it 'configures rabbit with ssl' do
+      is_expected.to contain_designate_config('oslo_messaging_rabbit/rabbit_userid').with_value( params[:rabbit_userid] )
+      is_expected.to contain_designate_config('oslo_messaging_rabbit/rabbit_password').with_value( params[:rabbit_password] )
+      is_expected.to contain_designate_config('oslo_messaging_rabbit/rabbit_password').with_value( params[:rabbit_password] ).with_secret(true)
+      is_expected.to contain_designate_config('oslo_messaging_rabbit/rabbit_virtual_host').with_value( params[:rabbit_virtual_host] )
+      is_expected.to contain_designate_config('oslo_messaging_rabbit/rabbit_use_ssl').with_value( params[:rabbit_use_ssl] )
+      is_expected.to contain_designate_config('oslo_messaging_rabbit/kombu_ssl_ca_certs').with_value( params[:kombu_ssl_ca_certs] )
+      is_expected.to contain_designate_config('oslo_messaging_rabbit/kombu_ssl_certfile').with_value( params[:kombu_ssl_certfile] )
+      is_expected.to contain_designate_config('oslo_messaging_rabbit/kombu_ssl_keyfile').with_value( params[:kombu_ssl_keyfile] )
+      is_expected.to contain_designate_config('oslo_messaging_rabbit/kombu_ssl_version').with_value( params[:kombu_ssl_version] )
+      is_expected.to contain_designate_config('oslo_messaging_rabbit/kombu_reconnect_delay').with_value( params[:kombu_reconnect_delay] )
+    end
+  end
+
+  shared_examples_for 'rabbit with SSL no key' do
+    before { params.merge!( rabbit_use_ssl_cert_no_key ) }
+
+    it 'should fail' do
+      is_expected.to raise_error(/The kombu_ssl_certfile and kombu_ssl_keyfile parameters must be used together/)
+    end
+  end
+
+  shared_examples_for 'rabbit with SSL no cert' do
+    before { params.merge!( rabbit_use_ssl_key_no_cert ) }
+
+    it 'should fail' do
+      is_expected.to raise_error(/The kombu_ssl_certfile and kombu_ssl_keyfile parameters must be used together/)
+    end
+  end
+
   shared_examples_for 'rabbit with deprecated option' do
     before { params.merge!( rabbit_deprecated_params ) }
 
     it 'configures rabbit' do
       is_expected.to contain_designate_config('oslo_messaging_rabbit/rabbit_virtual_host').with_value( params[:rabbit_virtualhost] )
     end
-
   end
 
   on_supported_os({
