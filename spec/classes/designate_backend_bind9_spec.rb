@@ -12,7 +12,7 @@ describe 'designate::backend::bind9' do
         is_expected.to contain_designate_config('backend:bind9/rndc_port').with_value('953')
         is_expected.to contain_designate_config('backend:bind9/rndc_config_file').with_value('/etc/rndc.conf')
         is_expected.to contain_designate_config('backend:bind9/rndc_key_file').with_value('/etc/rndc.key')
-        is_expected.to contain_file_line('dns allow-new-zones')
+        is_expected.to contain_file_line('dns allow-new-zones').with( :path => platform_params[:dns_optionspath], :line => 'allow-new-zones yes;')
       end
     end
 
@@ -54,9 +54,13 @@ describe 'designate::backend::bind9' do
       let(:platform_params) do
         case facts[:osfamily]
         when 'Debian'
-          { }
+          {
+          :dns_optionspath => '/etc/bind/named.conf.options'
+          }
         when 'RedHat'
-          { }
+          {
+          :dns_optionspath => '/etc/named/options.conf'
+          }
         end
       end
       it_behaves_like 'designate-backend-bind9'

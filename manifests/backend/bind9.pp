@@ -38,7 +38,7 @@ class designate::backend::bind9 (
 
   file_line {'dns allow-new-zones':
     ensure  => present,
-    path    => "${::dns::params::namedconf_path}.options",
+    path    => $::dns::params::optionspath,
     line    => 'allow-new-zones yes;',
     require => Class['::designate'],
   }
