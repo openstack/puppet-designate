@@ -15,7 +15,10 @@ Puppet::Type.newtype(:designate_rootwrap_config) do
       value
     end
     newvalues(/^[\S ]*$/)
+  end
 
+  autorequire(:package) do
+    'designate-common'
   end
 
 end
