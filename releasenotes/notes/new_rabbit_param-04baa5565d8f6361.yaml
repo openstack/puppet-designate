@@ -1,0 +1,4 @@
+---
+deprecations:
+  - rabbit_virtualhost is not deprecated and rabbit_virtual_host is now
+    the right parameter to use.

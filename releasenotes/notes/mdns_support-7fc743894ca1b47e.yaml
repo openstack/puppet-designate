@@ -1,0 +1,3 @@
+---
+features:
+  - Add designate::mdns class, that can deploy Designate wth Mini DNS service.
