@@ -1,8 +1,18 @@
-==============================
-puppet-designate Release Notes
-==============================
+==========================================
+Welcome to puppet-designate Release Notes!
+==========================================
+
+Contents
+========
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
    unreleased
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`search`
