@@ -98,8 +98,9 @@ class designate::api (
   $keystone_host              = '127.0.0.1',
   $keystone_port              = '35357',
   $keystone_protocol          = 'http',
-  $auth_uri                   = 'http://127.0.0.1:5000/v2.0',
-  $identity_uri               = 'http://127.0.0.1:35357/v2.0',
+  $auth_uri                   = false,
+  $identity_uri               = false,
+  $auth_version               = false,
   $keystone_tenant            = 'services',
   $keystone_user              = 'designate',
   $keystone_password          = false,
@@ -136,23 +137,23 @@ class designate::api (
 
     if $keystone_host {
       warning('The keystone_host parameter is deprecated. Please use auth_uri and identity_uri instead.')
-      designate_config { 'keystone_keystonetoken/keystone_host': value => $keystone_host; }
+      designate_config { 'keystone_keystonetoken/auth_host': value => $keystone_host; }
     } else {
-      designate_config { 'keystone_keystonetoken/keystone_host': ensure => absent; }
+      designate_config { 'keystone_keystonetoken/auth_host': ensure => absent; }
     }
 
     if $keystone_port {
       warning('The keystone_port parameter is deprecated. Please use auth_uri and identity_uri instead.')
-      designate_config { 'keystone_keystonetoken/keystone_port': value => $keystone_port; }
+      designate_config { 'keystone_keystonetoken/auth_port': value => $keystone_port; }
     } else {
-      designate_config { 'keystone_keystonetoken/keystone_port': ensure => absent; }
+      designate_config { 'keystone_keystonetoken/auth_port': ensure => absent; }
     }
 
     if $keystone_protocol {
       warning('The keystone_protocol parameter is deprecated. Please use auth_uri and identity_uri instead.')
-      designate_config { 'keystone_keystonetoken/keystone_protocol': value => $keystone_protocol; }
+      designate_config { 'keystone_keystonetoken/auth_protocol': value => $keystone_protocol; }
     } else {
-      designate_config { 'keystone_keystonetoken/keystone_protocol': ensure => absent; }
+      designate_config { 'keystone_keystonetoken/auth_protocol': ensure => absent; }
     }
   } else {
     designate_config {
