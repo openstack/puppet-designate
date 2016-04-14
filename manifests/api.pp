@@ -48,6 +48,7 @@
 #   (optional) API version of the admin Identity API endpoint
 #   for example, use 'v3.0' for the keystone version 3.0 api
 #   Defaults to false
+#
 # [*keystone_tenant*]
 #  (optional) Tenant to authenticate to.
 #  Defaults to 'services'
