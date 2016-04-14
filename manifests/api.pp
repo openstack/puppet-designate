@@ -25,16 +25,29 @@
 #  Defaults to 'noauth'
 #
 # [*keystone_host*]
-#  (optional) Host running auth service.
+#  (optional) DEPRECATED Host running auth service.
 #  Defaults to '127.0.0.1'
 #
 # [*keystone_port*]
-#  (optional) Port to use for auth service on auth_host.
+#  (optional) DEPRECATED Port to use for auth service on auth_host.
 #  Defaults to '35357'
 #
 # [*keystone_protocol*]
-#  (optional) Protocol to use for auth.
+#  (optional) DEPRECATED Protocol to use for auth.
 #  Defaults to 'http'
+#
+# [*auth_uri*]
+#   (optional) Complete public Identity API endpoint.
+#   Defaults to false
+#
+# [*identity_uri*]
+#   (optional) Complete admin Identity API endpoint.
+#   Defaults to: false
+#
+# [*auth_version*]
+#   (optional) API version of the admin Identity API endpoint
+#   for example, use 'v3.0' for the keystone version 3.0 api
+#   Defaults to false
 #
 # [*keystone_tenant*]
 #  (optional) Tenant to authenticate to.
@@ -85,6 +98,9 @@ class designate::api (
   $keystone_host              = '127.0.0.1',
   $keystone_port              = '35357',
   $keystone_protocol          = 'http',
+  $auth_uri                   = false,
+  $identity_uri               = false,
+  $auth_version               = false,
   $keystone_tenant            = 'services',
   $keystone_user              = 'designate',
   $keystone_password          = false,
@@ -97,6 +113,56 @@ class designate::api (
   $api_base_uri               = $::os_service_default,
 ) inherits designate {
 
+    if $auth_uri {
+    $auth_uri_real = $auth_uri
+  } else {
+    $auth_uri_real = "${auth_protocol}://${auth_host}:5000/"
+  }
+  designate_config { 'keystone_authtoken/auth_uri': value => $auth_uri_real; }
+
+  if $identity_uri {
+    designate_config { 'keystone_authtoken/identity_uri': value => $identity_uri; }
+  } else {
+    designate_config { 'keystone_authtoken/identity_uri': ensure => absent; }
+  }
+
+  if $auth_version {
+    designate_config { 'keystone_authtoken/auth_version': value => $auth_version; }
+  } else {
+    designate_config { 'keystone_authtoken/auth_version': ensure => absent; }
+  }
+
+  # if both auth_uri and identity_uri are set we skip these deprecated settings entirely
+  if !$auth_uri or !$identity_uri {
+
+    if $keystone_host {
+      warning('The auth_host parameter is deprecated. Please use auth_uri and identity_uri instead.')
+      designate_config { 'keystone_authtoken/auth_host': value => $keystone_host; }
+    } else {
+      designate_config { 'keystone_authtoken/auth_host': ensure => absent; }
+    }
+
+    if $keystone_port {
+      warning('The auth_port parameter is deprecated. Please use auth_uri and identity_uri instead.')
+      designate_config { 'keystone_authtoken/auth_port': value => $keystone_port; }
+    } else {
+      designate_config { 'keystone_authtoken/auth_port': ensure => absent; }
+    }
+
+    if $keystone_protocol {
+      warning('The auth_protocol parameter is deprecated. Please use auth_uri and identity_uri instead.')
+      designate_config { 'keystone_authtoken/auth_protocol': value => $keystone_protocol; }
+    } else {
+      designate_config { 'keystone_authtoken/auth_protocol': ensure => absent; }
+    }
+  } else {
+    designate_config {
+      'keystone_authtoken/auth_host': ensure => absent;
+      'keystone_authtoken/auth_port': ensure => absent;
+      'keystone_authtoken/auth_protocol': ensure => absent;
+    }
+  }
+  
   # API Service
   designate_config {
     'service:api/api_host'                  : value => $api_host;
@@ -106,6 +172,9 @@ class designate::api (
     'service:api/enable_api_v2'             : value => $enable_api_v2;
     'service:api/enable_api_admin'          : value => $enable_api_admin;
     'service:api/api_base_uri'              : value => $api_base_uri;
+    'keystone_authtoken/admin_tenant_name'  : value => $keystone_tenant;
+    'keystone_authtoken/admin_user'         : value => $keystone_user;
+    'keystone_authtoken/admin_password'     : value => $keystone_password, secret => true;
   }
 
   # Keystone Middleware
@@ -113,15 +182,6 @@ class designate::api (
     designate_config { 'keystone_authtoken/memcached_servers'  : value => join(any2array($keystone_memcached_servers), ',') }
   } else {
     designate_config { 'keystone_authtoken/memcached_servers'  : ensure => absent, }
-  }
-
-  designate_config {
-    'keystone_authtoken/auth_host'          : value => $keystone_host;
-    'keystone_authtoken/auth_port'          : value => $keystone_port;
-    'keystone_authtoken/auth_protocol'      : value => $keystone_protocol;
-    'keystone_authtoken/admin_tenant_name'  : value => $keystone_tenant;
-    'keystone_authtoken/admin_user'         : value => $keystone_user;
-    'keystone_authtoken/admin_password'     : value => $keystone_password, secret => true;
   }
 
   designate::generic_service { 'api':
