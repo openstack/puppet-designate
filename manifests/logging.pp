@@ -4,10 +4,6 @@
 #
 # == parameters
 #
-#  [*verbose*]
-#    (Optional) Should the daemons log verbose messages
-#    Defaults to 'false'
-#
 #  [*debug*]
 #    (Optional) Should the daemons log debug messages
 #    Defaults to 'false'
@@ -83,18 +79,23 @@
 #               it like this (string value).
 #    Defaults to undef.
 #    Example: instance_uuid_format='[instance: %(uuid)s] '
-
+#
 #  [*log_date_format*]
 #    (optional) Format string for %%(asctime)s in log records.
 #    Defaults to undef.
 #    Example: 'Y-%m-%d %H:%M:%S'
-
+#
+#  DEPRECATED PARAMETERS
+#
+#  [*verbose*]
+#    (Optional) Deprecated. Should the daemons log verbose messages
+#    Defaults to undef
+#
 class designate::logging(
   $use_syslog                    = false,
   $use_stderr                    = true,
   $log_facility                  = 'LOG_USER',
   $log_dir                       = $::designate::params::log_dir,
-  $verbose                       = false,
   $debug                         = false,
   $logging_context_format_string = undef,
   $logging_default_format_string = undef,
@@ -107,20 +108,23 @@ class designate::logging(
   $instance_format               = undef,
   $instance_uuid_format          = undef,
   $log_date_format               = undef,
+  #Deprecated
+  $verbose                       = undef,
 ) inherits ::designate::params  {
 
+  if $verbose {
+    warning('verbose is deprecated, has no effect and will be removed after Newton cycle.')
+  }
   # NOTE(spredzy): In order to keep backward compatibility we rely on the pick function
   # to use designate::<myparam> first then designate::logging::<myparam>.
   $use_syslog_real = pick($::designate::use_syslog,$use_syslog)
   $use_stderr_real = pick($::designate::use_stderr,$use_stderr)
   $log_facility_real = pick($::designate::log_facility,$log_facility)
   $log_dir_real = pick($::designate::log_dir, $log_dir)
-  $verbose_real  = pick($::designate::verbose,$verbose)
   $debug_real = pick($::designate::debug,$debug)
 
   designate_config {
     'DEFAULT/debug'              : value => $debug_real;
-    'DEFAULT/verbose'            : value => $verbose_real;
     'DEFAULT/use_stderr'         : value => $use_stderr_real;
     'DEFAULT/use_syslog'         : value => $use_syslog_real;
     'DEFAULT/log_dir'            : value => $log_dir_real;

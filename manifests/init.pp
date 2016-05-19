@@ -20,10 +20,6 @@
 #   (optional) should the daemons log debug messages.
 #   Defaults to undef
 #
-# [*verbose*]
-#   (optional) should the daemons log verbose messages.
-#   Defaults to undef
-#
 # [*use_syslog*]
 #   (Optional) Use syslog for logging.
 #   Defaults to undef
@@ -111,11 +107,13 @@
 #   (optional) DEPRECATED. Use rabbit_virtual_host
 #   Defaults to undef.
 #
-
+# [*verbose*]
+#   (optional) Deprecated. should the daemons log verbose messages.
+#   Defaults to undef
+#
 class designate(
   $package_ensure        = present,
   $common_package_name   = $::designate::params::common_package_name,
-  $verbose               = undef,
   $debug                 = undef,
   $log_dir               = undef,
   $use_syslog            = undef,
@@ -138,7 +136,12 @@ class designate(
   $notification_topics   = 'notifications',
   #DEPRECATED PARAMETER
   $rabbit_virtualhost    = undef,
+  $verbose               = undef,
 ) inherits designate::params {
+
+  if $verbose {
+    warning('verbose is deprecated, has no effect and will be removed after Newton cycle.')
+  }
 
   if $rabbit_virtualhost {
     warning('The parameter rabbit_virtualhost is deprecated, use rabbit_virtual_host.')

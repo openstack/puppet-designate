@@ -27,7 +27,6 @@ describe 'designate::logging' do
      :use_stderr => false,
      :log_facility => 'LOG_FOO',
      :log_dir => '/var/log',
-     :verbose => true,
      :debug => true,
     }
   end
@@ -58,7 +57,6 @@ describe 'designate::logging' do
     it 'configures designate logging settins with default values' do
       is_expected.to contain_designate_config('DEFAULT/use_syslog').with(:value => 'false')
       is_expected.to contain_designate_config('DEFAULT/use_stderr').with(:value => 'true')
-      is_expected.to contain_designate_config('DEFAULT/verbose').with(:value => 'false')
       is_expected.to contain_designate_config('DEFAULT/debug').with(:value => 'false')
     end
   end
@@ -69,7 +67,6 @@ describe 'designate::logging' do
       is_expected.to contain_designate_config('DEFAULT/use_stderr').with(:value => 'false')
       is_expected.to contain_designate_config('DEFAULT/syslog_log_facility').with(:value => 'LOG_FOO')
       is_expected.to contain_designate_config('DEFAULT/log_dir').with(:value => '/var/log')
-      is_expected.to contain_designate_config('DEFAULT/verbose').with(:value => 'true')
       is_expected.to contain_designate_config('DEFAULT/debug').with(:value => 'true')
     end
   end

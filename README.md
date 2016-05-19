@@ -47,12 +47,12 @@ designate is a combination of Puppet manifest and ruby code to delivery configur
 The `designate_config` provider is a children of the ini_setting provider. It allows one to write an entry in the `/etc/designate/designate.conf` file.
 
 ```puppet
-designate_config { 'DEFAULT/verbose' :
-  value => true,
+designate_config { 'DEFAULT/notification_driver' :
+  value => messaging,
 }
 ```
 
-This will write `verbose=true` in the `[DEFAULT]` section.
+This will write `notification_driver=messaging` in the `[DEFAULT]` section.
 
 ##### name
 

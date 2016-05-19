@@ -33,7 +33,6 @@ node /designate/ {
   }
 
   class { '::keystone':
-    verbose             => true,
     validate_service    => true,
     catalog_type        => 'sql',
     enable_pki_setup    => false,

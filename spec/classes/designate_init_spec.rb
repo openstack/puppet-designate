@@ -9,7 +9,6 @@ describe 'designate' do
     {
       :package_ensure     => 'installed',
       :debug              => 'False',
-      :verbose            => 'False',
       :root_helper        => 'sudo designate-rootwrap /etc/designate/rootwrap.conf'
     }
   end
