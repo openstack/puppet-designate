@@ -51,24 +51,6 @@ describe 'designate::keystone::auth' do
       ) }
     end
 
-    context 'with deprecated endpoint parameters' do
-      let :params do
-        { :password         => 'desigpwd',
-          :public_protocol  => 'https',
-          :public_address   => '10.10.10.10',
-          :port             => '81',
-          :internal_address => '10.10.10.11',
-          :admin_address    => '10.10.10.12' }
-      end
-
-      it { is_expected.to contain_keystone_endpoint('RegionOne/designate::dns').with(
-        :ensure       => 'present',
-        :public_url   => "https://10.10.10.10:81/v1",
-        :internal_url => "http://10.10.10.11:81/v1",
-        :admin_url    => "http://10.10.10.12:81/v1"
-      ) }
-    end
-
     context 'when overriding auth name' do
       let :params do
         { :password => 'foo',
