@@ -9,6 +9,7 @@ describe 'designate' do
     {
       :package_ensure     => 'installed',
       :debug              => 'False',
+      :purge_config       => false,
       :root_helper        => 'sudo designate-rootwrap /etc/designate/rootwrap.conf'
     }
   end
@@ -148,6 +149,12 @@ describe 'designate' do
         :tag    => ['openstack', 'designate-package'],
         :before  => ['User[designate]', 'Group[designate]'],
       )
+    end
+
+    it 'passes purge to resource' do
+      is_expected.to contain_resources('designate_config').with({
+        :purge => false
+      })
     end
 
     it 'configures debug and verbosity' do
