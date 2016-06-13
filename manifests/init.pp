@@ -101,6 +101,11 @@
 #   (optional) Notification Topics
 #   Defaults to 'notifications'
 #
+# [*purge_config*]
+#   (optional) Whether to set only the specified config options
+#   in the designate config.
+#   Defaults to false
+#
 # DEPRECATED PARAMETER
 #
 # [*rabbit_virtualhost*]
@@ -134,6 +139,7 @@ class designate(
   $kombu_reconnect_delay = $::os_service_default,
   $notification_driver   = 'messaging',
   $notification_topics   = 'notifications',
+  $purge_config          = false,
   #DEPRECATED PARAMETER
   $rabbit_virtualhost    = undef,
   $verbose               = undef,
@@ -202,6 +208,10 @@ class designate(
     owner  => 'designate',
     group  => 'designate',
     mode   => '0750',
+  }
+
+  resources { 'designate_config':
+    purge => $purge_config,
   }
 
   designate_config {
