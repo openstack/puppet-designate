@@ -51,30 +51,19 @@ describe 'designate::keystone::auth' do
       ) }
     end
 
-    context 'when overriding auth name' do
+    context 'when overriding auth and service name' do
       let :params do
         { :password => 'foo',
-          :auth_name => 'designate1' }
+          :service_name => 'designatey',
+          :auth_name => 'designatey' }
       end
 
-      it { is_expected.to contain_keystone_user('designate1') }
-      it { is_expected.to contain_keystone_user_role('designate1@services') }
-      it { is_expected.to contain_keystone_service('designate1::dns') }
-      it { is_expected.to contain_keystone_endpoint('RegionOne/designate1::dns') }
+      it { is_expected.to contain_keystone_user('designatey') }
+      it { is_expected.to contain_keystone_user_role('designatey@services') }
+      it { is_expected.to contain_keystone_service('designatey::dns') }
+      it { is_expected.to contain_keystone_endpoint('RegionOne/designatey::dns') }
     end
 
-    context 'when overriding service name' do
-      let :params do
-        { :service_name => 'designate_service',
-          :password => 'foo',
-          :auth_name => 'designate1' }
-      end
-
-      it { is_expected.to contain_keystone_user('designate1') }
-      it { is_expected.to contain_keystone_user_role('designate1@services') }
-      it { is_expected.to contain_keystone_service('designate_service::dns') }
-      it { is_expected.to contain_keystone_endpoint('RegionOne/designate_service::dns') }
-    end
   end
 
   on_supported_os({
