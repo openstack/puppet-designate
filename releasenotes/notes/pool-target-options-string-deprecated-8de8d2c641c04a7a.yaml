@@ -1,0 +1,4 @@
+---
+deprecations:
+  - Passing a string to pool_target::options is now deprecated. This parameter
+    should now be given as a hash.

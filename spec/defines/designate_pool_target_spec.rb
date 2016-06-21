@@ -7,7 +7,8 @@ describe 'designate::pool_target' do
 
   let :params do
     {
-      :options => 'rndc_host: 192.168.27.100, rndc_port: 953, rndc_config_file: /etc/bind/rndc.conf, rndc_key_file: /etc/bind/rndc.key, port: 53, host: 192.168.27.100',
+      :options => {'rndc_host' => '192.168.27.100', 'rndc_port' => 953, 'rndc_config_file' => '/etc/bind/rndc.conf',
+                   'rndc_key_file' => '/etc/bind/rndc.key', 'port' => 53, 'host' => '192.168.27.100'},
       :type    => 'bind9',
       :masters => ['127.0.0.1:5354'],
     }
@@ -25,7 +26,7 @@ describe 'designate::pool_target' do
     it { is_expected.to contain_designate__pool_target('f26e0b32-736f-4f0a-831b-039a415c481e') }
 
     it 'configures designate pool-manager pool with default parameters' do
-      is_expected.to contain_designate_config('pool_target:f26e0b32-736f-4f0a-831b-039a415c481e/options').with_value(params[:options])
+      is_expected.to contain_designate_config('pool_target:f26e0b32-736f-4f0a-831b-039a415c481e/options').with_value(params[:options].map{|k,v|"#{k}:#{v}"}.join(','))
       is_expected.to contain_designate_config('pool_target:f26e0b32-736f-4f0a-831b-039a415c481e/type').with_value(params[:type])
       is_expected.to contain_designate_config('pool_target:f26e0b32-736f-4f0a-831b-039a415c481e/masters').with_value(params[:masters])
     end
@@ -37,7 +38,7 @@ describe 'designate::pool_target' do
     it { is_expected.to contain_designate__pool_target('f26e0b32-736f-4f0a-831b-039a415c481e') }
 
     it 'configures designate pool-manager pool with default parameters' do
-      is_expected.to contain_designate_config('pool_target:f26e0b32-736f-4f0a-831b-039a415c481e/options').with_value(params[:options])
+      is_expected.to contain_designate_config('pool_target:f26e0b32-736f-4f0a-831b-039a415c481e/options').with_value(params[:options].map{|k,v|"#{k}:#{v}"}.join(','))
       is_expected.to contain_designate_config('pool_target:f26e0b32-736f-4f0a-831b-039a415c481e/type').with_value(params[:type])
       is_expected.to contain_designate_config('pool_target:f26e0b32-736f-4f0a-831b-039a415c481e/masters').with_value(params[:masters])
     end

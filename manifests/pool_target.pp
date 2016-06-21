@@ -6,9 +6,13 @@
 #
 # [*options*]
 #   Options to be passed to the backend DNS server. This should include host and
-#   port. For instance for a bind9
-#   target this could be:
-#     rndc_host: 192.168.27.100, rndc_port: 953, rndc_config_file: /etc/bind/rndc.conf, rndc_key_file: /etc/bind/rndc.key, port: 53, host: 192.168.27.100
+#   port. For instance for a bind9 target this could be:
+#     {'rndc_host'        => '192.168.27.100',
+#      'rndc_port'        => 953,
+#      'rndc_config_file' => '/etc/bind/rndc.conf',
+#      'rndc_key_file'    => '/etc/bind/rndc.key',
+#      'port'             => 53,
+#      'host'             => '192.168.27.100'}
 #
 # [*type*]
 #   Port number of the target DNS server.
@@ -31,8 +35,15 @@ define designate::pool_target (
   validate_re($name, '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')
   validate_array($masters)
 
+  if is_hash($options) {
+    $options_real = join(join_keys_to_values($options,':'),',')
+  } else {
+    warning('Passing a string to options is now deprecated, use a hash instead.')
+    $options_real = $options
+  }
+
   designate_config {
-    "pool_target:${name}/options": value => $options;
+    "pool_target:${name}/options": value => $options_real;
     "pool_target:${name}/type":    value => $type;
     "pool_target:${name}/masters": value => join($masters,',');
   }
