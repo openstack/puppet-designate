@@ -16,6 +16,14 @@
 # [*configure_endpoint*]
 #   Should designate endpoint be configured? Optional. Defaults to 'true'.
 #
+# [*configure_user*]
+#   Should designate user be configured?
+#   Defaults to 'true'.
+#
+# [*configure_user_role*]
+#   Should designate user_role be configured?
+#   Defaults to 'true'.
+#
 # [*service_name*]
 #   (optional) Name of the service.
 #   Defaults to 'designate'.
@@ -61,6 +69,8 @@ class designate::keystone::auth (
   $service_description = 'Openstack DNSaas Service',
   $region              = 'RegionOne',
   $tenant              = 'services',
+  $configure_user      = true,
+  $configure_user_role = true,
   $configure_endpoint  = true,
   $public_url          = 'http://127.0.0.1:9001/v1',
   $admin_url           = 'http://127.0.0.1:9001/v1',
@@ -71,8 +81,8 @@ class designate::keystone::auth (
     Service <| name == 'designate-api' |>
 
   keystone::resource::service_identity { 'designate':
-    configure_user      => true,
-    configure_user_role => true,
+    configure_user      => $configure_user,
+    configure_user_role => $configure_user_role,
     configure_endpoint  => $configure_endpoint,
     service_name        => $service_name,
     service_type        => $service_type,

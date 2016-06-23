@@ -66,6 +66,20 @@ describe 'designate::keystone::auth' do
 
   end
 
+  describe 'when disabling user and user_role configuration' do
+    let :params do
+      { :configure_user      => false,
+        :configure_user_role => false,
+        :service_name => 'designate',
+        :auth_name => 'designate',
+        :password            => 'designate_password' }
+    end
+    it { is_expected.to_not contain_keystone_user('designate') }
+    it { is_expected.to_not contain_keystone_user_role('designate@services') }
+    it { is_expected.to contain_keystone_service('designate::dns') }
+    it { is_expected.to contain_keystone_endpoint('RegionOne/designate::dns') }
+  end
+
   on_supported_os({
     :supported_os => OSDefaults.get_supported_os
   }).each do |os,facts|
