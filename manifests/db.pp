@@ -61,8 +61,8 @@ class designate::db (
 
   case $database_connection {
     /^mysql(\+pymysql)?:\/\//: {
-      require 'mysql::bindings'
-      require 'mysql::bindings::python'
+      require '::mysql::bindings'
+      require '::mysql::bindings::python'
       if $database_connection =~ /^mysql\+pymysql/ {
         $backend_package = $::designate::params::pymysql_package_name
       } else {
