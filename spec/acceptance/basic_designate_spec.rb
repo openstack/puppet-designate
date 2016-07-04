@@ -27,44 +27,37 @@ describe 'basic designate' do
         require              => Class['rabbitmq'],
       }
 
-      case $::osfamily {
-        'Debian': {
-          # Designate resources
-          class { '::designate::db::mysql':
-            password => 'a_big_secret',
-          }
-          class { '::designate::keystone::auth':
-            password => 'a_big_secret',
-          }
-          class { '::designate':
-            rabbit_userid       => 'designate',
-            rabbit_password     => 'an_even_bigger_secret',
-            rabbit_host         => '127.0.0.1',
-            debug               => true,
-          }
-          class { '::designate::api':
-            enabled           => true,
-            auth_strategy     => 'keystone',
-            keystone_password => 'a_big_secret',
-          }
-          class {'::designate::central':
-            backend_driver => 'bind9',
-          }
-          class { '::designate::backend::bind9':
-            rndc_config_file => '',
-            rndc_key_file    => '',
-          }
-          include ::designate::client
-          class { '::designate::agent': }
-          class { '::designate::db':
-            database_connection => 'mysql+pymysql://designate:a_big_secret@127.0.0.1/designate?charset=utf8',
-          }
-          include ::designate::dns
-        }
-        'RedHat': {
-          warning("Designate packaging is not ready on ${::osfamily}.")
-        }
+      # Designate resources
+      class { '::designate::db::mysql':
+        password => 'a_big_secret',
       }
+      class { '::designate::keystone::auth':
+        password => 'a_big_secret',
+      }
+      class { '::designate':
+        rabbit_userid       => 'designate',
+        rabbit_password     => 'an_even_bigger_secret',
+        rabbit_host         => '127.0.0.1',
+        debug               => true,
+      }
+      class { '::designate::api':
+        enabled           => true,
+        auth_strategy     => 'keystone',
+        keystone_password => 'a_big_secret',
+      }
+      class {'::designate::central':
+          backend_driver => 'bind9',
+      }
+      class { '::designate::backend::bind9':
+        rndc_config_file => '',
+        rndc_key_file    => '',
+      }
+      include ::designate::client
+      class { '::designate::agent': }
+      class { '::designate::db':
+        database_connection => 'mysql+pymysql://designate:a_big_secret@127.0.0.1/designate?charset=utf8',
+      }
+      include ::designate::dns
       EOS
 
       # Run it once, idempotency does not work
@@ -73,11 +66,8 @@ describe 'basic designate' do
       apply_manifest(pp, :catch_failures => true)
     end
 
-    if os[:family] == 'Debian'
-      describe port(9001) do
-        it { is_expected.to be_listening.with('tcp') }
-      end
+    describe port(9001) do
+      it { is_expected.to be_listening.with('tcp') }
     end
-
   end
 end
