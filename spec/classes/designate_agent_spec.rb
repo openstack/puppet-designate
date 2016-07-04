@@ -72,7 +72,7 @@ describe 'designate::agent' do
         when 'RedHat'
           {
             :agent_package_name => 'openstack-designate-agent',
-            :agent_service_name => 'openstack-designate-agent'
+            :agent_service_name => 'designate-agent'
           }
         end
       end

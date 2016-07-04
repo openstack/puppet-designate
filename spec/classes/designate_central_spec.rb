@@ -76,7 +76,7 @@ describe 'designate::central' do
         when 'RedHat'
           {
             :central_package_name => 'openstack-designate-central',
-            :central_service_name => 'openstack-designate-central'
+            :central_service_name => 'designate-central'
           }
         end
       end

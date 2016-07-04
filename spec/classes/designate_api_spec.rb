@@ -96,7 +96,7 @@ describe 'designate::api' do
         when 'RedHat'
           {
             :api_package_name => 'openstack-designate-api',
-            :api_service_name => 'openstack-designate-api'
+            :api_service_name => 'designate-api'
           }
         end
       end

@@ -72,7 +72,7 @@ describe 'designate::mdns' do
         when 'RedHat'
           {
             :mdns_package_name => 'openstack-designate-mdns',
-            :mdns_service_name => 'openstack-designate-mdns'
+            :mdns_service_name => 'designate-mdns'
           }
         end
       end

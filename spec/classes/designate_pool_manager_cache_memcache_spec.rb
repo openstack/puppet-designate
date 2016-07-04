@@ -51,7 +51,7 @@ describe 'designate::pool_manager_cache::memcache' do
         when 'RedHat'
           {
             :pool_manager_package_name => 'openstack-designate-pool-manager',
-            :pool_manager_service_name => 'openstack-designate-pool-manager'
+            :pool_manager_service_name => 'designate-pool-manager'
           }
         end
       end

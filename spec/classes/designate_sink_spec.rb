@@ -68,7 +68,7 @@ describe 'designate::sink' do
         when 'RedHat'
           {
             :sink_package_name => 'openstack-designate-sink',
-            :sink_service_name => 'openstack-designate-sink'
+            :sink_service_name => 'designate-sink'
           }
         end
       end
