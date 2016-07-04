@@ -47,6 +47,9 @@ describe 'basic designate' do
             auth_strategy     => 'keystone',
             keystone_password => 'a_big_secret',
           }
+          class {'::designate::central':
+            backend_driver => 'bind9',
+          }
           class { '::designate::backend::bind9':
             rndc_config_file => '',
             rndc_key_file    => '',
