@@ -115,7 +115,7 @@ class designate::pool_manager(
   if $manage_package {
     package { 'designate-pool-manager':
       ensure => $package_ensure,
-      name   => pick($pool_manager_package_name, $::designate::params::pool_manager_service_name),
+      name   => pick($pool_manager_package_name, $::designate::params::pool_manager_package_name),
       tag    => ['openstack', 'designate-package'],
     }
   }

@@ -36,7 +36,7 @@ class designate::params {
       $agent_package_name        = 'designate-agent'
       $sink_package_name         = 'designate-sink'
       $pymysql_package_name      = 'python-pymysql'
-      $pool_manager_package_name = 'openstack-designate-pool-manager'
+      $pool_manager_package_name = 'designate-pool-manager'
       $mdns_package_name         = 'designate-mdns'
       # service names
       $agent_service_name        = 'designate-agent'
