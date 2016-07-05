@@ -43,7 +43,7 @@
 #
 # [*min_ttl*]
 #  (optional) Minimum TTL.
-#  Defaults to None
+#  Defaults to $::os_service_default
 #
 class designate::central (
   $package_ensure             = present,
@@ -55,7 +55,7 @@ class designate::central (
   $managed_resource_tenant_id = '123456',
   $max_domain_name_len        = '255',
   $max_recordset_name_len     = '255',
-  $min_ttl                    = 'None',
+  $min_ttl                    = $::os_service_default,
 ) inherits designate {
 
   designate_config {

@@ -32,7 +32,7 @@ describe 'designate::central' do
         is_expected.to contain_designate_config('service:central/managed_resource_tenant_id').with_value('123456')
         is_expected.to contain_designate_config('service:central/max_domain_name_len').with_value('255')
         is_expected.to contain_designate_config('service:central/max_recordset_name_len').with_value('255')
-        is_expected.to contain_designate_config('service:central/min_ttl').with_value('None')
+        is_expected.to contain_designate_config('service:central/min_ttl').with_value('<SERVICE DEFAULT>')
       end
 
       context 'when using Power DNS backend driver' do
