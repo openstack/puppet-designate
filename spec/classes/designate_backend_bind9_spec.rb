@@ -12,7 +12,9 @@ describe 'designate::backend::bind9' do
         is_expected.to contain_designate_config('backend:bind9/rndc_port').with_value('953')
         is_expected.to contain_designate_config('backend:bind9/rndc_config_file').with_value('/etc/rndc.conf')
         is_expected.to contain_designate_config('backend:bind9/rndc_key_file').with_value('/etc/rndc.key')
-        is_expected.to contain_file_line('dns allow-new-zones').with( :path => platform_params[:dns_optionspath], :line => 'allow-new-zones yes;')
+        is_expected.to contain_concat_fragment('dns allow-new-zones').with(
+          :target => platform_params[:dns_optionspath],
+          :content => 'allow-new-zones yes;')
       end
     end
 
