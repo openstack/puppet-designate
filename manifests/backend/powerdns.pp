@@ -35,13 +35,6 @@ class designate::backend::powerdns (
     recurse => true,
   }
 
-  file { '/var/lib/designate':
-    ensure => directory,
-    owner  => 'designate',
-    group  => 'designate',
-    mode   => '0750',
-  }
-
   designate_config {
     'backend:powerdns/connection':       value => $database_connection, secret => true;
     'backend:powerdns/use_db_reconnect': value => $use_db_reconnect;
@@ -50,5 +43,4 @@ class designate::backend::powerdns (
   if $sync_db {
     include ::designate::db::powerdns::sync
   }
-
 }

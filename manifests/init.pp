@@ -184,32 +184,6 @@ class designate(
     tag    => ['openstack', 'designate-package'],
   }
 
-  if $package_ensure != 'absent' {
-    Package['designate-common'] -> User['designate']
-    Package['designate-common'] -> Group['designate']
-  }
-
-  user { 'designate':
-    ensure => 'present',
-    name   => 'designate',
-    gid    => 'designate',
-    system => true,
-    before => Anchor['designate::install::end'],
-  }
-
-  group { 'designate':
-    ensure => 'present',
-    name   => 'designate',
-    before => Anchor['designate::install::end'],
-  }
-
-  file { '/etc/designate/':
-    ensure => directory,
-    owner  => 'designate',
-    group  => 'designate',
-    mode   => '0750',
-  }
-
   resources { 'designate_config':
     purge => $purge_config,
   }

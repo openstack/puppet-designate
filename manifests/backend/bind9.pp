@@ -42,17 +42,4 @@ class designate::backend::bind9 (
     line    => 'allow-new-zones yes;',
     require => Class['::designate'],
   }
-
-  Class['::dns'] -> User['designate']
-  User<| title == 'designate' |> {
-    groups +> $::dns::params::group,
-  }
-
-  file { '/var/lib/designate':
-    ensure => directory,
-    owner  => 'designate',
-    group  => $::dns::params::group,
-    mode   => '0750',
-  }
-
 }

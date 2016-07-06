@@ -115,39 +115,11 @@ describe 'designate' do
     it { is_expected.to contain_class('designate::logging') }
     it { is_expected.to contain_class('designate::params') }
 
-    it 'configures designate group' do
-      is_expected.to contain_group('designate').with(
-        :ensure  => 'present',
-        :name    => 'designate',
-        :before  => 'Anchor[designate::install::end]',
-      )
-    end
-
-    it 'configures designate user' do
-      is_expected.to contain_user('designate').with(
-        :ensure  => 'present',
-        :name    => 'designate',
-        :gid     => 'designate',
-        :system  => true,
-        :before  => 'Anchor[designate::install::end]',
-      )
-    end
-
-    it 'configures designate configuration folder' do
-      is_expected.to contain_file('/etc/designate/').with(
-        :ensure  => 'directory',
-        :owner   => 'designate',
-        :group   => 'designate',
-        :mode    => '0750'
-      )
-    end
-
     it 'installs designate common package' do
       is_expected.to contain_package('designate-common').with(
         :ensure => 'installed',
         :name   => platform_params[:common_package_name],
         :tag    => ['openstack', 'designate-package'],
-        :before  => ['User[designate]', 'Group[designate]'],
       )
     end
 
