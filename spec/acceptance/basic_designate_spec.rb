@@ -57,7 +57,6 @@ describe 'basic designate' do
       class { '::designate::db':
         database_connection => 'mysql+pymysql://designate:a_big_secret@127.0.0.1/designate?charset=utf8',
       }
-      include ::designate::dns
       EOS
 
       # Run it once, idempotency does not work
