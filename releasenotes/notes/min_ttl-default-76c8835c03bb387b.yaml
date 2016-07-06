@@ -1,0 +1,4 @@
+---
+fixes:
+  - the min_ttl parameter from designate::central now defaults to designate's
+    default.

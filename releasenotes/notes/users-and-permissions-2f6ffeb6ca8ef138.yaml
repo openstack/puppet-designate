@@ -1,0 +1,9 @@
+---
+prelude: >
+    puppet-designate no longer manages the designate group and user as well as
+    the folders /etc/designate and /var/lib/designate. These are expected to be
+    provided by RDO and Ubuntu Cloud Archive packaging.
+fixes:
+  - puppet-designate no longer manages the 'designate' group and user
+  - puppet-designate no longer manages the /etc/designate and
+    /var/lib/designate folders
