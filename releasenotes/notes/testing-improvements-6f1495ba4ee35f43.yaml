@@ -1,0 +1,9 @@
+---
+prelude: >
+    puppet-designate now supports installation with RDO packaging and testing
+    coverage has been largely improved for both RDO and Ubuntu Cloud Archive.
+fixes:
+  - puppet-designate now supports installation with RDO packaging
+  - puppet-designate is now tested against RDO packaging and coverage has been
+    improved in general
+  - puppet-designate was made idempotent and is now tested for idempotency

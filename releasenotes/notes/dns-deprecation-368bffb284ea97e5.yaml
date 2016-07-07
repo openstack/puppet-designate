@@ -1,0 +1,9 @@
+---
+upgrade:
+  - puppet-designate no longer maintains a configuration directory (and it's
+    contents) in /var/lib/designate/bind9
+deprecations:
+  - The class designate::dns has been deprecated. It took care of setting up
+    the /var/lib/designate/bind9 directory and the zones.config file which are
+    no longer managed by puppet-designate. Use designate::backend::bind9
+    instead.
