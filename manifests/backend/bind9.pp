@@ -21,25 +21,26 @@
 #  Defaults to '953'
 #
 class designate::backend::bind9 (
-  $rndc_host        = '127.0.0.1',
-  $rndc_port        = '953',
-  $rndc_config_file = '/etc/rndc.conf',
-  $rndc_key_file    = '/etc/rndc.key'
-) {
+  $rndc_host           = '127.0.0.1',
+  $rndc_port           = '953',
+  $rndc_config_file    = '/etc/rndc.conf',
+  $rndc_key_file       = '/etc/rndc.key'
+) inherits designate::params {
   include ::designate
   include ::dns
 
   designate_config {
-    'backend:bind9/rndc_host'         : value => $rndc_host;
-    'backend:bind9/rndc_port'         : value => $rndc_port;
-    'backend:bind9/rndc_config_file'  : value => $rndc_config_file;
-    'backend:bind9/rndc_key_file'     : value => $rndc_key_file;
+    'backend:bind9/rndc_host'        : value => $rndc_host;
+    'backend:bind9/rndc_port'        : value => $rndc_port;
+    'backend:bind9/rndc_config_file' : value => $rndc_config_file;
+    'backend:bind9/rndc_key_file'    : value => $rndc_key_file;
   }
 
-  file_line {'dns allow-new-zones':
+  file_line { 'dns allow-new-zones':
     ensure  => present,
-    path    => $::dns::params::optionspath,
+    path    => $::dns::optionspath,
     line    => 'allow-new-zones yes;',
     require => Class['::designate'],
+    notify  => Service[$::dns::namedservicename]
   }
 }
