@@ -1,6 +1,7 @@
 # Params
 #
 class designate::params {
+  include ::openstacklib::defaults
   $state_path              =  '/var/lib/designate'
   # Log dir
   $log_dir                 =  '/var/log/designate'
