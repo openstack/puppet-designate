@@ -25,7 +25,7 @@ class designate::backend::bind9 (
   $rndc_port           = '953',
   $rndc_config_file    = '/etc/rndc.conf',
   $rndc_key_file       = '/etc/rndc.key'
-) inherits designate::params {
+) {
   include ::designate
   include ::dns
 
@@ -36,11 +36,9 @@ class designate::backend::bind9 (
     'backend:bind9/rndc_key_file'    : value => $rndc_key_file;
   }
 
-  file_line { 'dns allow-new-zones':
-    ensure  => present,
-    path    => $::dns::optionspath,
-    line    => 'allow-new-zones yes;',
-    require => Class['::designate'],
-    notify  => Service[$::dns::namedservicename]
+  concat::fragment { 'dns allow-new-zones':
+    target  => $::dns::optionspath,
+    content => 'allow-new-zones yes;',
+    order   => '20',
   }
 }

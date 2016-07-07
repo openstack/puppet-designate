@@ -59,10 +59,9 @@ describe 'basic designate' do
       }
       EOS
 
-      # Run it once, idempotency does not work
-      # this is what we have each time we run puppet after first time:
-      # http://paste.openstack.org/show/2ebHALkNguNsE0804Oev/
+      # Run it twice and test for idempotency
       apply_manifest(pp, :catch_failures => true)
+      apply_manifest(pp, :catch_changes => true)
     end
 
     describe port(9001) do
