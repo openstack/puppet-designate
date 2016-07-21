@@ -35,15 +35,15 @@ describe 'basic designate' do
         password => 'a_big_secret',
       }
       class { '::designate':
-        rabbit_userid       => 'designate',
-        rabbit_password     => 'an_even_bigger_secret',
-        rabbit_host         => '127.0.0.1',
-        debug               => true,
+        rabbit_userid   => 'designate',
+        rabbit_password => 'an_even_bigger_secret',
+        rabbit_host     => '127.0.0.1',
+        debug           => true,
       }
       class { '::designate::api':
-        enabled           => true,
-        auth_strategy     => 'keystone',
-        keystone_password => 'a_big_secret',
+        enabled       => true,
+        auth_strategy => 'keystone',
+        password      => 'a_big_secret',
       }
       class {'::designate::central':
           backend_driver => 'bind9',

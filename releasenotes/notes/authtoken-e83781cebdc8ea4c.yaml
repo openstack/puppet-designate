@@ -1,0 +1,16 @@
+---
+features:
+  - Configure keystonemiddleware in a consistent way with all options required
+    for Keystone v3.
+deprecations:
+  - designate::api::keystone_tenant is deprecated in favor of
+    designate::api::project_name.
+  - designate::api::keystone_user is deprecated in favor of
+    designate::api::username.
+  - designate::api::keystone_password is deprecated in favor of
+    designate::api::password.
+  - designate::api::keystone_host, designate::api::keystone_port,
+    designate::api::keystone_protocol are deprecated in favor of
+    designate::api::auth_uri and designate::api_auth_url.
+  - designate::api::keystone_memcached_servers is deprecated in favor of
+    designate::api::memcached_servers.
