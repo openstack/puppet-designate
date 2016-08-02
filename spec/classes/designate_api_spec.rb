@@ -6,11 +6,12 @@ require 'spec_helper'
 describe 'designate::api' do
   let :params do
     {
-      :username => 'designate',
-      :password => 'passw0rd',
-      :auth_uri => 'https://10.0.0.42:5000',
-      :auth_url => 'https://10.0.0.42:35357',
-      :project_name => '_services_',
+      :keystone_password => 'passw0rd',
+      :keystone_host     => '10.0.0.42',
+      :keystone_port     => '35357',
+      :keystone_protocol => 'https',
+      :keystone_tenant   => '_services_',
+      :keystone_user     => 'designate',
     }
   end
 
@@ -38,12 +39,7 @@ describe 'designate::api' do
         is_expected.to contain_designate_config('service:api/api_host').with_value('0.0.0.0')
         is_expected.to contain_designate_config('service:api/api_port').with_value('9001')
         is_expected.to contain_designate_config('service:api/api_base_uri').with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_designate_config('keystone_authtoken/auth_url').with_value('https://10.0.0.42:35357')
-        is_expected.to contain_designate_config('keystone_authtoken/auth_uri').with_value('https://10.0.0.42:5000')
-        is_expected.to contain_designate_config('keystone_authtoken/project_name').with_value('_services_')
-        is_expected.to contain_designate_config('keystone_authtoken/username').with_value('designate')
-        is_expected.to contain_designate_config('keystone_authtoken/password').with_value('passw0rd')
-
+        is_expected.to_not contain_designate__keystone__authtoken('designate_config')
       end
 
       context 'when using auth against keystone' do
@@ -54,7 +50,12 @@ describe 'designate::api' do
       end
 
       context 'when using memcached with  keystone auth' do
-        before { params.merge!(:keystone_memcached_servers => [ '127.0.0.1:11211', '127.0.0.1:11212' ]) }
+        before do
+          params.merge!(
+            :keystone_memcached_servers => [ '127.0.0.1:11211', '127.0.0.1:11212' ],
+            :auth_strategy => 'keystone',
+          )
+        end
         it 'configures designate-api with keystone memcached servers' do
             is_expected.to contain_designate_config('keystone_authtoken/memcached_servers').with_value('127.0.0.1:11211,127.0.0.1:11212')
         end
@@ -78,6 +79,7 @@ describe 'designate::api' do
     context 'with backwards compatible parameters' do
       let :params do
         {
+          :auth_strategy     => 'keystone',
           :keystone_password => 'passw0rd',
           :keystone_host     => '10.0.0.42',
           :keystone_port     => '35357',
@@ -88,7 +90,7 @@ describe 'designate::api' do
       end
 
       it 'configures designate-api with correct parameters' do
-        is_expected.to contain_designate_config('service:api/auth_strategy').with_value('noauth')
+        is_expected.to contain_designate_config('service:api/auth_strategy').with_value('keystone')
         is_expected.to contain_designate_config('service:api/enable_api_v1').with_value(true)
         is_expected.to contain_designate_config('service:api/enable_api_v2').with_value(false)
         is_expected.to contain_designate_config('service:api/enable_api_admin').with_value(false)

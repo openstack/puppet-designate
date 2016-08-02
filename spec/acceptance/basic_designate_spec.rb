@@ -40,10 +40,12 @@ describe 'basic designate' do
         rabbit_host     => '127.0.0.1',
         debug           => true,
       }
+      class { '::designate::keystone::authtoken':
+        password => 'a_big_secret',
+      }
       class { '::designate::api':
         enabled       => true,
         auth_strategy => 'keystone',
-        password      => 'a_big_secret',
       }
       class {'::designate::central':
           backend_driver => 'bind9',

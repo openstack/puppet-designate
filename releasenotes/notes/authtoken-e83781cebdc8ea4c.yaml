@@ -4,13 +4,14 @@ features:
     for Keystone v3.
 deprecations:
   - designate::api::keystone_tenant is deprecated in favor of
-    designate::api::project_name.
+    designate::keystone::authtoken::project_name.
   - designate::api::keystone_user is deprecated in favor of
-    designate::api::username.
+    designate::keystone::authtoken::username.
   - designate::api::keystone_password is deprecated in favor of
-    designate::api::password.
+    designate::keystone::authtoken::password.
   - designate::api::keystone_host, designate::api::keystone_port,
     designate::api::keystone_protocol are deprecated in favor of
-    designate::api::auth_uri and designate::api_auth_url.
+    designate::keystone::authtoken::auth_uri and
+    designate::keystone::authtoken::auth_url.
   - designate::api::keystone_memcached_servers is deprecated in favor of
-    designate::api::memcached_servers.
+    designate::keystone::authtoken::memcached_servers.
