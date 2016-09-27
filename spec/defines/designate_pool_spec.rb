@@ -1,44 +1,42 @@
 require 'spec_helper'
 
 describe 'designate::pool' do
-  let :facts do
-    @default_facts.merge({:osfamily => 'Debian'})
-  end
-
-  let :params do
-    {
-      :nameservers => ['0f66b842-96c2-4189-93fc-1dc95a08b012'],
-      :targets     => ['f26e0b32-736f-4f0a-831b-039a415c481e'],
-    }
-  end
-
-  let :pre_condition do
-    'include designate'
-  end
-
-  let :title do
-    '794ccc2c-d751-44fe-b57f-8894c9f5c842'
-  end
-
-  shared_examples_for 'with only required parameters' do
-    it { is_expected.to contain_designate__pool('794ccc2c-d751-44fe-b57f-8894c9f5c842') }
-
-    it 'configures designate pool with default parameters' do
-      is_expected.to contain_designate_config("pool:794ccc2c-d751-44fe-b57f-8894c9f5c842/nameservers").with_value( params[:nameservers])
-      is_expected.to contain_designate_config("pool:794ccc2c-d751-44fe-b57f-8894c9f5c842/targets").with_value( params[:targets] )
-      is_expected.to contain_designate_config("pool:794ccc2c-d751-44fe-b57f-8894c9f5c842/also-notifies").with_value( "" )
+  shared_examples_for 'designate::pool' do
+    let :params do
+      {
+        :nameservers => ['0f66b842-96c2-4189-93fc-1dc95a08b012'],
+        :targets     => ['f26e0b32-736f-4f0a-831b-039a415c481e'],
+      }
     end
-  end
 
-  shared_examples_for 'with all parameters' do
-    before { params.merge!( { :also_notifies => ["192.168.0.1"] } ) }
+    let :pre_condition do
+      'include designate'
+    end
 
-    it { is_expected.to contain_designate__pool('794ccc2c-d751-44fe-b57f-8894c9f5c842') }
+    let :title do
+      '794ccc2c-d751-44fe-b57f-8894c9f5c842'
+    end
 
-    it 'configures designate pool with default parameters' do
-      is_expected.to contain_designate_config("pool:794ccc2c-d751-44fe-b57f-8894c9f5c842/nameservers").with_value( params[:nameservers])
-      is_expected.to contain_designate_config("pool:794ccc2c-d751-44fe-b57f-8894c9f5c842/targets").with_value( params[:targets] )
-      is_expected.to contain_designate_config("pool:794ccc2c-d751-44fe-b57f-8894c9f5c842/also-notifies").with_value( ["192.168.0.1"] )
+    context 'with only required parameters' do
+      it { is_expected.to contain_designate__pool('794ccc2c-d751-44fe-b57f-8894c9f5c842') }
+
+      it 'configures designate pool with default parameters' do
+        is_expected.to contain_designate_config("pool:794ccc2c-d751-44fe-b57f-8894c9f5c842/nameservers").with_value( params[:nameservers])
+        is_expected.to contain_designate_config("pool:794ccc2c-d751-44fe-b57f-8894c9f5c842/targets").with_value( params[:targets] )
+        is_expected.to contain_designate_config("pool:794ccc2c-d751-44fe-b57f-8894c9f5c842/also-notifies").with_value( "" )
+      end
+    end
+
+    context 'with all parameters' do
+      before { params.merge!( { :also_notifies => ["192.168.0.1"] } ) }
+
+      it { is_expected.to contain_designate__pool('794ccc2c-d751-44fe-b57f-8894c9f5c842') }
+
+      it 'configures designate pool with default parameters' do
+        is_expected.to contain_designate_config("pool:794ccc2c-d751-44fe-b57f-8894c9f5c842/nameservers").with_value( params[:nameservers])
+        is_expected.to contain_designate_config("pool:794ccc2c-d751-44fe-b57f-8894c9f5c842/targets").with_value( params[:targets] )
+        is_expected.to contain_designate_config("pool:794ccc2c-d751-44fe-b57f-8894c9f5c842/also-notifies").with_value( ["192.168.0.1"] )
+      end
     end
   end
 
@@ -50,8 +48,7 @@ describe 'designate::pool' do
         facts.merge!(OSDefaults.get_facts())
       end
 
-      it_behaves_like 'with only required parameters'
-      it_behaves_like 'with all parameters'
+      it_behaves_like 'designate::pool'
     end
   end
 end
