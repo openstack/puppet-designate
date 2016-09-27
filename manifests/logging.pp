@@ -85,12 +85,6 @@
 #    Defaults to undef.
 #    Example: 'Y-%m-%d %H:%M:%S'
 #
-#  DEPRECATED PARAMETERS
-#
-#  [*verbose*]
-#    (Optional) Deprecated. Should the daemons log verbose messages
-#    Defaults to undef
-#
 class designate::logging(
   $use_syslog                    = false,
   $use_stderr                    = true,
@@ -108,13 +102,8 @@ class designate::logging(
   $instance_format               = undef,
   $instance_uuid_format          = undef,
   $log_date_format               = undef,
-  #Deprecated
-  $verbose                       = undef,
 ) inherits ::designate::params  {
 
-  if $verbose {
-    warning('verbose is deprecated, has no effect and will be removed after Newton cycle.')
-  }
   # NOTE(spredzy): In order to keep backward compatibility we rely on the pick function
   # to use designate::<myparam> first then designate::logging::<myparam>.
   $use_syslog_real = pick($::designate::use_syslog,$use_syslog)
