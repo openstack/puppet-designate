@@ -21,6 +21,8 @@ class designate::db::sync(
     path        => '/usr/bin',
     user        => 'root',
     refreshonly => true,
+    try_sleep   => 5,
+    tries       => 10,
     logoutput   => on_failure,
     subscribe   => Anchor['designate::config::end'],
     notify      => Anchor['designate::service::begin'],
