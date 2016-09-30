@@ -41,6 +41,18 @@
 #  (optional) Minimum TTL.
 #  Defaults to $::os_service_default
 #
+# [*workers*]
+#  (optional) Number of central worker processes to spawn.
+#  Defaults to $::os_service_default
+#
+# [*threads*]
+#  (optional) Number of central greenthreads to spawn.
+#  Defaults to $::os_service_default
+#
+# [*default_pool_id*]
+#  (optional) The name of the default pool.
+#  Defaults to $::os_service_default
+#
 # === DEPRECATED PARAMETERS
 #
 # [*backend_driver*]
@@ -57,6 +69,9 @@ class designate::central (
   $max_domain_name_len        = '255',
   $max_recordset_name_len     = '255',
   $min_ttl                    = $::os_service_default,
+  $workers                    = $::os_service_default,
+  $threads                    = $::os_service_default,
+  $default_pool_id            = $::os_service_default,
   # DEPRECATED PARAMETERS
   $backend_driver             = undef,
 ) inherits designate {
@@ -73,6 +88,9 @@ class designate::central (
     'service:central/max_domain_name_len'        : value => $max_domain_name_len;
     'service:central/max_recordset_name_len'     : value => $max_recordset_name_len;
     'service:central/min_ttl'                    : value => $min_ttl;
+    'service:central/workers'                    : value => $workers;
+    'service:central/threads'                    : value => $threads;
+    'service:central/default_pool_id'            : value => $default_pool_id;
   }
 
   designate::generic_service { 'central':
