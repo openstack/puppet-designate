@@ -1,12 +1,13 @@
-# Params
+# == Class: designate::params
+#
+#  Parameters for puppet-designate
 #
 class designate::params {
   include ::openstacklib::defaults
-  $state_path              =  '/var/lib/designate'
-  # Log dir
-  $log_dir                 =  '/var/log/designate'
-  $client_package_name     =  'python-designateclient'
 
+  $state_path                =  '/var/lib/designate'
+  $log_dir                   =  '/var/log/designate'
+  $client_package_name       =  'python-designateclient'
   $agent_service_name        = 'designate-agent'
   $api_service_name          = 'designate-api'
   $central_service_name      = 'designate-central'
