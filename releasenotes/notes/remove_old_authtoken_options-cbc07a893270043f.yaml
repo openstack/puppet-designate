@@ -1,0 +1,9 @@
+---
+other:
+  - removed deprecated designate::api::keystone_user
+  - removed deprecated designate::api::keystone_password
+  - removed deprecated designate::api::keystone_tenant
+  - removed deprecated designate::api::keystone_host
+  - removed deprecated designate::api::keystone_port
+  - removed deprecated designate::api::keystone_protocol
+  - removed deprecated designate::api::keystone_memcached_servers

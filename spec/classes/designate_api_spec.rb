@@ -4,15 +4,15 @@
 require 'spec_helper'
 
 describe 'designate::api' do
+
+  let :pre_condition do
+    "class { '::designate::keystone::authtoken':
+      password => 'a_big_secret',
+    }"
+  end
+
   let :params do
-    {
-      :keystone_password => 'passw0rd',
-      :keystone_host     => '10.0.0.42',
-      :keystone_port     => '35357',
-      :keystone_protocol => 'https',
-      :keystone_tenant   => '_services_',
-      :keystone_user     => 'designate',
-    }
+    {}
   end
 
   shared_examples 'designate-api' do
@@ -48,18 +48,6 @@ describe 'designate::api' do
           is_expected.to contain_designate_config('service:api/auth_strategy').with_value('keystone')
         end
       end
-
-      context 'when using memcached with  keystone auth' do
-        before do
-          params.merge!(
-            :keystone_memcached_servers => [ '127.0.0.1:11211', '127.0.0.1:11212' ],
-            :auth_strategy => 'keystone',
-          )
-        end
-        it 'configures designate-api with keystone memcached servers' do
-            is_expected.to contain_designate_config('keystone_authtoken/memcached_servers').with_value('127.0.0.1:11211,127.0.0.1:11212')
-        end
-      end
     end
 
     context 'with custom package name' do
@@ -75,38 +63,6 @@ describe 'designate::api' do
         )
       end
     end
-
-    context 'with backwards compatible parameters' do
-      let :params do
-        {
-          :auth_strategy     => 'keystone',
-          :keystone_password => 'passw0rd',
-          :keystone_host     => '10.0.0.42',
-          :keystone_port     => '35357',
-          :keystone_protocol => 'https',
-          :keystone_tenant   => '_services_',
-          :keystone_user     => 'designate',
-        }
-      end
-
-      it 'configures designate-api with correct parameters' do
-        is_expected.to contain_designate_config('service:api/auth_strategy').with_value('keystone')
-        is_expected.to contain_designate_config('service:api/enable_api_v1').with_value(true)
-        is_expected.to contain_designate_config('service:api/enable_api_v2').with_value(false)
-        is_expected.to contain_designate_config('service:api/enable_api_admin').with_value(false)
-        is_expected.to contain_designate_config('service:api/api_host').with_value('0.0.0.0')
-        is_expected.to contain_designate_config('service:api/api_port').with_value('9001')
-        is_expected.to contain_designate_config('service:api/api_base_uri').with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_designate_config('keystone_authtoken/auth_url').with_value('https://10.0.0.42:35357')
-        is_expected.to contain_designate_config('keystone_authtoken/auth_uri').with_value('https://10.0.0.42:35357')
-        is_expected.to contain_designate_config('keystone_authtoken/project_name').with_value('_services_')
-        is_expected.to contain_designate_config('keystone_authtoken/username').with_value('designate')
-        is_expected.to contain_designate_config('keystone_authtoken/password').with_value('passw0rd')
-
-      end
-
-    end
-
   end
 
   on_supported_os({
