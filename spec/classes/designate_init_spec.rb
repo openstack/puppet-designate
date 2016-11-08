@@ -164,7 +164,7 @@ describe 'designate' do
     end
 
     it { is_expected.to contain_designate_config('oslo_messaging_rabbit/rabbit_host').with_value( params[:rabbit_host] ) }
-    it { is_expected.to contain_designate_config('oslo_messaging_rabbit/rabbit_hosts').with_value( "#{params[:rabbit_host]}:#{params[:rabbit_port]}" ) }
+    it { is_expected.to contain_designate_config('oslo_messaging_rabbit/rabbit_hosts').with_value('<SERVICE DEFAULT>') }
     it { is_expected.to contain_designate_config('oslo_messaging_rabbit/rabbit_port').with_value( params[:rabbit_port] ) }
     it { is_expected.to contain_designate_config('oslo_messaging_rabbit/rabbit_ha_queues').with_value( 'false' ) }
 
@@ -180,9 +180,9 @@ describe 'designate' do
       is_expected.to contain_designate_config('oslo_messaging_rabbit/rabbit_virtual_host').with_value( params[:rabbit_virtual_host] )
     end
 
-    it { is_expected.to contain_designate_config('oslo_messaging_rabbit/rabbit_host').with_ensure( 'absent' ) }
+    it { is_expected.to contain_designate_config('oslo_messaging_rabbit/rabbit_host').with_value('<SERVICE DEFAULT>') }
     it { is_expected.to contain_designate_config('oslo_messaging_rabbit/rabbit_hosts').with_value( '10.0.0.1:5672,10.0.0.2:5672,10.0.0.3:5672' ) }
-    it { is_expected.to contain_designate_config('oslo_messaging_rabbit/rabbit_port').with_ensure( 'absent' ) }
+    it { is_expected.to contain_designate_config('oslo_messaging_rabbit/rabbit_port').with_value('<SERVICE DEFAULT>') }
     it { is_expected.to contain_designate_config('oslo_messaging_rabbit/rabbit_ha_queues').with_value( 'true' ) }
 
   end
