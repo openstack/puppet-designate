@@ -1,0 +1,16 @@
+---
+upgrade:
+  - designate::rabbit_ha_queues has been exposed and will need to be configured
+    based on the desired use of ha queues. Previously, the value for this was
+    being configured using the designate::rabbit_hosts parameter. This automatic
+    configuration will be dropped during the Pike cycle.
+  - The designate module will now use the oslo::messaging::rabbit resource to
+    configure the rabbit configuration settings.
+deprecations:
+  - designate::rabbit_host, designate::rabbit_hosts, designate::rabbit_password,
+    designate::rabbit_port, designate::rabbit_userid and
+    designate::rabbit_virtual_host are deprecated.
+    designate::default_transport_url should be used instead.
+  - rabbit_ha_queues will no longer be configured to be True when rabbit_hosts
+    is configured and will need to be specified.  This automatic configuration
+    will be dropped in the Pike cycle.

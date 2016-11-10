@@ -41,34 +41,26 @@
 #   (optional) Command for designate rootwrap helper.
 #   Defaults to 'sudo designate-rootwrap /etc/designate/rootwrap.conf'.
 #
-# [*rabbit_host*]
-#   (optional) Location of rabbitmq installation.
-#   Defaults to '127.0.0.1'
+# [*rpc_backend*]
+#   (optional) The messaging driver to use. Currently only rabbit is support
+#   by this puppet module.
+#   Defaults to 'rabbit'.
 #
-# [*rabbit_port*]
-#   (optional) Port for rabbitmq instance.
-#   Defaults to '5672'
-#
-# [*rabbit_hosts*]
-#   (Optional) Array of host:port (used with HA queues).
-#   If defined, will remove rabbit_host & rabbit_port parameters from config
-#   Defaults to undef.
-#
-# [*rabbit_password*]
-#   (optional) Password used to connect to rabbitmq.
-#   Defaults to 'guest'
-#
-# [*rabbit_userid*]
-#   (optional) User used to connect to rabbitmq.
-#   Defaults to 'guest'
-#
-# [*rabbit_virtual_host*]
-#   (optional) The RabbitMQ virtual host.
-#   Defaults to '/'
+# [*default_transport_url*]
+#   (optional) A URL representing the messaging driver to use and its full
+#   configuration. Transport URLs take the form:
+#     transport://user:pass@host1:port[,hostN:portN]/virtual_host
+#   Defaults to $::os_service_default
 #
 # [*rabbit_use_ssl*]
 #   (optional) Connect over SSL for RabbitMQ
 #   Defaults to false
+#
+# [*rabbit_ha_queues*]
+#   (optional) Use HA queues in RabbitMQ (x-ha-policy: all). If you change this
+#   option, you must wipe the RabbitMQ database. (boolean value). Currently,
+#   this value is set to true when rabbit_hosts is configured. This will change
+#   during the Pike cycle where we will no longer do this check.
 #
 # [*kombu_ssl_ca_certs*]
 #   (optional) SSL certification authority file (valid only if SSL enabled).
@@ -112,6 +104,31 @@
 #   (optional) DEPRECATED. Use rabbit_virtual_host
 #   Defaults to undef.
 #
+# [*rabbit_host*]
+#   (optional) Location of rabbitmq installation.
+#   Defaults to $::os_service_default
+#
+# [*rabbit_port*]
+#   (optional) Port for rabbitmq instance.
+#   Defaults to $::os_service_default
+#
+# [*rabbit_hosts*]
+#   (Optional) Array of host:port (used with HA queues).
+#   If defined, will remove rabbit_host & rabbit_port parameters from config
+#   Defaults to $::os_service_default
+#
+# [*rabbit_password*]
+#   (optional) Password used to connect to rabbitmq.
+#   Defaults to $::os_service_default
+#
+# [*rabbit_userid*]
+#   (optional) User used to connect to rabbitmq.
+#   Defaults to $::os_service_default
+#
+# [*rabbit_virtual_host*]
+#   (optional) The RabbitMQ virtual host.
+#   Defaults to $::os_service_default
+#
 class designate(
   $package_ensure        = present,
   $common_package_name   = $::designate::params::common_package_name,
@@ -121,13 +138,10 @@ class designate(
   $use_stderr            = undef,
   $log_facility          = undef,
   $root_helper           = 'sudo designate-rootwrap /etc/designate/rootwrap.conf',
-  $rabbit_host           = '127.0.0.1',
-  $rabbit_port           = '5672',
-  $rabbit_hosts          = false,
-  $rabbit_userid         = 'guest',
-  $rabbit_password       = '',
-  $rabbit_virtual_host   = '/',
+  $rpc_backend           = 'rabbit',
+  $default_transport_url = $::os_service_default,
   $rabbit_use_ssl        = false,
+  $rabbit_ha_queues      = $::os_service_default,
   $kombu_ssl_ca_certs    = $::os_service_default,
   $kombu_ssl_certfile    = $::os_service_default,
   $kombu_ssl_keyfile     = $::os_service_default,
@@ -138,6 +152,12 @@ class designate(
   $purge_config          = false,
   #DEPRECATED PARAMETER
   $rabbit_virtualhost    = undef,
+  $rabbit_host           = $::os_service_default,
+  $rabbit_port           = $::os_service_default,
+  $rabbit_hosts          = $::os_service_default,
+  $rabbit_userid         = $::os_service_default,
+  $rabbit_password       = $::os_service_default,
+  $rabbit_virtual_host   = $::os_service_default,
 ) inherits designate::params {
 
   if $rabbit_virtualhost {
@@ -161,6 +181,31 @@ class designate(
     fail('The kombu_ssl_certfile and kombu_ssl_keyfile parameters must be used together')
   }
 
+  if !is_service_default($rabbit_host) or
+    !is_service_default($rabbit_hosts) or
+    !is_service_default($rabbit_password) or
+    !is_service_default($rabbit_port) or
+    !is_service_default($rabbit_userid) or
+    !is_service_default($rabbit_virtual_host) {
+    warning("designate::rabbit_host, designate::rabbit_hosts, designate::rabbit_password, \
+designate::rabbit_port, designate::rabbit_userid and designate::rabbit_virtual_host are \
+deprecated. Please use designate::default_transport_url instead.")
+  }
+
+  if is_service_default($rabbit_ha_queues) {
+    warning("designate::rabbit_ha_queues will be changed to use the service default \
+durring the Pike cycle. Currently it is automatically configured based on the setting of \
+designate::rabbit_hosts which has been deprecated. Please consider defining this variable \
+to your desired configuration.")
+    if !is_service_default($rabbit_hosts) {
+      $rabbit_ha_queues_real = true
+    } else {
+      $rabbit_ha_queues_real = false
+    }
+  } else {
+    $rabbit_ha_queues_real = $rabbit_ha_queues
+  }
+
   include ::designate::logging
 
   exec { 'post-designate_config':
@@ -180,28 +225,25 @@ class designate(
     purge => $purge_config,
   }
 
-  designate_config {
-    'oslo_messaging_rabbit/rabbit_userid'          : value => $rabbit_userid;
-    'oslo_messaging_rabbit/rabbit_password'        : value => $rabbit_password, secret => true;
-    'oslo_messaging_rabbit/rabbit_virtual_host'    : value => $rabbit_virtual_host_real;
-    'oslo_messaging_rabbit/rabbit_use_ssl'         : value => $rabbit_use_ssl;
-    'oslo_messaging_rabbit/kombu_ssl_ca_certs'     : value => $kombu_ssl_ca_certs;
-    'oslo_messaging_rabbit/kombu_ssl_certfile'     : value => $kombu_ssl_certfile;
-    'oslo_messaging_rabbit/kombu_ssl_keyfile'      : value => $kombu_ssl_keyfile;
-    'oslo_messaging_rabbit/kombu_ssl_version'      : value => $kombu_ssl_version;
-    'oslo_messaging_rabbit/kombu_reconnect_delay'  : value => $kombu_reconnect_delay;
+  if $rpc_backend == 'rabbit' {
+    oslo::messaging::rabbit { 'designate_config':
+      kombu_ssl_version     => $kombu_ssl_version,
+      kombu_ssl_keyfile     => $kombu_ssl_keyfile,
+      kombu_ssl_certfile    => $kombu_ssl_certfile,
+      kombu_ssl_ca_certs    => $kombu_ssl_ca_certs,
+      kombu_reconnect_delay => $kombu_reconnect_delay,
+      rabbit_host           => $rabbit_host,
+      rabbit_port           => $rabbit_port,
+      rabbit_hosts          => $rabbit_hosts,
+      rabbit_use_ssl        => $rabbit_use_ssl,
+      rabbit_userid         => $rabbit_userid,
+      rabbit_password       => $rabbit_password,
+      rabbit_virtual_host   => $rabbit_virtual_host,
+      rabbit_ha_queues      => $rabbit_ha_queues_real,
+    }
   }
-
-  if $rabbit_hosts {
-    designate_config { 'oslo_messaging_rabbit/rabbit_hosts':     value => join($rabbit_hosts, ',') }
-    designate_config { 'oslo_messaging_rabbit/rabbit_ha_queues': value => true }
-    designate_config { 'oslo_messaging_rabbit/rabbit_host':      ensure => absent }
-    designate_config { 'oslo_messaging_rabbit/rabbit_port':      ensure => absent }
-  } else {
-    designate_config { 'oslo_messaging_rabbit/rabbit_host':      value => $rabbit_host }
-    designate_config { 'oslo_messaging_rabbit/rabbit_port':      value => $rabbit_port }
-    designate_config { 'oslo_messaging_rabbit/rabbit_hosts':     value => "${rabbit_host}:${rabbit_port}" }
-    designate_config { 'oslo_messaging_rabbit/rabbit_ha_queues': value => false }
+  oslo::messaging::default { 'designate_config':
+    transport_url => $default_transport_url,
   }
 
   # default setting

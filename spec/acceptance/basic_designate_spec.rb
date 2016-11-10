@@ -35,10 +35,8 @@ describe 'basic designate' do
         password => 'a_big_secret',
       }
       class { '::designate':
-        rabbit_userid   => 'designate',
-        rabbit_password => 'an_even_bigger_secret',
-        rabbit_host     => '127.0.0.1',
-        debug           => true,
+        default_transport_url => 'rabbit://designate:an_even_bigger_secret@127.0.0.1:5672/',
+        debug                 => true,
       }
       class { '::designate::keystone::authtoken':
         password => 'a_big_secret',
