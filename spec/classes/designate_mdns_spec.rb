@@ -30,13 +30,12 @@ describe 'designate::mdns' do
       it 'configures designate-mdns with default parameters' do
         is_expected.to contain_designate_config('service:mdns/workers').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:mdns/threads').with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_designate_config('service:mdns/host').with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_designate_config('service:mdns/port').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:mdns/tcp_backlog').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:mdns/tcp_recv_timeout').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:mdns/query_enforce_tsig').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:mdns/storage_driver').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:mdns/max_message_size').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_designate_config('service:mdns/listen').with_value('<SERVICE DEFAULT>')
       end
 
       context 'when using custom options' do

@@ -28,14 +28,6 @@
 #   (Optional) Number of mdns greenthreads to spawn.
 #   Defaults to $::os_service_default.
 #
-# [*host*]
-#   (Optional) mDNS Bind Host.
-#   Defaults to $::os_service_default.
-#
-# [*port*]
-#   (Optional) mDNS Port Number.
-#   Defaults to $::os_service_default.
-#
 # [*tcp_backlog*]
 #   (Optional) mDNS TCP Backlog.
 #   Defaults to $::os_service_default.
@@ -56,6 +48,20 @@
 #   (Optional) Maximum message size to emit.
 #   Defaults to $::os_service_default.
 #
+# [*listen*]
+#   (Optional) mDNS host:port pairs to listen on.
+#   Defaults to $::os_service_default.
+#
+# DEPRECATED PARAMETERS
+#
+# [*host*]
+#   (Optional) mDNS Bind Host.
+#   Defaults to undef.
+#
+# [*port*]
+#   (Optional) mDNS Port Number.
+#   Defaults to undef.
+#
 class designate::mdns (
   $package_ensure     = present,
   $mdns_package_name  = $::designate::params::mdns_package_name,
@@ -63,25 +69,33 @@ class designate::mdns (
   $manage_service     = 'running',
   $workers            = $::os_service_default,
   $threads            = $::os_service_default,
-  $host               = $::os_service_default,
-  $port               = $::os_service_default,
   $tcp_backlog        = $::os_service_default,
   $tcp_recv_timeout   = $::os_service_default,
   $query_enforce_tsig = $::os_service_default,
   $storage_driver     = $::os_service_default,
-  $max_message_size   = $::os_service_default
+  $max_message_size   = $::os_service_default,
+  $listen             = $::os_service_default,
+  # DEPRECATED PARAMETERS
+  $host               = undef,
+  $port               = undef,
 ) inherits designate {
+
+  if $host and $port {
+    warning('host and port parameters have been deprecated, please use listen instead.')
+    $listen_real = "${host}:${port}"
+  } else {
+    $listen_real = $listen
+  }
 
   designate_config {
     'service:mdns/workers'            : value => $workers;
     'service:mdns/threads'            : value => $threads;
-    'service:mdns/host'               : value => $host;
-    'service:mdns/port'               : value => $port;
     'service:mdns/tcp_backlog'        : value => $tcp_backlog;
     'service:mdns/tcp_recv_timeout'   : value => $tcp_recv_timeout;
     'service:mdns/query_enforce_tsig' : value => $query_enforce_tsig;
     'service:mdns/storage_driver'     : value => $storage_driver;
     'service:mdns/max_message_size'   : value => $max_message_size;
+    'service:mdns/listen'             : value => $listen_real;
   }
 
   designate::generic_service { 'mdns':

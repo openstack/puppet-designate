@@ -1,0 +1,7 @@
+---
+features:
+  - Add "listen" option from group "service:mdns".
+deprecations:
+  - The "host" and "port" options from group "service:mdns" are
+    deprecated, please use "listen" option from group "service:mdns"
+    instead.
