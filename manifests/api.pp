@@ -37,35 +37,49 @@
 #  (optional) Enable Designate Admin API
 #  Defaults to false.
 #
-# [*api_host*]
-#  (optional) Address to bind the API server
-#  Defaults to '0.0.0.0'
-#
-# [*api_port*]
-#  (optional) Port the bind the API server to
-#  Defaults to '9001'
-#
 # [*api_base_uri*]
 #  Set the base URI of the Designate API service.
 #
+# [*listen*]
+#  (optional) API host:port pairs to listen on.
+#  Defaults to $::os_service_default
+#
+# DEPRECATED PARAMETERS
+#
+# [*api_host*]
+#  (optional) Address to bind the API server
+#  Defaults to undef
+#
+# [*api_port*]
+#  (optional) Port the bind the API server to
+#  Defaults to undef
+#
 class designate::api (
-  $package_ensure             = present,
-  $api_package_name           = $::designate::params::api_package_name,
-  $enabled                    = true,
-  $service_ensure             = 'running',
-  $auth_strategy              = 'noauth',
-  $enable_api_v1              = true,
-  $enable_api_v2              = false,
-  $enable_api_admin           = false,
-  $api_host                   = '0.0.0.0',
-  $api_port                   = '9001',
-  $api_base_uri               = $::os_service_default,
+  $package_ensure   = present,
+  $api_package_name = $::designate::params::api_package_name,
+  $enabled          = true,
+  $service_ensure   = 'running',
+  $auth_strategy    = 'noauth',
+  $enable_api_v1    = true,
+  $enable_api_v2    = false,
+  $enable_api_admin = false,
+  $api_base_uri     = $::os_service_default,
+  $listen           = $::os_service_default,
+  # DEPRECATED PARAMETERS
+  $api_host         = undef,
+  $api_port         = undef,
 ) inherits designate {
+
+  if $api_host and $api_port {
+    warning('api_host and api_port parameters have been deprecated, please use listen instead.')
+    $listen_real = "${api_host}:${api_port}"
+  } else {
+    $listen_real = $listen
+  }
 
   # API Service
   designate_config {
-    'service:api/api_host'                  : value => $api_host;
-    'service:api/api_port'                  : value => $api_port;
+    'service:api/listen'                    : value => $listen_real;
     'service:api/auth_strategy'             : value => $auth_strategy;
     'service:api/enable_api_v1'             : value => $enable_api_v1;
     'service:api/enable_api_v2'             : value => $enable_api_v2;

@@ -36,9 +36,8 @@ describe 'designate::api' do
         is_expected.to contain_designate_config('service:api/enable_api_v1').with_value(true)
         is_expected.to contain_designate_config('service:api/enable_api_v2').with_value(false)
         is_expected.to contain_designate_config('service:api/enable_api_admin').with_value(false)
-        is_expected.to contain_designate_config('service:api/api_host').with_value('0.0.0.0')
-        is_expected.to contain_designate_config('service:api/api_port').with_value('9001')
         is_expected.to contain_designate_config('service:api/api_base_uri').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_designate_config('service:api/listen').with_value('<SERVICE DEFAULT>')
         is_expected.to_not contain_designate__keystone__authtoken('designate_config')
       end
 

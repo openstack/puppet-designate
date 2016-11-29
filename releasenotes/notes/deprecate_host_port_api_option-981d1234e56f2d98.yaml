@@ -1,0 +1,7 @@
+---
+features:
+  - Add "listen" option from group "service:api".
+deprecations:
+  - The "api_host" and "api_port" options from group "service:api" are
+    deprecated, please use "listen" option from group "service:api"
+    instead.
