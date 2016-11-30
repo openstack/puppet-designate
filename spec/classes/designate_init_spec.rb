@@ -112,6 +112,7 @@ describe 'designate' do
 
   shared_examples_for 'a designate base installation' do
 
+    it { is_expected.to contain_class('designate::deps') }
     it { is_expected.to contain_class('designate::logging') }
     it { is_expected.to contain_class('designate::params') }
 
@@ -136,19 +137,6 @@ describe 'designate' do
     it 'configures notification' do
       is_expected.to contain_designate_config('DEFAULT/notification_driver').with_value('messaging' )
       is_expected.to contain_designate_config('DEFAULT/notification_topics').with_value('notifications')
-    end
-
-    it 'configures phase anchors' do
-      is_expected.to contain_anchor('designate::install::begin')
-      is_expected.to contain_anchor('designate::install::end').with(
-        :notify => ['Anchor[designate::service::begin]'],
-      )
-      is_expected.to contain_anchor('designate::config::begin')
-      is_expected.to contain_anchor('designate::config::end').with(
-        :notify => ['Anchor[designate::service::begin]'],
-      )
-      is_expected.to contain_anchor('designate::service::begin')
-      is_expected.to contain_anchor('designate::service::end')
     end
 
   end

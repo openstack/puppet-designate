@@ -58,6 +58,8 @@ class designate::central (
   $min_ttl                    = $::os_service_default,
 ) inherits designate {
 
+  include ::designate::deps
+
   designate_config {
     'service:central/backend_driver'             : value => $backend_driver;
     'service:central/managed_resource_email'     : value => $managed_resource_email;

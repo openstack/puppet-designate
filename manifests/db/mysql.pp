@@ -41,6 +41,8 @@ class designate::db::mysql(
   $allowed_hosts = undef,
 ) {
 
+  include ::designate::deps
+
   ::openstacklib::db::mysql { 'designate':
     user          => $user,
     password_hash => mysql_password($password),
@@ -51,5 +53,8 @@ class designate::db::mysql(
     allowed_hosts => $allowed_hosts,
   }
 
-  ::Openstacklib::Db::Mysql['designate'] ~> Exec<| title == 'designate-dbsync' |>
+  Anchor['designate::db::begin']
+  ~> Class['designate::db::mysql']
+  ~> Anchor['designate::db::end']
+
 }

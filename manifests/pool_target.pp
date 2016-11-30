@@ -27,6 +27,9 @@ define designate::pool_target (
   $type,
   $masters = ['127.0.0.1:5354'],
 ) {
+
+  include ::designate::deps
+
   if target == 'powerdns' {
     include ::powerdns
     include ::powerdns::mysql

@@ -70,6 +70,8 @@ class designate::api (
   $api_port         = undef,
 ) inherits designate {
 
+  include ::designate::deps
+
   if $api_host and $api_port {
     warning('api_host and api_port parameters have been deprecated, please use listen instead.')
     $listen_real = "${api_host}:${api_port}"

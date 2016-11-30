@@ -26,6 +26,8 @@ class designate::backend::bind9 (
   $rndc_config_file    = '/etc/rndc.conf',
   $rndc_key_file       = '/etc/rndc.key'
 ) {
+
+  include ::designate::deps
   include ::designate
   include ::dns
 

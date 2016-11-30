@@ -80,6 +80,8 @@ class designate::mdns (
   $port               = undef,
 ) inherits designate {
 
+  include ::designate::deps
+
   if $host and $port {
     warning('host and port parameters have been deprecated, please use listen instead.')
     $listen_real = "${host}:${port}"

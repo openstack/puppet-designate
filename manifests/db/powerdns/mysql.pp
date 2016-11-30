@@ -40,6 +40,9 @@ class designate::db::powerdns::mysql (
   $collate          = 'utf8_general_ci',
   $allowed_hosts    = undef,
 ) {
+
+  include ::designate::deps
+
   ::openstacklib::db::mysql { 'powerdns':
     user          => $user,
     password_hash => mysql_password($password),
@@ -50,5 +53,8 @@ class designate::db::powerdns::mysql (
     allowed_hosts => $allowed_hosts,
   }
 
-  ::Openstacklib::Db::Mysql['powerdns'] ~> Exec<| title == 'designate-dbsync' |>
+  Anchor['designate::db::begin']
+  ~> Class['designate::db::powerdns::mysql']
+  ~> Anchor['designate::db::end']
+
 }

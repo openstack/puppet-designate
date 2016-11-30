@@ -18,6 +18,9 @@ define designate::pool(
   $targets,
   $also_notifies = [],
 ){
+
+  include ::designate::deps
+
   validate_re($name, '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}',
     'Pool name should be a UUID.')
   validate_array($nameservers)

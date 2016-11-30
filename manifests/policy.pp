@@ -29,6 +29,8 @@ class designate::policy (
   $policy_path = '/etc/designate/policy.json',
 ) {
 
+  include ::designate::deps
+
   validate_hash($policies)
 
   Openstacklib::Policy::Base {

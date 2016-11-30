@@ -16,6 +16,9 @@ class designate::pool_manager_cache::memcache(
   $memcached_servers = ['127.0.0.1'],
   $expiration        = $::os_service_default,
 ){
+
+  include ::designate::deps
+
   validate_array($memcached_servers)
 
   designate_config {

@@ -32,8 +32,10 @@ class designate::agent (
   $backend_driver     = 'bind9',
 ) inherits designate {
 
+  include ::designate::deps
+
   designate_config {
-    'service:agent/backend_driver'         : value => $backend_driver;
+    'service:agent/backend_driver' : value => $backend_driver;
   }
 
   designate::generic_service { 'agent':

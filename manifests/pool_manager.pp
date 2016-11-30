@@ -106,6 +106,8 @@ class designate::pool_manager(
   $periodic_sync_max_attempts   = $::os_service_default,
   $periodic_sync_retry_interval = $::os_service_default,
 ) {
+
+  include ::designate::deps
   include ::designate::params
 
   if $pool_id !~ /^[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}$/ {

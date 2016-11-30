@@ -17,6 +17,7 @@ class designate::client (
   $client_package_name = $::designate::params::client_package_name,
 ) {
 
+  include ::designate::deps
   include ::designate::params
 
   package { 'python-designateclient':

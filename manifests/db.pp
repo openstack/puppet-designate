@@ -54,6 +54,7 @@ class designate::db (
   $sync_db                 = true,
 ) {
 
+  include ::designate::deps
   include ::designate::params
 
   validate_re($database_connection,

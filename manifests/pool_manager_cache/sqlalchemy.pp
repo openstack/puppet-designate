@@ -40,6 +40,9 @@ class designate::pool_manager_cache::sqlalchemy(
   $max_retries        = $::os_service_default,
   $retry_interval     = $::os_service_default,
 ){
+
+  include ::designate::deps
+
   designate_config {
     'service:pool_manager/cache_driver':                value => 'sqlalchemy';
     'pool_manager_cache:sqlalchemy/connection':         value => $connection;

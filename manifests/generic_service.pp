@@ -39,12 +39,12 @@ define designate::generic_service(
   $ensure_package = 'present'
 ) {
 
+  include ::designate::deps
   include ::designate::params
   include ::designate::db
 
   $designate_title = "designate-${name}"
-  Exec['post-designate_config'] ~> Service<| title == $designate_title |>
-  Exec<| title == 'designate-db-sync' |> ~> Service<| title == $designate_title |>
+  Exec['post-designate_config'] ~> Anchor['designate::service::end']
 
   if ($package_name) {
     if !defined(Package[$package_name]) {

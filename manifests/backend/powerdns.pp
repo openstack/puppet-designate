@@ -23,6 +23,8 @@ class designate::backend::powerdns (
   $use_db_reconnect = true,
   $sync_db          = true,
 ) {
+
+  include ::designate::deps
   include ::designate
   include ::powerdns
   include ::powerdns::mysql

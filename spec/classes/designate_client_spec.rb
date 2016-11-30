@@ -11,6 +11,7 @@ describe 'designate::client' do
   shared_examples 'designate-client' do
 
     context 'with default parameters' do
+      it { is_expected.to contain_class('designate::deps') }
       it { is_expected.to contain_class('designate::params') }
 
       it 'installs designate client package' do

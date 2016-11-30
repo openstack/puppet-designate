@@ -104,6 +104,8 @@ class designate::logging(
   $log_date_format               = undef,
 ) inherits ::designate::params  {
 
+  include ::designate::deps
+
   # NOTE(spredzy): In order to keep backward compatibility we rely on the pick function
   # to use designate::<myparam> first then designate::logging::<myparam>.
   $use_syslog_real = pick($::designate::use_syslog,$use_syslog)

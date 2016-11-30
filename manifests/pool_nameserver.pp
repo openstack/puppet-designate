@@ -12,6 +12,9 @@ define designate::pool_nameserver(
   $port = 53,
   $host = '127.0.0.1',
 ){
+
+  include ::designate::deps
+
   validate_re($name, '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}',
     'Name should be a UUID.')
 

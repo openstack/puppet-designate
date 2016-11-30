@@ -206,6 +206,7 @@ to your desired configuration.")
     $rabbit_ha_queues_real = $rabbit_ha_queues
   }
 
+  include ::designate::deps
   include ::designate::logging
 
   exec { 'post-designate_config':
@@ -213,7 +214,7 @@ to your desired configuration.")
     refreshonly => true,
   }
 
-  Designate_config<| |> ~> Exec['post-designate_config']
+  Anchor['designate::config::end'] ~> Exec['post-designate_config']
 
   package { 'designate-common':
     ensure => $package_ensure,
@@ -254,26 +255,4 @@ to your desired configuration.")
     'DEFAULT/notification_topics'    : value => $notification_topics;
   }
 
-  # Setup anchors for install, config and service phases of the module.  These
-  # anchors allow external modules to hook the begin and end of any of these
-  # phases.  Package or service management can also be replaced by ensuring the
-  # package is absent or turning off service management and having the
-  # replacement depend on the appropriate anchors.  When applicable, end tags
-  # should be notified so that subscribers can determine if installation,
-  # config or service state changed and act on that if needed.
-  anchor { 'designate::install::begin': } ->
-  Package<| tag == 'designate-package'|> ~>
-  anchor { 'designate::install::end': }
-  ->
-  anchor { 'designate::config::begin': } ->
-  Designate_config<||> ~>
-  anchor { 'designate::config::end': }
-  ->
-  anchor { 'designate::service::begin': } ~>
-  Service<| tag == 'designate-service' |> ~>
-  anchor { 'designate::service::end': }
-
-  # Package installation or config changes will always restart services.
-  Anchor['designate::install::end'] ~> Anchor['designate::service::begin']
-  Anchor['designate::config::end']  ~> Anchor['designate::service::begin']
 }

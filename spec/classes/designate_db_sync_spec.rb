@@ -14,8 +14,10 @@ describe 'designate::db::sync' do
           :user        => 'root',
           :refreshonly => 'true',
           :logoutput   => 'on_failure',
-          :subscribe   => 'Anchor[designate::config::end]',
-          :notify      => 'Anchor[designate::service::begin]',
+          :subscribe   => ['Anchor[designate::install::end]',
+                           'Anchor[designate::config::end]',
+                           'Anchor[designate::dbsync::begin]'],
+          :notify      => 'Anchor[designate::dbsync::end]',
         )
       end
     end
@@ -33,8 +35,10 @@ describe 'designate::db::sync' do
           :user        => 'root',
           :refreshonly => 'true',
           :logoutput   => 'on_failure',
-          :subscribe   => 'Anchor[designate::config::end]',
-          :notify      => 'Anchor[designate::service::begin]',
+          :subscribe   => ['Anchor[designate::install::end]',
+                           'Anchor[designate::config::end]',
+                           'Anchor[designate::dbsync::begin]'],
+          :notify      => 'Anchor[designate::dbsync::end]',
         )
       end
     end

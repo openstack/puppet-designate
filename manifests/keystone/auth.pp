@@ -77,8 +77,11 @@ class designate::keystone::auth (
   $internal_url        = 'http://127.0.0.1:9001/v1',
 ) {
 
-  Keystone_user_role["${auth_name}@${tenant}"] ~>
-    Service <| name == 'designate-api' |>
+  include ::designate::deps
+
+  if $configure_user_role {
+    Keystone_user_role["${auth_name}@${tenant}"] ~> Anchor['designate::service::end']
+  }
 
   keystone::resource::service_identity { 'designate':
     configure_user      => $configure_user,

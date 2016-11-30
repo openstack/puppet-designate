@@ -34,6 +34,8 @@ class designate::sink (
   $enabled_notification_handlers = undef,
 ) inherits designate {
 
+  include ::designate::deps
+
   designate::generic_service { 'sink':
     enabled        => $enabled,
     manage_service => $service_ensure,
