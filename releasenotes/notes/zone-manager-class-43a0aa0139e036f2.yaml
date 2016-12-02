@@ -1,0 +1,4 @@
+---
+features:
+  - Add new class designate::zone_manager to manage the zone manager in
+    designate
