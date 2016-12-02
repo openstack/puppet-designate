@@ -9,7 +9,6 @@ node /designate/ {
   $rabbit_userid         = 'guest'
   $rabbit_password       = 'guest'
   $auth_strategy         = 'noauth'
-  $backend_driver        = 'bind9'
   $designate_db_password = 'admin'
   $db_host               = '127.0.0.1'
 
@@ -36,7 +35,5 @@ node /designate/ {
     auth_strategy => $auth_strategy,
   }
 
-  class {'::designate::central':
-    backend_driver => $backend_driver,
-  }
+  include '::designate::central'
 }

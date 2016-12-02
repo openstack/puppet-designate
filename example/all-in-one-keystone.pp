@@ -22,7 +22,6 @@ node /designate/ {
   $rabbit_userid         = 'guest'
   $rabbit_password       = 'guest'
   $auth_strategy         = 'keystone'
-  $backend_driver        = 'bind9'
   $designate_db_password = 'admin'
   $db_host               = '127.0.0.1'
 
@@ -74,9 +73,7 @@ node /designate/ {
     keystone_password => $keystone_password,
   }
 
-  class {'::designate::central':
-    backend_driver => $backend_driver,
-  }
+  include '::designate::central'
 
   include '::designate::dns'
   class {'::designate::backend::bind9':

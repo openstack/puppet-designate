@@ -20,10 +20,6 @@
 #  (optional) Whether the designate central service will be running.
 #  Defaults to 'running'
 #
-# [*backend_driver*]
-#  (optional) Driver used for backend communication (fake, rpc, bind9, powerdns)
-#  Defaults to 'bind9'
-#
 # [*managed_resource_email*]
 #  (optional) Email to use for managed resources like domains created by the FloatingIP API
 #  Defaults to 'hostmaster@example.com'
@@ -45,23 +41,33 @@
 #  (optional) Minimum TTL.
 #  Defaults to $::os_service_default
 #
+# === DEPRECATED PARAMETERS
+#
+# [*backend_driver*]
+#  (optional) Driver used for backend communication (fake, rpc, bind9, powerdns)
+#  Defaults to 'undef'
+#
 class designate::central (
   $package_ensure             = present,
   $central_package_name       = $::designate::params::central_package_name,
   $enabled                    = true,
   $service_ensure             = 'running',
-  $backend_driver             = 'bind9',
   $managed_resource_email     = 'hostmaster@example.com',
   $managed_resource_tenant_id = '123456',
   $max_domain_name_len        = '255',
   $max_recordset_name_len     = '255',
   $min_ttl                    = $::os_service_default,
+  # DEPRECATED PARAMETERS
+  $backend_driver             = undef,
 ) inherits designate {
 
   include ::designate::deps
 
+  if $backend_driver {
+    warning('backend_driver has been deprecated and has no effect. It will be removed in Pike.')
+  }
+
   designate_config {
-    'service:central/backend_driver'             : value => $backend_driver;
     'service:central/managed_resource_email'     : value => $managed_resource_email;
     'service:central/managed_resource_tenant_id' : value => $managed_resource_tenant_id;
     'service:central/max_domain_name_len'        : value => $max_domain_name_len;

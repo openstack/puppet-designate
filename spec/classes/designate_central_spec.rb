@@ -27,7 +27,6 @@ describe 'designate::central' do
       end
 
       it 'configures designate-central with default parameters' do
-        is_expected.to contain_designate_config('service:central/backend_driver').with_value('bind9')
         is_expected.to contain_designate_config('service:central/managed_resource_email').with_value('hostmaster@example.com')
         is_expected.to contain_designate_config('service:central/managed_resource_tenant_id').with_value('123456')
         is_expected.to contain_designate_config('service:central/max_domain_name_len').with_value('255')
@@ -35,12 +34,6 @@ describe 'designate::central' do
         is_expected.to contain_designate_config('service:central/min_ttl').with_value('<SERVICE DEFAULT>')
       end
 
-      context 'when using Power DNS backend driver' do
-        before { params.merge!(:backend_driver => 'powerdns') }
-        it 'configures designate-central with pdns backend' do
-          is_expected.to contain_designate_config('service:central/backend_driver').with_value('powerdns')
-        end
-      end
     end
 
     context 'with custom package name' do

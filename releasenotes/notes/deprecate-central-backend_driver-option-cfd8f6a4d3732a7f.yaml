@@ -1,0 +1,5 @@
+---
+deprecations:
+  - The "backend_driver" option in designate::central is deprecated.
+    This option is no longer recognised by designate from at least
+    mitaka.
