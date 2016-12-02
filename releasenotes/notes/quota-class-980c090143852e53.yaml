@@ -1,0 +1,11 @@
+---
+features:
+  - Configure quota for designate via following options
+    designate::quota::quota_api_export_size
+    designate::quota::quota_domain_records
+    designate::quota::quota_domain_recordsets
+    designate::quota::quota_domains
+    designate::quota::quota_recordset_records
+
+    You can also set the quota driver via
+    designate::quota::quota_driver
