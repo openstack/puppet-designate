@@ -29,6 +29,7 @@ describe 'designate::agent' do
 
       it 'configures designate-agent with default parameters' do
         is_expected.to contain_designate_config('service:agent/backend_driver').with_value('bind9')
+        is_expected.to contain_designate_config('service:agent/listen').with_value('<SERVICE DEFAULT>')
       end
 
       context 'when using Power DNS backend driver' do
@@ -52,6 +53,17 @@ describe 'designate::agent' do
         )
       end
     end
+
+    context 'with overriding parameters' do
+      before do
+        params.merge!({ :listen => '127.0.0.1:9002' })
+      end
+
+      it 'configures designate-agent with custom parameters' do
+        is_expected.to contain_designate_config('service:agent/listen').with_value( params[:listen] )
+      end
+    end
+
   end
 
   on_supported_os({

@@ -24,18 +24,24 @@
 #  (optional) Driver used for backend communication (fake, rpc, bind9, powerdns)
 #  Defaults to 'bind9'
 #
+# [*listen*]
+#  (optional) Agent host:port pairs to listen on.
+#  Defaults to $::os_service_default
+#
 class designate::agent (
   $package_ensure     = present,
   $agent_package_name = $::designate::params::agent_package_name,
   $enabled            = true,
   $service_ensure     = 'running',
   $backend_driver     = 'bind9',
+  $listen             = $::os_service_default,
 ) inherits designate {
 
   include ::designate::deps
 
   designate_config {
     'service:agent/backend_driver' : value => $backend_driver;
+    'service:agent/listen' :         value => $listen;
   }
 
   designate::generic_service { 'agent':
