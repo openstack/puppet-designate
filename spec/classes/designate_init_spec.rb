@@ -135,8 +135,10 @@ describe 'designate' do
     end
 
     it 'configures notification' do
-      is_expected.to contain_designate_config('DEFAULT/notification_driver').with_value('messaging' )
-      is_expected.to contain_designate_config('DEFAULT/notification_topics').with_value('notifications')
+      is_expected.to contain_designate_config('oslo_messaging_notifications/driver').with_value('messaging' )
+      is_expected.to contain_designate_config('oslo_messaging_notifications/topics').with_value('notifications')
+      is_expected.to contain_designate_config('oslo_messaging_notifications/transport_url').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_designate_config('DEFAULT/transport_url').with_value('<SERVICE DEFAULT>')
     end
 
   end

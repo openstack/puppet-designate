@@ -52,6 +52,11 @@
 #     transport://user:pass@host1:port[,hostN:portN]/virtual_host
 #   Defaults to $::os_service_default
 #
+# [*notification_transport_url*]
+#   (optional) Connection url for oslo messaging notification backend. An
+#   example rabbit url would be, rabbit://user:pass@host:port/virtual_host
+#   Defaults to $::os_service_default
+#
 # [*rabbit_use_ssl*]
 #   (optional) Connect over SSL for RabbitMQ
 #   Defaults to false
@@ -130,26 +135,27 @@
 #   Defaults to $::os_service_default
 #
 class designate(
-  $package_ensure        = present,
-  $common_package_name   = $::designate::params::common_package_name,
-  $debug                 = undef,
-  $log_dir               = undef,
-  $use_syslog            = undef,
-  $use_stderr            = undef,
-  $log_facility          = undef,
-  $root_helper           = 'sudo designate-rootwrap /etc/designate/rootwrap.conf',
-  $rpc_backend           = 'rabbit',
-  $default_transport_url = $::os_service_default,
-  $rabbit_use_ssl        = false,
-  $rabbit_ha_queues      = $::os_service_default,
-  $kombu_ssl_ca_certs    = $::os_service_default,
-  $kombu_ssl_certfile    = $::os_service_default,
-  $kombu_ssl_keyfile     = $::os_service_default,
-  $kombu_ssl_version     = $::os_service_default,
-  $kombu_reconnect_delay = $::os_service_default,
-  $notification_driver   = 'messaging',
-  $notification_topics   = 'notifications',
-  $purge_config          = false,
+  $package_ensure             = present,
+  $common_package_name        = $::designate::params::common_package_name,
+  $debug                      = undef,
+  $log_dir                    = undef,
+  $use_syslog                 = undef,
+  $use_stderr                 = undef,
+  $log_facility               = undef,
+  $root_helper                = 'sudo designate-rootwrap /etc/designate/rootwrap.conf',
+  $rpc_backend                = 'rabbit',
+  $notification_transport_url = $::os_service_default,
+  $rabbit_use_ssl             = false,
+  $rabbit_ha_queues           = $::os_service_default,
+  $kombu_ssl_ca_certs         = $::os_service_default,
+  $kombu_ssl_certfile         = $::os_service_default,
+  $kombu_ssl_keyfile          = $::os_service_default,
+  $kombu_ssl_version          = $::os_service_default,
+  $kombu_reconnect_delay      = $::os_service_default,
+  $notification_driver        = 'messaging',
+  $default_transport_url      = $::os_service_default,
+  $notification_topics        = 'notifications',
+  $purge_config               = false,
   #DEPRECATED PARAMETER
   $rabbit_virtualhost    = undef,
   $rabbit_host           = $::os_service_default,
@@ -247,12 +253,16 @@ to your desired configuration.")
     transport_url => $default_transport_url,
   }
 
+  oslo::messaging::notifications { 'designate_config':
+    driver        => $notification_driver,
+    transport_url => $notification_transport_url,
+    topics        => $notification_topics,
+  }
+
   # default setting
   designate_config {
     'DEFAULT/root_helper'            : value => $root_helper;
     'DEFAULT/state_path'             : value => $::designate::params::state_path;
-    'DEFAULT/notification_driver'    : value => $notification_driver;
-    'DEFAULT/notification_topics'    : value => $notification_topics;
   }
 
 }
