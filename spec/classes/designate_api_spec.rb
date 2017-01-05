@@ -38,6 +38,10 @@ describe 'designate::api' do
         is_expected.to contain_designate_config('service:api/enable_api_admin').with_value(false)
         is_expected.to contain_designate_config('service:api/api_base_uri').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:api/listen').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_designate_config('service:api/workers').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_designate_config('service:api/threads').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_designate_config('service:api/enable_host_header').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_designate_config('service:api/max_header_line').with_value('<SERVICE DEFAULT>')
         is_expected.to_not contain_designate__keystone__authtoken('designate_config')
       end
 

@@ -44,6 +44,22 @@
 #  (optional) API host:port pairs to listen on.
 #  Defaults to $::os_service_default
 #
+# [*workers*]
+#  (optional) Number of api worker processes to spawn.
+#  Defaults to $::os_service_default
+#
+# [*threads*]
+#  (optional) Number of api greenthreads to spawn.
+#  Defaults to $::os_service_default
+#
+# [*enable_host_header*]
+#  (optional) Enable host request headers.
+#  Defaults to $::os_service_default
+#
+# [*max_header_line*]
+#  (optional) Maximum line size of message headers to be accepted.
+#  Defaults to $::os_service_default
+#
 # DEPRECATED PARAMETERS
 #
 # [*api_host*]
@@ -55,19 +71,23 @@
 #  Defaults to undef
 #
 class designate::api (
-  $package_ensure   = present,
-  $api_package_name = $::designate::params::api_package_name,
-  $enabled          = true,
-  $service_ensure   = 'running',
-  $auth_strategy    = 'noauth',
-  $enable_api_v1    = true,
-  $enable_api_v2    = false,
-  $enable_api_admin = false,
-  $api_base_uri     = $::os_service_default,
-  $listen           = $::os_service_default,
+  $package_ensure     = present,
+  $api_package_name   = $::designate::params::api_package_name,
+  $enabled            = true,
+  $service_ensure     = 'running',
+  $auth_strategy      = 'noauth',
+  $enable_api_v1      = true,
+  $enable_api_v2      = false,
+  $enable_api_admin   = false,
+  $api_base_uri       = $::os_service_default,
+  $listen             = $::os_service_default,
+  $workers            = $::os_service_default,
+  $threads            = $::os_service_default,
+  $enable_host_header = $::os_service_default,
+  $max_header_line    = $::os_service_default,
   # DEPRECATED PARAMETERS
-  $api_host         = undef,
-  $api_port         = undef,
+  $api_host           = undef,
+  $api_port           = undef,
 ) inherits designate {
 
   include ::designate::deps
@@ -87,6 +107,10 @@ class designate::api (
     'service:api/enable_api_v2'             : value => $enable_api_v2;
     'service:api/enable_api_admin'          : value => $enable_api_admin;
     'service:api/api_base_uri'              : value => $api_base_uri;
+    'service:api/workers'                   : value => $workers;
+    'service:api/threads'                   : value => $threads;
+    'service:api/enable_host_header'        : value => $enable_host_header;
+    'service:api/max_header_line'           : value => $max_header_line;
   }
 
   if $auth_strategy == 'keystone' {
