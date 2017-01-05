@@ -22,20 +22,20 @@
 #
 # [*auth_strategy*]
 #  (optional) Authentication strategy to use, can be either "noauth" or
-#  "keystone"
-#  Defaults to 'noauth'
+#  "keystone".
+#  Defaults to $::os_service_default
 #
 # [*enable_api_v1*]
-#  (optional) Enable Designate API Version 1
-#  Defaults to true
+#  (optional) Enable Designate API Version 1 (deprecated).
+#  Defaults to $::os_service_default
 #
 # [*enable_api_v2*]
-#  (optional) Enable Designate API Version 2 (experimental)
-#  Defaults to false
+#  (optional) Enable Designate API Version 2.
+#  Defaults to $::os_service_default
 #
 # [*enable_api_admin*]
-#  (optional) Enable Designate Admin API
-#  Defaults to false.
+#  (optional) Enable Designate Admin API.
+#  Defaults to $::os_service_default
 #
 # [*api_base_uri*]
 #  Set the base URI of the Designate API service.
@@ -75,10 +75,10 @@ class designate::api (
   $api_package_name   = $::designate::params::api_package_name,
   $enabled            = true,
   $service_ensure     = 'running',
-  $auth_strategy      = 'noauth',
-  $enable_api_v1      = true,
-  $enable_api_v2      = false,
-  $enable_api_admin   = false,
+  $auth_strategy      = $::os_service_default,
+  $enable_api_v1      = $::os_service_default,
+  $enable_api_v2      = $::os_service_default,
+  $enable_api_admin   = $::os_service_default,
   $api_base_uri       = $::os_service_default,
   $listen             = $::os_service_default,
   $workers            = $::os_service_default,
@@ -97,6 +97,10 @@ class designate::api (
     $listen_real = "${api_host}:${api_port}"
   } else {
     $listen_real = $listen
+  }
+
+  if !is_service_default($enable_api_v1) {
+    warning('Version 1 of API is deprecated.')
   }
 
   # API Service
