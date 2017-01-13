@@ -60,6 +60,38 @@
 #  (optional) Maximum line size of message headers to be accepted.
 #  Defaults to $::os_service_default
 #
+# [*default_limit_admin*]
+#  (optional) Default per-page limit for the Admin API.
+#  Defaults to $::os_service_default
+#
+# [*max_limit_admin*]
+#  (optional) Max page size in the Admin API.
+#  Defaults to $::os_service_default
+#
+# [*default_limit_v2*]
+#  (optional) Default per-page limit for the V2 API.
+#  Defaults to $::os_service_default
+#
+# [*max_limit_v2*]
+#  (optional) Max page size in the V2 API.
+#  Defaults to $::os_service_default
+#
+# [*pecan_debug*]
+#  (optional) Show the pecan HTML based debug interface (v2 only).
+#  Defaults to $::os_service_default
+#
+# [*enabled_extensions_v1*]
+#  (optional) API Version 1 extensions.
+#  Defaults to $::os_service_default
+#
+# [*enabled_extensions_v2*]
+#  (optional) API Version 2 extensions.
+#  Defaults to $::os_service_default
+#
+# [*enabled_extensions_admin*]
+#  (optional) Admin API extensions.
+#  Defaults to $::os_service_default
+#
 # DEPRECATED PARAMETERS
 #
 # [*api_host*]
@@ -71,20 +103,28 @@
 #  Defaults to undef
 #
 class designate::api (
-  $package_ensure     = present,
-  $api_package_name   = $::designate::params::api_package_name,
-  $enabled            = true,
-  $service_ensure     = 'running',
-  $auth_strategy      = $::os_service_default,
-  $enable_api_v1      = $::os_service_default,
-  $enable_api_v2      = $::os_service_default,
-  $enable_api_admin   = $::os_service_default,
-  $api_base_uri       = $::os_service_default,
-  $listen             = $::os_service_default,
-  $workers            = $::os_service_default,
-  $threads            = $::os_service_default,
-  $enable_host_header = $::os_service_default,
-  $max_header_line    = $::os_service_default,
+  $package_ensure           = present,
+  $api_package_name         = $::designate::params::api_package_name,
+  $enabled                  = true,
+  $service_ensure           = 'running',
+  $auth_strategy            = $::os_service_default,
+  $enable_api_v1            = $::os_service_default,
+  $enable_api_v2            = $::os_service_default,
+  $enable_api_admin         = $::os_service_default,
+  $api_base_uri             = $::os_service_default,
+  $listen                   = $::os_service_default,
+  $workers                  = $::os_service_default,
+  $threads                  = $::os_service_default,
+  $enable_host_header       = $::os_service_default,
+  $max_header_line          = $::os_service_default,
+  $default_limit_admin      = $::os_service_default,
+  $max_limit_admin          = $::os_service_default,
+  $default_limit_v2         = $::os_service_default,
+  $max_limit_v2             = $::os_service_default,
+  $pecan_debug              = $::os_service_default,
+  $enabled_extensions_v1    = $::os_service_default,
+  $enabled_extensions_v2    = $::os_service_default,
+  $enabled_extensions_admin = $::os_service_default,
   # DEPRECATED PARAMETERS
   $api_host           = undef,
   $api_port           = undef,
@@ -115,6 +155,14 @@ class designate::api (
     'service:api/threads'                   : value => $threads;
     'service:api/enable_host_header'        : value => $enable_host_header;
     'service:api/max_header_line'           : value => $max_header_line;
+    'service:api/default_limit_admin'       : value => $default_limit_admin;
+    'service:api/max_limit_admin'           : value => $max_limit_admin;
+    'service:api/default_limit_v2'          : value => $default_limit_v2;
+    'service:api/max_limit_v2'              : value => $max_limit_v2;
+    'service:api/pecan_debug'               : value => $pecan_debug;
+    'service:api/enabled_extensions_v1'     : value => $enabled_extensions_v1;
+    'service:api/enabled_extensions_v2'     : value => $enabled_extensions_v2;
+    'service:api/enabled_extensions_admin'  : value => $enabled_extensions_admin;
   }
 
   if $auth_strategy == 'keystone' {
