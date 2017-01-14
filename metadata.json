@@ -1,6 +1,6 @@
 {
   "name": "openstack-designate",
-  "version": "10.1.0",
+  "version": "10.2.0",
   "author": "Xingchao Yu and StackForge Contributors",
   "summary": "Puppet module for OpenStack Designate",
   "license": "Apache-2.0",
@@ -52,7 +52,7 @@
     },
     {
       "name": "openstack/keystone",
-      "version_requirement": ">=10.1.0 <11.0.0"
+      "version_requirement": ">=10.2.0 <11.0.0"
     },
     {
       "name": "puppetlabs/stdlib",
@@ -64,11 +64,11 @@
     },
     {
       "name": "openstack/openstacklib",
-      "version_requirement": ">=10.1.0 <11.0.0"
+      "version_requirement": ">=10.2.0 <11.0.0"
     },
     {
       "name": "openstack/oslo",
-      "version_requirement": ">=10.1.0 <11.0.0"
+      "version_requirement": ">=10.2.0 <11.0.0"
     },
     {
       "name": "antonlindstrom/powerdns",
