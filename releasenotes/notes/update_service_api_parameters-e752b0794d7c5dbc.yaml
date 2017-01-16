@@ -1,0 +1,14 @@
+---
+fixes:
+  - workers option for service:api section in designate config file.
+  - threads option for service:api section in designate config file.
+  - enable_host_header option for service:api section in designate config file.
+  - max_header_line option for service:api section in designate config file.
+  - default_limit_admin option for service:api section in designate config file.
+  - max_limit_admin option for service:api section in designate config file.
+  - default_limit_v2 option for service:api section in designate config file.
+  - max_limit_v2 option for service:api section in designate config file.
+  - pecan_debug option for service:api section in designate config file.
+  - enabled_extensions_v1 option for service:api section in designate config file.
+  - enabled_extensions_v2 option for service:api section in designate config file.
+  - enabled_extensions_admin option for service:api section in designate config file.
