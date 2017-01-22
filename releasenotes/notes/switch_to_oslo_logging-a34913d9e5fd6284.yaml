@@ -1,0 +1,5 @@
+---
+features:
+  - Switch to puppet-oslo configuring logging.
+  - Switch logging related parameters default value to
+    $::os_service_default.
