@@ -52,6 +52,16 @@
 #     transport://user:pass@host1:port[,hostN:portN]/virtual_host
 #   Defaults to $::os_service_default
 #
+# [*rpc_response_timeout*]
+#  (Optional) Seconds to wait for a response from a call.
+#  Defaults to $::os_service_default
+#
+# [*control_exchange*]
+#   (Optional) The default exchange under which topics are scoped. May be
+#   overridden by an exchange name specified in the transport_url
+#   option.
+#   Defaults to $::os_service_default
+#
 # [*notification_transport_url*]
 #   (optional) Connection url for oslo messaging notification backend. An
 #   example rabbit url would be, rabbit://user:pass@host:port/virtual_host
@@ -154,16 +164,18 @@ class designate(
   $kombu_reconnect_delay      = $::os_service_default,
   $notification_driver        = 'messaging',
   $default_transport_url      = $::os_service_default,
+  $rpc_response_timeout       = $::os_service_default,
+  $control_exchange           = $::os_service_default,
   $notification_topics        = 'notifications',
   $purge_config               = false,
   #DEPRECATED PARAMETER
-  $rabbit_virtualhost    = undef,
-  $rabbit_host           = $::os_service_default,
-  $rabbit_port           = $::os_service_default,
-  $rabbit_hosts          = $::os_service_default,
-  $rabbit_userid         = $::os_service_default,
-  $rabbit_password       = $::os_service_default,
-  $rabbit_virtual_host   = $::os_service_default,
+  $rabbit_virtualhost         = undef,
+  $rabbit_host                = $::os_service_default,
+  $rabbit_port                = $::os_service_default,
+  $rabbit_hosts               = $::os_service_default,
+  $rabbit_userid              = $::os_service_default,
+  $rabbit_password            = $::os_service_default,
+  $rabbit_virtual_host        = $::os_service_default,
 ) inherits designate::params {
 
   if $rabbit_virtualhost {
@@ -250,7 +262,9 @@ to your desired configuration.")
     }
   }
   oslo::messaging::default { 'designate_config':
-    transport_url => $default_transport_url,
+    transport_url        => $default_transport_url,
+    rpc_response_timeout => $rpc_response_timeout,
+    control_exchange     => $control_exchange,
   }
 
   oslo::messaging::notifications { 'designate_config':

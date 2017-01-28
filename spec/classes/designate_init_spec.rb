@@ -139,6 +139,8 @@ describe 'designate' do
       is_expected.to contain_designate_config('oslo_messaging_notifications/topics').with_value('notifications')
       is_expected.to contain_designate_config('oslo_messaging_notifications/transport_url').with_value('<SERVICE DEFAULT>')
       is_expected.to contain_designate_config('DEFAULT/transport_url').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_designate_config('DEFAULT/rpc_response_timeout').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_designate_config('DEFAULT/control_exchange').with_value('<SERVICE DEFAULT>')
     end
 
   end
