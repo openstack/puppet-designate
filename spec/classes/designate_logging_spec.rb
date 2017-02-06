@@ -55,9 +55,11 @@ describe 'designate::logging' do
 
   shared_examples 'basic default logging settings' do
     it 'configures designate logging settins with default values' do
-      is_expected.to contain_designate_config('DEFAULT/use_syslog').with(:value => 'false')
-      is_expected.to contain_designate_config('DEFAULT/use_stderr').with(:value => 'true')
-      is_expected.to contain_designate_config('DEFAULT/debug').with(:value => 'false')
+      is_expected.to contain_designate_config('DEFAULT/use_syslog').with(:value => '<SERVICE DEFAULT>')
+      is_expected.to contain_designate_config('DEFAULT/use_stderr').with(:value => '<SERVICE DEFAULT>')
+      is_expected.to contain_designate_config('DEFAULT/syslog_log_facility').with(:value => '<SERVICE DEFAULT>')
+      is_expected.to contain_designate_config('DEFAULT/log_dir').with(:value => '/var/log/designate')
+      is_expected.to contain_designate_config('DEFAULT/debug').with(:value => '<SERVICE DEFAULT>')
     end
   end
 
@@ -115,7 +117,7 @@ describe 'designate::logging' do
      :default_log_levels, :fatal_deprecations,
      :instance_format, :instance_uuid_format,
      :log_date_format, ].each { |param|
-        it { is_expected.to contain_designate_config("DEFAULT/#{param}").with_ensure('absent') }
+        it { is_expected.to contain_designate_config("DEFAULT/#{param}").with(:value => '<SERVICE DEFAULT>') }
       }
   end
 
