@@ -20,6 +20,7 @@ describe 'designate::policy' do
         :key   => 'context_is_admin',
         :value => 'foo:bar'
       })
+      is_expected.to contain_designate_config('oslo_policy/policy_file').with_value('/etc/designate/policy.json')
     end
   end
 
