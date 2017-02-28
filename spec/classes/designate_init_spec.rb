@@ -263,7 +263,7 @@ describe 'designate' do
         when 'Debian'
           { :common_package_name => 'designate-common' }
         when 'RedHat'
-          { :common_package_name => 'openstack-designate' }
+          { :common_package_name => 'openstack-designate-common' }
         end
       end
       it_behaves_like 'designate'

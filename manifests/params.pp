@@ -12,7 +12,7 @@ class designate::params {
   case $::osfamily {
     'RedHat': {
       # package name
-      $common_package_name       = 'openstack-designate'
+      $common_package_name       = 'openstack-designate-common'
       $api_package_name          = 'openstack-designate-api'
       $central_package_name      = 'openstack-designate-central'
       $agent_package_name        = 'openstack-designate-agent'
