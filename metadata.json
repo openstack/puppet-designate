@@ -1,7 +1,7 @@
 {
   "name": "openstack-designate",
-  "version": "10.3.0",
-  "author": "Xingchao Yu and StackForge Contributors",
+  "version": "11.0.0-dev",
+  "author": "Xingchao Yu and OpenStack Contributors",
   "summary": "Puppet module for OpenStack Designate",
   "license": "Apache-2.0",
   "source": "git://github.com/openstack/puppet-designate.git",
@@ -19,9 +19,15 @@
   ],
   "operatingsystem_support": [
     {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "8"
+      ]
+    },
+    {
       "operatingsystem": "Fedora",
       "operatingsystemrelease": [
-        "20"
+        "24"
       ]
     },
     {
@@ -31,15 +37,8 @@
       ]
     },
     {
-      "operatingsystem": "Debian",
-      "operatingsystemrelease": [
-        "8"
-      ]
-    },
-    {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "14.04",
         "16.04"
       ]
     }
@@ -52,7 +51,7 @@
     },
     {
       "name": "openstack/keystone",
-      "version_requirement": ">=10.3.0 <11.0.0"
+      "version_requirement": ">=11.0.0 <12.0.0"
     },
     {
       "name": "puppetlabs/stdlib",
@@ -64,11 +63,11 @@
     },
     {
       "name": "openstack/openstacklib",
-      "version_requirement": ">=10.3.0 <11.0.0"
+      "version_requirement": ">=11.0.0 <12.0.0"
     },
     {
       "name": "openstack/oslo",
-      "version_requirement": ">=10.3.0 <11.0.0"
+      "version_requirement": ">=11.0.0 <12.0.0"
     },
     {
       "name": "antonlindstrom/powerdns",
