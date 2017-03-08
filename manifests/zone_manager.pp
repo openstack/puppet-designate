@@ -55,7 +55,7 @@ class designate::zone_manager (
   }
 
   designate::generic_service { 'zone-manager':
-    ensure_package => $package_ensure,
+    package_ensure => $package_ensure,
     enabled        => $enabled,
     package_name   => $package_name,
     manage_service => $service_ensure,

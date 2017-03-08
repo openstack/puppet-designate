@@ -47,7 +47,7 @@ class designate::agent (
   designate::generic_service { 'agent':
     enabled        => $enabled,
     manage_service => $service_ensure,
-    ensure_package => $package_ensure,
+    package_ensure => $package_ensure,
     package_name   => $agent_package_name,
     service_name   => $::designate::params::agent_service_name,
   }

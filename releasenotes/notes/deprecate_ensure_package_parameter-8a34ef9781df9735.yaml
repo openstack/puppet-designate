@@ -1,0 +1,5 @@
+---
+deprecations:
+  - designate::generic_service::ensure_package is now
+    deprecated and will be removed in the future release.
+    Please use designate::generic_service::package_ensure instead.

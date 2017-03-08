@@ -103,7 +103,7 @@ class designate::mdns (
   designate::generic_service { 'mdns':
     enabled        => $enabled,
     manage_service => $manage_service,
-    ensure_package => $package_ensure,
+    package_ensure => $package_ensure,
     package_name   => $mdns_package_name,
     service_name   => $::designate::params::mdns_service_name,
   }

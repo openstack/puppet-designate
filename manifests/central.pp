@@ -78,7 +78,7 @@ class designate::central (
   designate::generic_service { 'central':
     enabled        => $enabled,
     manage_service => $service_ensure,
-    ensure_package => $package_ensure,
+    package_ensure => $package_ensure,
     package_name   => $central_package_name,
     service_name   => $::designate::params::central_service_name,
   }

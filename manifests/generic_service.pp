@@ -27,16 +27,24 @@
 #   (optional) Manage or not the service (if a service_name is provided).
 #   Defaults to true.
 #
-# [*ensure_package*]
+# [*package_ensure*]
 #   (optional) Control the ensure parameter for the package ressource.
 #   Defaults to 'present'.
+#
+# DEPRECATED PARAMETERS
+#
+# [*ensure_package*]
+#   (optional) Control the ensure parameter for the package ressource.
+#   Defaults to undef.
 #
 define designate::generic_service(
   $package_name,
   $service_name,
   $enabled        = false,
   $manage_service = true,
-  $ensure_package = 'present'
+  $package_ensure = 'present',
+  # DEPRECATED PARAMETERS
+  $ensure_package = undef
 ) {
 
   include ::designate::deps
@@ -46,10 +54,18 @@ define designate::generic_service(
   $designate_title = "designate-${name}"
   Exec['post-designate_config'] ~> Anchor['designate::service::end']
 
+  if $ensure_package {
+    warning("designate::generic_service::ensure_package is deprecated and will be removed in \
+the future release. Please use designate::generic_service::package_ensure instead.")
+    $package_ensure_real = $ensure_package
+  } else {
+    $package_ensure_real = $package_ensure
+  }
+
   if ($package_name) {
     if !defined(Package[$package_name]) {
       package { $designate_title:
-        ensure => $ensure_package,
+        ensure => $package_ensure_real,
         name   => $package_name,
         notify => Service[$designate_title],
         tag    => ['openstack', 'designate-package'],

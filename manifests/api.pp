@@ -172,7 +172,7 @@ class designate::api (
   designate::generic_service { 'api':
     enabled        => $enabled,
     manage_service => $service_ensure,
-    ensure_package => $package_ensure,
+    package_ensure => $package_ensure,
     package_name   => $api_package_name,
     service_name   => $::designate::params::api_service_name,
   }

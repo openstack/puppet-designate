@@ -39,7 +39,7 @@ class designate::sink (
   designate::generic_service { 'sink':
     enabled        => $enabled,
     manage_service => $service_ensure,
-    ensure_package => $package_ensure,
+    package_ensure => $package_ensure,
     package_name   => $sink_package_name,
     service_name   => $::designate::params::sink_service_name,
   }

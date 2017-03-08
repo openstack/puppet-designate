@@ -12,7 +12,7 @@ describe 'designate::generic_service' do
         :service_name   => 'food',
         :enabled        => true,
         :manage_service => true,
-        :ensure_package => 'latest',
+        :package_ensure => 'latest',
       }
     end
 
