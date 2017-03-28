@@ -12,7 +12,7 @@ describe 'designate::backend::powerdns' do
   shared_examples 'designate-backend-powerdns' do
     context 'with default params' do
       it 'configures designate backend powerdns with default parameters' do
-        is_expected.to contain_designate_config('backend:powerdns/connection').with_value('mysql://dbserver')
+        is_expected.to contain_designate_config('backend:powerdns/connection').with_value('mysql://dbserver').with_secret(true)
         is_expected.to contain_designate_config('backend:powerdns/use_db_reconnect').with_value(true)
       end
 
