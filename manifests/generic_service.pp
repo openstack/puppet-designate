@@ -67,7 +67,7 @@ the future release. Please use designate::generic_service::package_ensure instea
       package { $designate_title:
         ensure => $package_ensure_real,
         name   => $package_name,
-        notify => Service[$designate_title],
+        notify => Anchor['designate::install::end'],
         tag    => ['openstack', 'designate-package'],
       }
     }
