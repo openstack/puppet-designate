@@ -32,7 +32,7 @@ Setup
 
 **What the designate module affects:**
 
-* [Designate](http://docs.openstack.org/developer/designate/), the DNS service for OpenStack.
+* [Designate](https://docs.openstack.org/designate/latest/), the DNS service for OpenStack.
 
 ### Installing designate
 
@@ -97,7 +97,7 @@ Development
 
 Developer documentation for the entire puppet-openstack project.
 
-* http://docs.openstack.org/developer/puppet-openstack-guide/
+* https://docs.openstack.org/puppet-openstack-guide/latest/
 
 WORK IN PROGRESS
 ----------------
