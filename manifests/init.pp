@@ -41,11 +41,6 @@
 #   (optional) Command for designate rootwrap helper.
 #   Defaults to 'sudo designate-rootwrap /etc/designate/rootwrap.conf'.
 #
-# [*rpc_backend*]
-#   (optional) The messaging driver to use. Currently only rabbit is support
-#   by this puppet module.
-#   Defaults to 'rabbit'.
-#
 # [*default_transport_url*]
 #   (optional) A URL representing the messaging driver to use and its full
 #   configuration. Transport URLs take the form:
@@ -144,6 +139,11 @@
 #   (optional) The RabbitMQ virtual host.
 #   Defaults to $::os_service_default
 #
+# [*rpc_backend*]
+#   (optional) The messaging driver to use. Currently only rabbit is support
+#   by this puppet module.
+#   Defaults to 'rabbit'.
+#
 class designate(
   $package_ensure             = present,
   $common_package_name        = $::designate::params::common_package_name,
@@ -153,7 +153,6 @@ class designate(
   $use_stderr                 = undef,
   $log_facility               = undef,
   $root_helper                = 'sudo designate-rootwrap /etc/designate/rootwrap.conf',
-  $rpc_backend                = 'rabbit',
   $notification_transport_url = $::os_service_default,
   $rabbit_use_ssl             = false,
   $rabbit_ha_queues           = $::os_service_default,
@@ -176,6 +175,7 @@ class designate(
   $rabbit_userid              = $::os_service_default,
   $rabbit_password            = $::os_service_default,
   $rabbit_virtual_host        = $::os_service_default,
+  $rpc_backend                = 'rabbit',
 ) inherits designate::params {
 
   if $rabbit_virtualhost {
@@ -204,10 +204,10 @@ class designate(
     !is_service_default($rabbit_password) or
     !is_service_default($rabbit_port) or
     !is_service_default($rabbit_userid) or
-    !is_service_default($rabbit_virtual_host) {
+    $rpc_backend or !is_service_default($rabbit_virtual_host) {
     warning("designate::rabbit_host, designate::rabbit_hosts, designate::rabbit_password, \
-designate::rabbit_port, designate::rabbit_userid and designate::rabbit_virtual_host are \
-deprecated. Please use designate::default_transport_url instead.")
+designate::rabbit_port, designate::rabbit_userid and designate::rabbit_virtual_host and \
+designate::rpc_backend are deprecated. Please use designate::default_transport_url instead.")
   }
 
   if is_service_default($rabbit_ha_queues) {
@@ -244,23 +244,22 @@ to your desired configuration.")
     purge => $purge_config,
   }
 
-  if $rpc_backend == 'rabbit' {
-    oslo::messaging::rabbit { 'designate_config':
-      kombu_ssl_version     => $kombu_ssl_version,
-      kombu_ssl_keyfile     => $kombu_ssl_keyfile,
-      kombu_ssl_certfile    => $kombu_ssl_certfile,
-      kombu_ssl_ca_certs    => $kombu_ssl_ca_certs,
-      kombu_reconnect_delay => $kombu_reconnect_delay,
-      rabbit_host           => $rabbit_host,
-      rabbit_port           => $rabbit_port,
-      rabbit_hosts          => $rabbit_hosts,
-      rabbit_use_ssl        => $rabbit_use_ssl,
-      rabbit_userid         => $rabbit_userid,
-      rabbit_password       => $rabbit_password,
-      rabbit_virtual_host   => $rabbit_virtual_host,
-      rabbit_ha_queues      => $rabbit_ha_queues_real,
-    }
+  oslo::messaging::rabbit { 'designate_config':
+    kombu_ssl_version     => $kombu_ssl_version,
+    kombu_ssl_keyfile     => $kombu_ssl_keyfile,
+    kombu_ssl_certfile    => $kombu_ssl_certfile,
+    kombu_ssl_ca_certs    => $kombu_ssl_ca_certs,
+    kombu_reconnect_delay => $kombu_reconnect_delay,
+    rabbit_host           => $rabbit_host,
+    rabbit_port           => $rabbit_port,
+    rabbit_hosts          => $rabbit_hosts,
+    rabbit_use_ssl        => $rabbit_use_ssl,
+    rabbit_userid         => $rabbit_userid,
+    rabbit_password       => $rabbit_password,
+    rabbit_virtual_host   => $rabbit_virtual_host,
+    rabbit_ha_queues      => $rabbit_ha_queues_real,
   }
+
   oslo::messaging::default { 'designate_config':
     transport_url        => $default_transport_url,
     rpc_response_timeout => $rpc_response_timeout,
