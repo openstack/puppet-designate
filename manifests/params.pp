@@ -15,6 +15,7 @@ class designate::params {
   $mdns_service_name         = 'designate-mdns'
   $pool_manager_service_name = 'designate-pool-manager'
   $zone_manager_service_name = 'designate-zone-manager'
+  $producer_service_name     = 'designate-producer'
 
   case $::osfamily {
     'RedHat': {
@@ -28,6 +29,7 @@ class designate::params {
       $mdns_package_name         = 'openstack-designate-mdns'
       $pool_manager_package_name = 'openstack-designate-pool-manager'
       $zone_manager_package_name = 'openstack-designate-zone-manager'
+      $producer_package_name     = 'openstack-designate-producer'
     }
     'Debian': {
       # package name
@@ -40,6 +42,7 @@ class designate::params {
       $pool_manager_package_name = 'designate-pool-manager'
       $mdns_package_name         = 'designate-mdns'
       $zone_manager_package_name = 'designate-zone-manager'
+      $producer_package_name     = 'designate-producer'
     }
     default: {
       fail("Unsupported osfamily: ${::osfamily} operatingsystem")
