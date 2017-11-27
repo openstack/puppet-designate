@@ -32,7 +32,7 @@ describe 'designate::central' do
         is_expected.to contain_designate_config('service:central/max_domain_name_len').with_value('255')
         is_expected.to contain_designate_config('service:central/max_recordset_name_len').with_value('255')
         is_expected.to contain_designate_config('service:central/min_ttl').with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_designate_config('service:central/workers').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_designate_config('service:central/workers').with_value(8)
         is_expected.to contain_designate_config('service:central/threads').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:central/default_pool_id').with_value('<SERVICE DEFAULT>')
       end
@@ -59,7 +59,7 @@ describe 'designate::central' do
   }).each do |os,facts|
     context "on #{os}" do
       let (:facts) do
-        facts.merge!(OSDefaults.get_facts())
+        facts.merge!(OSDefaults.get_facts({ :os_workers => 8 }))
       end
 
       let(:platform_params) do

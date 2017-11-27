@@ -43,7 +43,7 @@
 #
 # [*workers*]
 #  (optional) Number of central worker processes to spawn.
-#  Defaults to $::os_service_default
+#  Defaults to $::os_workers
 #
 # [*threads*]
 #  (optional) Number of central greenthreads to spawn.
@@ -69,7 +69,7 @@ class designate::central (
   $max_domain_name_len        = '255',
   $max_recordset_name_len     = '255',
   $min_ttl                    = $::os_service_default,
-  $workers                    = $::os_service_default,
+  $workers                    = $::os_workers,
   $threads                    = $::os_service_default,
   $default_pool_id            = $::os_service_default,
   # DEPRECATED PARAMETERS

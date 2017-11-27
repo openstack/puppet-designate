@@ -28,7 +28,7 @@ describe 'designate::mdns' do
       end
 
       it 'configures designate-mdns with default parameters' do
-        is_expected.to contain_designate_config('service:mdns/workers').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_designate_config('service:mdns/workers').with_value(8)
         is_expected.to contain_designate_config('service:mdns/threads').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:mdns/tcp_backlog').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:mdns/tcp_recv_timeout').with_value('<SERVICE DEFAULT>')
@@ -59,7 +59,7 @@ describe 'designate::mdns' do
   }).each do |os,facts|
     context "on #{os}" do
       let (:facts) do
-        facts.merge!(OSDefaults.get_facts())
+        facts.merge!(OSDefaults.get_facts({ :os_workers => 8 }))
       end
       let(:platform_params) do
         case facts[:osfamily]

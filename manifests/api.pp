@@ -46,7 +46,7 @@
 #
 # [*workers*]
 #  (optional) Number of api worker processes to spawn.
-#  Defaults to $::os_service_default
+#  Defaults to $::os_workers
 #
 # [*threads*]
 #  (optional) Number of api greenthreads to spawn.
@@ -113,7 +113,7 @@ class designate::api (
   $enable_api_admin         = $::os_service_default,
   $api_base_uri             = $::os_service_default,
   $listen                   = $::os_service_default,
-  $workers                  = $::os_service_default,
+  $workers                  = $::os_workers,
   $threads                  = $::os_service_default,
   $enable_host_header       = $::os_service_default,
   $max_header_line          = $::os_service_default,

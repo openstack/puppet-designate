@@ -22,7 +22,7 @@
 #
 # [*workers*]
 #   (Optional) Number of mdns worker processes to spawn.
-#   Defaults to $::os_service_default.
+#   Defaults to $::os_workers.
 #
 # [*threads*]
 #   (Optional) Number of mdns greenthreads to spawn.
@@ -67,7 +67,7 @@ class designate::mdns (
   $mdns_package_name  = $::designate::params::mdns_package_name,
   $enabled            = true,
   $manage_service     = 'running',
-  $workers            = $::os_service_default,
+  $workers            = $::os_workers,
   $threads            = $::os_service_default,
   $tcp_backlog        = $::os_service_default,
   $tcp_recv_timeout   = $::os_service_default,

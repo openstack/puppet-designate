@@ -54,7 +54,7 @@ describe 'designate::pool_manager' do
 
       it 'configures designate-pool-manager with default parameters' do
         is_expected.to contain_designate_config('service:pool_manager/pool_id').with_value( params[:pool_id] )
-        is_expected.to contain_designate_config('service:pool_manager/workers').with_value( '<SERVICE DEFAULT>' )
+        is_expected.to contain_designate_config('service:pool_manager/workers').with_value(8)
         is_expected.to contain_designate_config('service:pool_manager/threads').with_value( '<SERVICE DEFAULT>' )
         is_expected.to contain_designate_config('service:pool_manager/threshold_percentage').with_value( '<SERVICE DEFAULT>' )
         is_expected.to contain_designate_config('service:pool_manager/poll_timeout').with_value( '<SERVICE DEFAULT>' )
@@ -116,7 +116,7 @@ describe 'designate::pool_manager' do
   }).each do |os,facts|
     context "on #{os}" do
       let (:facts) do
-        facts.merge!(OSDefaults.get_facts())
+        facts.merge!(OSDefaults.get_facts({ :os_workers => 8 }))
       end
 
       let(:platform_params) do

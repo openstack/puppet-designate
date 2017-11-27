@@ -30,7 +30,7 @@
 #
 # [*workers*]
 #   (optional) Number of worker processes.
-#   Defaults to $::os_service_default
+#   Defaults to $::os_workers
 #
 # [*threads*]
 #   (optional) Number of Pool Manager greenthreads to spawn
@@ -91,7 +91,7 @@ class designate::pool_manager(
   $pool_manager_package_name    = undef,
   $enabled                      = true,
   $service_ensure               = 'running',
-  $workers                      = $::os_service_default,
+  $workers                      = $::os_workers,
   $threads                      = $::os_service_default,
   $threshold_percentage         = $::os_service_default,
   $poll_timeout                 = $::os_service_default,

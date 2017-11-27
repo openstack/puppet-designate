@@ -38,7 +38,7 @@ describe 'designate::api' do
         is_expected.to contain_designate_config('service:api/enable_api_admin').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:api/api_base_uri').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:api/listen').with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_designate_config('service:api/workers').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_designate_config('service:api/workers').with_value(8)
         is_expected.to contain_designate_config('service:api/threads').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:api/enable_host_header').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:api/max_header_line').with_value('<SERVICE DEFAULT>')
@@ -120,7 +120,7 @@ describe 'designate::api' do
   }).each do |os,facts|
     context "on #{os}" do
       let (:facts) do
-        facts.merge!(OSDefaults.get_facts())
+        facts.merge!(OSDefaults.get_facts({ :os_workers => 8 }))
       end
 
       let(:platform_params) do

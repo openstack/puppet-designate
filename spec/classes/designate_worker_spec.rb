@@ -48,7 +48,7 @@ describe 'designate::worker' do
       end
 
       it 'configures designate-worker with default parameters' do
-        is_expected.to contain_designate_config('service:worker/workers').with_value( '<SERVICE DEFAULT>' )
+        is_expected.to contain_designate_config('service:worker/workers').with_value(8)
         is_expected.to contain_designate_config('service:worker/threads').with_value( '<SERVICE DEFAULT>' )
         is_expected.to contain_designate_config('service:worker/threshold_percentage').with_value( '<SERVICE DEFAULT>' )
         is_expected.to contain_designate_config('service:worker/poll_timeout').with_value( '<SERVICE DEFAULT>' )
@@ -101,7 +101,7 @@ describe 'designate::worker' do
   }).each do |os,facts|
     context "on #{os}" do
       let (:facts) do
-        facts.merge!(OSDefaults.get_facts())
+        facts.merge!(OSDefaults.get_facts({ :os_workers => 8 }))
       end
 
       let(:platform_params) do

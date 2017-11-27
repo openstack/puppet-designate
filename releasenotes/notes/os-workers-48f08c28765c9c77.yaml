@@ -1,0 +1,5 @@
+---
+other:
+  - |
+    Use os_workers as default for all workers config settings of the various
+    services.
