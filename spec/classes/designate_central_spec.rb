@@ -32,6 +32,9 @@ describe 'designate::central' do
         is_expected.to contain_designate_config('service:central/max_domain_name_len').with_value('255')
         is_expected.to contain_designate_config('service:central/max_recordset_name_len').with_value('255')
         is_expected.to contain_designate_config('service:central/min_ttl').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_designate_config('service:central/workers').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_designate_config('service:central/threads').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_designate_config('service:central/default_pool_id').with_value('<SERVICE DEFAULT>')
       end
 
     end
