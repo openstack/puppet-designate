@@ -58,6 +58,7 @@ describe 'designate::worker' do
         is_expected.to contain_designate_config('service:worker/notify').with_value( '<SERVICE DEFAULT>' )
         is_expected.to contain_designate_config('service:worker/export_synchronous').with_value( '<SERVICE DEFAULT>' )
         is_expected.to contain_designate_config('service:worker/worker_topic').with_value( '<SERVICE DEFAULT>' )
+        is_expected.to contain_designate_config('service:worker/enabled').with_value( 'true' )
       end
     end
 
@@ -91,6 +92,7 @@ describe 'designate::worker' do
         is_expected.to contain_designate_config('service:worker/notify').with_value( params[:worker_notify] )
         is_expected.to contain_designate_config('service:worker/export_synchronous').with_value( params[:export_synchronous] )
         is_expected.to contain_designate_config('service:worker/worker_topic').with_value( params[:worker_topic] )
+        is_expected.to contain_designate_config('service:worker/enabled').with_value( params[:enabled] )
       end
     end
 

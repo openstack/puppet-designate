@@ -114,5 +114,6 @@ class designate::worker(
     'service:worker/notify':               value => $worker_notify;
     'service:worker/export_synchronous':   value => $export_synchronous;
     'service:worker/worker_topic':         value => $worker_topic;
+    'service:worker/enabled':              value => $enabled;
   }
 }
