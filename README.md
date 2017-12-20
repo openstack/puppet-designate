@@ -123,12 +123,11 @@ Setup
 * Debian testing (jessie) include all designate packages.
 * Ubuntu utopic is the minimum requirement for Ubuntu deployment.
 
-#### RedHat
+#### Red Hat
 
-* Currently there is no available RPM packages for use, you need to package it from source.
- * First, clone the spec file from   https://github.com/NewpTone/designate-spec.git
- * Then, clone the source file from  https://github.com/openstack/designate.git
- * Last, use rpmbuild to package it.
+* Packages are available from RDO: https://www.rdoproject.org/
+* See the repo setup instructions for the various RDO deployment methods for
+  details on how to use them.
 
 Contributors
 ------------
