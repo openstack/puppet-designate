@@ -8,17 +8,16 @@
 #   (optional) Set of policies to configure for designate
 #   Example :
 #     {
-#       'create_domain' => {
-#         'key' => 'create_domain',
-#         'value' => 'rule:admin'
+#       'designate-context_is_admin' => {
+#         'key' => 'context_is_admin',
+#         'value' => 'true'
 #       },
-#       'delete_domain' => {
+#       'designate-default' => {
 #         'key' => 'default',
-#         'value' => 'rule:admin'
+#         'value' => 'rule:admin_or_owner'
 #       }
 #     }
 #   Defaults to empty hash.
-#
 #
 # [*policy_path*]
 #   (optional) Path to the designate policy.json file
@@ -30,14 +29,18 @@ class designate::policy (
 ) {
 
   include ::designate::deps
+  include ::designate::params
 
   validate_hash($policies)
 
   Openstacklib::Policy::Base {
-    file_path => $policy_path,
+    file_path  => $policy_path,
+    file_user  => 'root',
+    file_group => $::designate::params::group,
   }
 
   create_resources('openstacklib::policy::base', $policies)
+
   oslo::policy { 'designate_config': policy_file => $policy_path }
 
 }

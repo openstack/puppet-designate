@@ -17,6 +17,7 @@ class designate::params {
   $zone_manager_service_name = 'designate-zone-manager'
   $producer_service_name     = 'designate-producer'
   $worker_service_name       = 'designate-worker'
+  $group                     = 'designate'
 
   case $::osfamily {
     'RedHat': {
