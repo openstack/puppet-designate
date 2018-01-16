@@ -1,0 +1,4 @@
+---
+features:
+  - Add new parameter "network_endpoint_type", to configure endpoint
+    type to use.
