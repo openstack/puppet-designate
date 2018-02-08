@@ -1,0 +1,3 @@
+---
+other:
+  - Remove deprecated designate::central::backend_driver option.

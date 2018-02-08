@@ -53,12 +53,6 @@
 #  (optional) The name of the default pool.
 #  Defaults to $::os_service_default
 #
-# === DEPRECATED PARAMETERS
-#
-# [*backend_driver*]
-#  (optional) Driver used for backend communication (fake, rpc, bind9, powerdns)
-#  Defaults to 'undef'
-#
 class designate::central (
   $package_ensure             = present,
   $central_package_name       = $::designate::params::central_package_name,
@@ -72,15 +66,9 @@ class designate::central (
   $workers                    = $::os_workers,
   $threads                    = $::os_service_default,
   $default_pool_id            = $::os_service_default,
-  # DEPRECATED PARAMETERS
-  $backend_driver             = undef,
 ) inherits designate {
 
   include ::designate::deps
-
-  if $backend_driver {
-    warning('backend_driver has been deprecated and has no effect. It will be removed in Pike.')
-  }
 
   designate_config {
     'service:central/managed_resource_email'     : value => $managed_resource_email;
