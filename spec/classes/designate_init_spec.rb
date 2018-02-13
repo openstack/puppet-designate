@@ -42,47 +42,50 @@ describe 'designate' do
 
   let :rabbit_use_ssl do
     {
-      :rabbit_host           => '127.0.0.1',
-      :rabbit_port           => 5672,
-      :rabbit_userid         => 'guest',
-      :rabbit_password       => '',
-      :rabbit_virtual_host   => '/',
-      :rabbit_use_ssl        => true,
-      :kombu_ssl_ca_certs    => 'ca goes here',
-      :kombu_ssl_certfile    => 'cert goes here',
-      :kombu_ssl_keyfile     => 'key goes here',
-      :kombu_ssl_version     => 'TLSv1',
-      :kombu_reconnect_delay => '1.0',
+      :rabbit_host             => '127.0.0.1',
+      :rabbit_port             => 5672,
+      :rabbit_userid           => 'guest',
+      :rabbit_password         => '',
+      :rabbit_virtual_host     => '/',
+      :rabbit_use_ssl          => true,
+      :kombu_ssl_ca_certs      => 'ca goes here',
+      :kombu_ssl_certfile      => 'cert goes here',
+      :kombu_ssl_keyfile       => 'key goes here',
+      :kombu_ssl_version       => 'TLSv1',
+      :kombu_reconnect_delay   => '1.0',
+      :kombu_failover_strategy => 'shuffle',
     }
   end
 
   let :rabbit_use_ssl_cert_no_key do
     {
-      :rabbit_host           => '127.0.0.1',
-      :rabbit_port           => 5672,
-      :rabbit_userid         => 'guest',
-      :rabbit_password       => '',
-      :rabbit_virtual_host   => '/',
-      :rabbit_use_ssl        => true,
-      :kombu_ssl_ca_certs    => 'ca goes here',
-      :kombu_ssl_certfile    => 'cert goes here',
-      :kombu_ssl_version     => 'TLSv1',
-      :kombu_reconnect_delay => '1.0',
+      :rabbit_host             => '127.0.0.1',
+      :rabbit_port             => 5672,
+      :rabbit_userid           => 'guest',
+      :rabbit_password         => '',
+      :rabbit_virtual_host     => '/',
+      :rabbit_use_ssl          => true,
+      :kombu_ssl_ca_certs      => 'ca goes here',
+      :kombu_ssl_certfile      => 'cert goes here',
+      :kombu_ssl_version       => 'TLSv1',
+      :kombu_reconnect_delay   => '1.0',
+      :kombu_failover_strategy => 'shuffle',
     }
   end
 
   let :rabbit_use_ssl_key_no_cert do
     {
-      :rabbit_host           => '127.0.0.1',
-      :rabbit_port           => 5672,
-      :rabbit_userid         => 'guest',
-      :rabbit_password       => '',
-      :rabbit_virtual_host   => '/',
-      :rabbit_use_ssl        => true,
-      :kombu_ssl_ca_certs    => 'ca goes here',
-      :kombu_ssl_keyfile     => 'key goes here',
-      :kombu_ssl_version     => 'TLSv1',
-      :kombu_reconnect_delay => '1.0',
+      :rabbit_host             => '127.0.0.1',
+      :rabbit_port             => 5672,
+      :rabbit_userid           => 'guest',
+      :rabbit_password         => '',
+      :rabbit_virtual_host     => '/',
+      :rabbit_use_ssl          => true,
+      :kombu_ssl_ca_certs      => 'ca goes here',
+      :kombu_ssl_keyfile       => 'key goes here',
+      :kombu_ssl_version       => 'TLSv1',
+      :kombu_reconnect_delay   => '1.0',
+      :kombu_failover_strategy => 'shuffle',
     }
   end
 
@@ -191,6 +194,7 @@ describe 'designate' do
       is_expected.to contain_designate_config('oslo_messaging_rabbit/rabbit_password').with_value( params[:rabbit_password] ).with_secret(true)
       is_expected.to contain_designate_config('oslo_messaging_rabbit/rabbit_virtual_host').with_value( params[:rabbit_virtual_host] )
       is_expected.to contain_designate_config('oslo_messaging_rabbit/kombu_reconnect_delay').with_value( params[:kombu_reconnect_delay] )
+      is_expected.to contain_designate_config('oslo_messaging_rabbit/kombu_failover_strategy').with_value( params[:kombu_failover_strategy] )
       is_expected.to contain_oslo__messaging__rabbit('designate_config').with(
         :rabbit_use_ssl     => params[:rabbit_use_ssl],
         :kombu_ssl_ca_certs => params[:kombu_ssl_ca_certs],

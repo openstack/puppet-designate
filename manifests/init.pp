@@ -95,6 +95,12 @@
 #   consumer cancel notification.
 #   Defaults to $::os_service_default
 #
+# [*kombu_failover_strategy*]
+#   (Optional) Determines how the next RabbitMQ node is chosen in case the one
+#   we are currently connected to becomes unavailable. Takes effect only if
+#   more than one RabbitMQ node is provided in config. (string value)
+#   Defaults to $::os_service_default
+#
 # [*notification_driver*]
 #   (optional) Driver used for issuing notifications
 #   Defaults to 'messaging'
@@ -165,6 +171,7 @@ class designate(
   $kombu_ssl_keyfile          = $::os_service_default,
   $kombu_ssl_version          = $::os_service_default,
   $kombu_reconnect_delay      = $::os_service_default,
+  $kombu_failover_strategy    = $::os_service_default,
   $notification_driver        = 'messaging',
   $default_transport_url      = $::os_service_default,
   $rpc_response_timeout       = $::os_service_default,
@@ -250,20 +257,21 @@ to your desired configuration.")
   }
 
   oslo::messaging::rabbit { 'designate_config':
-    kombu_ssl_version     => $kombu_ssl_version,
-    kombu_ssl_keyfile     => $kombu_ssl_keyfile,
-    kombu_ssl_certfile    => $kombu_ssl_certfile,
-    kombu_ssl_ca_certs    => $kombu_ssl_ca_certs,
-    kombu_reconnect_delay => $kombu_reconnect_delay,
-    rabbit_host           => $rabbit_host,
-    rabbit_port           => $rabbit_port,
-    rabbit_hosts          => $rabbit_hosts,
-    rabbit_use_ssl        => $rabbit_use_ssl,
-    rabbit_userid         => $rabbit_userid,
-    rabbit_password       => $rabbit_password,
-    rabbit_virtual_host   => $rabbit_virtual_host,
-    rabbit_ha_queues      => $rabbit_ha_queues_real,
-    amqp_durable_queues   => $amqp_durable_queues,
+    kombu_ssl_version       => $kombu_ssl_version,
+    kombu_ssl_keyfile       => $kombu_ssl_keyfile,
+    kombu_ssl_certfile      => $kombu_ssl_certfile,
+    kombu_ssl_ca_certs      => $kombu_ssl_ca_certs,
+    kombu_reconnect_delay   => $kombu_reconnect_delay,
+    kombu_failover_strategy => $kombu_failover_strategy,
+    rabbit_host             => $rabbit_host,
+    rabbit_port             => $rabbit_port,
+    rabbit_hosts            => $rabbit_hosts,
+    rabbit_use_ssl          => $rabbit_use_ssl,
+    rabbit_userid           => $rabbit_userid,
+    rabbit_password         => $rabbit_password,
+    rabbit_virtual_host     => $rabbit_virtual_host,
+    rabbit_ha_queues        => $rabbit_ha_queues_real,
+    amqp_durable_queues     => $amqp_durable_queues,
   }
 
   oslo::messaging::default { 'designate_config':
