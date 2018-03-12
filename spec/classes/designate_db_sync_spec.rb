@@ -18,6 +18,7 @@ describe 'designate::db::sync' do
                            'Anchor[designate::config::end]',
                            'Anchor[designate::dbsync::begin]'],
           :notify      => 'Anchor[designate::dbsync::end]',
+          :tag         => 'openstack-db',
         )
       end
     end
@@ -39,6 +40,7 @@ describe 'designate::db::sync' do
                            'Anchor[designate::config::end]',
                            'Anchor[designate::dbsync::begin]'],
           :notify      => 'Anchor[designate::dbsync::end]',
+          :tag         => 'openstack-db',
         )
       end
     end
