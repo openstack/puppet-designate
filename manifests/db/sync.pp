@@ -31,6 +31,7 @@ class designate::db::sync(
       Anchor['designate::dbsync::begin']
     ],
     notify      => Anchor['designate::dbsync::end'],
+    tag         => 'openstack-db',
   }
 
 }
