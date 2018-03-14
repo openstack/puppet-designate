@@ -11,50 +11,7 @@ describe 'basic designate' do
       include ::openstack_integration::rabbitmq
       include ::openstack_integration::mysql
       include ::openstack_integration::keystone
-
-      rabbitmq_user { 'designate':
-        admin    => true,
-        password => 'an_even_bigger_secret',
-        provider => 'rabbitmqctl',
-        require  => Class['rabbitmq'],
-      }
-
-      rabbitmq_user_permissions { 'designate@/':
-        configure_permission => '.*',
-        write_permission     => '.*',
-        read_permission      => '.*',
-        provider             => 'rabbitmqctl',
-        require              => Class['rabbitmq'],
-      }
-
-      # Designate resources
-      class { '::designate::db::mysql':
-        password => 'a_big_secret',
-      }
-      class { '::designate::keystone::auth':
-        password => 'a_big_secret',
-      }
-      class { '::designate':
-        default_transport_url => 'rabbit://designate:an_even_bigger_secret@127.0.0.1:5672/',
-        debug                 => true,
-      }
-      class { '::designate::keystone::authtoken':
-        password => 'a_big_secret',
-      }
-      class { '::designate::api':
-        enabled       => true,
-        auth_strategy => 'keystone',
-      }
-      include ::designate::central
-      class { '::designate::backend::bind9':
-        rndc_config_file => '',
-        rndc_key_file    => '',
-      }
-      include ::designate::client
-      class { '::designate::agent': }
-      class { '::designate::db':
-        database_connection => 'mysql+pymysql://designate:a_big_secret@127.0.0.1/designate?charset=utf8',
-      }
+      include ::openstack_integration::designate
       EOS
 
       # Run it twice and test for idempotency
