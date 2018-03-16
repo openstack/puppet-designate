@@ -118,6 +118,10 @@
 #   (optional) Whether to use durable queues in AMQP.
 #   Defaults to $::os_service_default.
 #
+# [*neutron_endpoint_type*]
+#   (optional) Endpoint type to use.
+#   Defaults to $::os_service_default.
+#
 # DEPRECATED PARAMETER
 #
 # [*rabbit_virtualhost*]
@@ -179,6 +183,7 @@ class designate(
   $notification_topics        = 'notifications',
   $purge_config               = false,
   $amqp_durable_queues        = $::os_service_default,
+  $neutron_endpoint_type      = $::os_service_default,
   #DEPRECATED PARAMETER
   $rabbit_virtualhost         = undef,
   $rabbit_host                = $::os_service_default,
@@ -288,8 +293,9 @@ to your desired configuration.")
 
   # default setting
   designate_config {
-    'DEFAULT/root_helper'            : value => $root_helper;
-    'DEFAULT/state_path'             : value => $::designate::params::state_path;
+    'DEFAULT/root_helper'               : value => $root_helper;
+    'DEFAULT/state_path'                : value => $::designate::params::state_path;
+    'network_api:neutron/endpoint_type' : value => $neutron_endpoint_type;
   }
 
 }
