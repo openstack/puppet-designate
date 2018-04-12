@@ -49,7 +49,11 @@ describe 'designate::client' do
       let(:platform_params) do
         case facts[:osfamily]
         when 'Debian'
-          { :client_package_name => 'python-designateclient' }
+          if facts[:os_package_type] == 'debian'
+            { :client_package_name => 'python3-designateclient' }
+          else
+            { :client_package_name => 'python-designateclient' }
+          end
         when 'RedHat'
           { :client_package_name => 'python-designateclient' }
         end
