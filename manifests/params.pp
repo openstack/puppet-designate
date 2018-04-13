@@ -11,9 +11,9 @@ class designate::params {
     $pyvers = ''
   }
 
-  $state_path                =  '/var/lib/designate'
-  $log_dir                   =  '/var/log/designate'
-  $client_package_name       =  "python${pyvers}-designateclient"
+  $state_path                = '/var/lib/designate'
+  $log_dir                   = '/var/log/designate'
+  $client_package_name       = "python${pyvers}-designateclient"
   $agent_service_name        = 'designate-agent'
   $api_service_name          = 'designate-api'
   $central_service_name      = 'designate-central'
