@@ -24,6 +24,8 @@ describe 'designate::config' do
 
 
   shared_examples_for 'designate-config' do
+    it { is_expected.to contain_class('designate::deps') }
+
     it 'configures arbitrary designate configurations' do
       is_expected.to contain_designate_config('DEFAULT/foo').with_value('fooValue')
       is_expected.to contain_designate_config('DEFAULT/bar').with_value('barValue')
