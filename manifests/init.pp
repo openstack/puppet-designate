@@ -122,42 +122,6 @@
 #   (optional) Endpoint type to use.
 #   Defaults to $::os_service_default.
 #
-# DEPRECATED PARAMETER
-#
-# [*rabbit_virtualhost*]
-#   (optional) DEPRECATED. Use rabbit_virtual_host
-#   Defaults to undef.
-#
-# [*rabbit_host*]
-#   (optional) Location of rabbitmq installation.
-#   Defaults to $::os_service_default
-#
-# [*rabbit_port*]
-#   (optional) Port for rabbitmq instance.
-#   Defaults to $::os_service_default
-#
-# [*rabbit_hosts*]
-#   (Optional) Array of host:port (used with HA queues).
-#   If defined, will remove rabbit_host & rabbit_port parameters from config
-#   Defaults to $::os_service_default
-#
-# [*rabbit_password*]
-#   (optional) Password used to connect to rabbitmq.
-#   Defaults to $::os_service_default
-#
-# [*rabbit_userid*]
-#   (optional) User used to connect to rabbitmq.
-#   Defaults to $::os_service_default
-#
-# [*rabbit_virtual_host*]
-#   (optional) The RabbitMQ virtual host.
-#   Defaults to $::os_service_default
-#
-# [*rpc_backend*]
-#   (optional) The messaging driver to use. Currently only rabbit is support
-#   by this puppet module.
-#   Defaults to 'rabbit'.
-#
 class designate(
   $package_ensure             = present,
   $common_package_name        = $::designate::params::common_package_name,
@@ -184,23 +148,7 @@ class designate(
   $purge_config               = false,
   $amqp_durable_queues        = $::os_service_default,
   $neutron_endpoint_type      = $::os_service_default,
-  #DEPRECATED PARAMETER
-  $rabbit_virtualhost         = undef,
-  $rabbit_host                = $::os_service_default,
-  $rabbit_port                = $::os_service_default,
-  $rabbit_hosts               = $::os_service_default,
-  $rabbit_userid              = $::os_service_default,
-  $rabbit_password            = $::os_service_default,
-  $rabbit_virtual_host        = $::os_service_default,
-  $rpc_backend                = 'rabbit',
 ) inherits designate::params {
-
-  if $rabbit_virtualhost {
-    warning('The parameter rabbit_virtualhost is deprecated, use rabbit_virtual_host.')
-    $rabbit_virtual_host_real = $rabbit_virtualhost
-  } else {
-    $rabbit_virtual_host_real = $rabbit_virtual_host
-  }
 
   if !is_service_default($kombu_ssl_ca_certs) and !$rabbit_use_ssl {
     fail('The kombu_ssl_ca_certs parameter requires rabbit_use_ssl to be set to true')
@@ -214,31 +162,6 @@ class designate(
   if (is_service_default($kombu_ssl_certfile) and ! is_service_default($kombu_ssl_keyfile))
       or (is_service_default($kombu_ssl_keyfile) and ! is_service_default($kombu_ssl_certfile)) {
     fail('The kombu_ssl_certfile and kombu_ssl_keyfile parameters must be used together')
-  }
-
-  if !is_service_default($rabbit_host) or
-    !is_service_default($rabbit_hosts) or
-    !is_service_default($rabbit_password) or
-    !is_service_default($rabbit_port) or
-    !is_service_default($rabbit_userid) or
-    $rpc_backend or !is_service_default($rabbit_virtual_host) {
-    warning("designate::rabbit_host, designate::rabbit_hosts, designate::rabbit_password, \
-designate::rabbit_port, designate::rabbit_userid and designate::rabbit_virtual_host and \
-designate::rpc_backend are deprecated. Please use designate::default_transport_url instead.")
-  }
-
-  if is_service_default($rabbit_ha_queues) {
-    warning("designate::rabbit_ha_queues will be changed to use the service default \
-durring the Pike cycle. Currently it is automatically configured based on the setting of \
-designate::rabbit_hosts which has been deprecated. Please consider defining this variable \
-to your desired configuration.")
-    if !is_service_default($rabbit_hosts) {
-      $rabbit_ha_queues_real = true
-    } else {
-      $rabbit_ha_queues_real = false
-    }
-  } else {
-    $rabbit_ha_queues_real = $rabbit_ha_queues
   }
 
   include ::designate::deps
@@ -268,14 +191,8 @@ to your desired configuration.")
     kombu_ssl_ca_certs      => $kombu_ssl_ca_certs,
     kombu_reconnect_delay   => $kombu_reconnect_delay,
     kombu_failover_strategy => $kombu_failover_strategy,
-    rabbit_host             => $rabbit_host,
-    rabbit_port             => $rabbit_port,
-    rabbit_hosts            => $rabbit_hosts,
     rabbit_use_ssl          => $rabbit_use_ssl,
-    rabbit_userid           => $rabbit_userid,
-    rabbit_password         => $rabbit_password,
-    rabbit_virtual_host     => $rabbit_virtual_host,
-    rabbit_ha_queues        => $rabbit_ha_queues_real,
+    rabbit_ha_queues        => $rabbit_ha_queues,
     amqp_durable_queues     => $amqp_durable_queues,
   }
 

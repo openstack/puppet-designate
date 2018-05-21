@@ -1,0 +1,20 @@
+---
+upgrade:
+  - |
+    The deprecated parameters designate::rabbit_host, designate::rabbit_hosts, designate::rabbit_password,
+    designate::rabbit_port, designate::rabbit_userid, designate::rabbit_virtual_host and
+    designate::rpc_backend is removed.
+    Please use designate::default_transport_url instead.
+  - |
+    The designate::rabbit_ha_queues is not automatically set to true if designate::rabbit_hosts is set
+    since this parameter does not exist anymore. Please explicitly set designate::rabbit_ha_queues to
+    true.
+  - |
+    The deprecated parameters designate::api_host and designate::api_port is removed.
+    Please use designate::listen instead.
+  - |
+    The deprecated parameters designate::mdns::host and designate::mdns::port is removed.
+    Please use designate::mdns::listen instead.
+  - |
+    The deprecated class designate::dns is removed.
+    Please use designate::backend::bind9 instead.

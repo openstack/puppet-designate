@@ -92,16 +92,6 @@
 #  (optional) Admin API extensions.
 #  Defaults to $::os_service_default
 #
-# DEPRECATED PARAMETERS
-#
-# [*api_host*]
-#  (optional) Address to bind the API server
-#  Defaults to undef
-#
-# [*api_port*]
-#  (optional) Port the bind the API server to
-#  Defaults to undef
-#
 class designate::api (
   $package_ensure           = present,
   $api_package_name         = $::designate::params::api_package_name,
@@ -125,19 +115,9 @@ class designate::api (
   $enabled_extensions_v1    = $::os_service_default,
   $enabled_extensions_v2    = $::os_service_default,
   $enabled_extensions_admin = $::os_service_default,
-  # DEPRECATED PARAMETERS
-  $api_host           = undef,
-  $api_port           = undef,
 ) inherits designate {
 
   include ::designate::deps
-
-  if $api_host and $api_port {
-    warning('api_host and api_port parameters have been deprecated, please use listen instead.')
-    $listen_real = "${api_host}:${api_port}"
-  } else {
-    $listen_real = $listen
-  }
 
   if !is_service_default($enable_api_v1) {
     warning('Version 1 of API is deprecated.')
@@ -145,7 +125,7 @@ class designate::api (
 
   # API Service
   designate_config {
-    'service:api/listen'                    : value => $listen_real;
+    'service:api/listen'                    : value => $listen;
     'service:api/auth_strategy'             : value => $auth_strategy;
     'service:api/enable_api_v1'             : value => $enable_api_v1;
     'service:api/enable_api_v2'             : value => $enable_api_v2;
