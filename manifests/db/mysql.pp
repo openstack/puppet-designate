@@ -5,7 +5,7 @@
 # === Parameters:
 #
 # [*password*]
-#   Password to use for the designate user
+#   (Required) Password to use for the designate user
 #
 # [*dbname*]
 #   (optional) The name of the database
