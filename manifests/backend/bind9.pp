@@ -44,6 +44,15 @@ class designate::backend::bind9 (
     order   => '20',
   }
 
+  # Recommended by Designate docs as a mitigation for potential cache
+  # poisoning attacks:
+  # https://docs.openstack.org/designate/queens/admin/production-guidelines.html#bind9-mitigation
+  concat::fragment { 'dns minimal-responses':
+    target  => $::dns::optionspath,
+    content => 'minimal-responses yes;',
+    order   => '21',
+  }
+
   # /var/named is root:named on RedHat and /var/cache/bind is root:bind on
   # Debian. Both groups only have read access but require write permission in
   # order to be able to use rndc addzone/delzone commands that Designate uses.
