@@ -20,16 +20,27 @@
 #  (optional) Port to use for dns service on rndc_host.
 #  Defaults to '953'
 #
+# [*rndc_controls*]
+#  (optional) Hash defining controls configuration for rndc.
+#  Defaults to undef, which uses the puppet-dns default
+#
 class designate::backend::bind9 (
   $rndc_host           = '127.0.0.1',
   $rndc_port           = '953',
   $rndc_config_file    = '/etc/rndc.conf',
   $rndc_key_file       = '/etc/rndc.key',
+  $rndc_controls       = undef,
 ) {
 
   include ::designate::deps
   include ::designate
-  include ::dns
+  if $rndc_controls {
+    class { '::dns':
+      controls => $rndc_controls,
+    }
+  } else {
+    include ::dns
+  }
 
   designate_config {
     'backend:bind9/rndc_host'        : value => $rndc_host;
