@@ -129,6 +129,13 @@ Setup
 * See the repo setup instructions for the various RDO deployment methods for
   details on how to use them.
 
+Development
+-----------
+
+Developer documentation for the entire puppet-openstack project.
+
+* https://docs.openstack.org/puppet-openstack-guide/latest/
+
 Contributors
 ------------
 
