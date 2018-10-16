@@ -71,6 +71,7 @@
 #   option, you must wipe the RabbitMQ database. (boolean value). Currently,
 #   this value is set to true when rabbit_hosts is configured. This will change
 #   during the Pike cycle where we will no longer do this check.
+#   Defaults to $::os_service_default
 #
 # [*kombu_ssl_ca_certs*]
 #   (optional) SSL certification authority file (valid only if SSL enabled).
