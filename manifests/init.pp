@@ -68,9 +68,7 @@
 #
 # [*rabbit_ha_queues*]
 #   (optional) Use HA queues in RabbitMQ (x-ha-policy: all). If you change this
-#   option, you must wipe the RabbitMQ database. (boolean value). Currently,
-#   this value is set to true when rabbit_hosts is configured. This will change
-#   during the Pike cycle where we will no longer do this check.
+#   option, you must wipe the RabbitMQ database. (boolean value).
 #   Defaults to $::os_service_default
 #
 # [*kombu_ssl_ca_certs*]

@@ -18,9 +18,6 @@ node /designate/ {
 
   # This example would install designate api
   # designate central service and designate backend (bind)
-  $rabbit_host           = '127.0.0.1'
-  $rabbit_userid         = 'guest'
-  $rabbit_password       = 'guest'
   $auth_strategy         = 'keystone'
   $designate_db_password = 'admin'
   $db_host               = '127.0.0.1'
@@ -58,13 +55,17 @@ node /designate/ {
   }
 
   class {'::designate':
-    rabbit_host     => $rabbit_host,
-    rabbit_userid   => $rabbit_userid,
-    rabbit_password => $rabbit_password,
+    default_transport_url => os_transport_url({
+        'transport'    => 'rabbit',
+        'host'         => '127.0.0.1',
+        'username'     => 'guest',
+        'password'     => 'guest',
+        'virtual_host' => '/',
+    }),
   }
 
   class {'::designate::db':
-    database_connection   => "mysql://designate:${designate_db_password}@${db_host}/designate"
+    database_connection => "mysql://designate:${designate_db_password}@${db_host}/designate"
   }
 
   include '::designate::client'
