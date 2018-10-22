@@ -41,7 +41,6 @@ define designate::generic_service(
 
   include ::designate::deps
   include ::designate::params
-  include ::designate::db
 
   $designate_title = "designate-${name}"
   Exec['post-designate_config'] ~> Anchor['designate::service::end']

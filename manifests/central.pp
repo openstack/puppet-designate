@@ -69,6 +69,7 @@ class designate::central (
 ) inherits designate {
 
   include ::designate::deps
+  include ::designate::db
 
   designate_config {
     'service:central/managed_resource_email'     : value => $managed_resource_email;

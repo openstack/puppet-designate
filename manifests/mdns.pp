@@ -68,6 +68,7 @@ class designate::mdns (
 ) inherits designate {
 
   include ::designate::deps
+  include ::designate::db
 
   designate_config {
     'service:mdns/workers'            : value => $workers;
