@@ -27,6 +27,10 @@ describe 'designate::mdns' do
         )
       end
 
+      it 'includes designate::db' do
+        is_expected.to contain_class('designate::db')
+      end
+
       it 'configures designate-mdns with default parameters' do
         is_expected.to contain_designate_config('service:mdns/workers').with_value(8)
         is_expected.to contain_designate_config('service:mdns/threads').with_value('<SERVICE DEFAULT>')
