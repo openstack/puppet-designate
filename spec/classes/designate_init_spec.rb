@@ -8,7 +8,6 @@ describe 'designate' do
   let :params do
     {
       :package_ensure        => 'installed',
-      :debug                 => 'False',
       :purge_config          => false,
       :neutron_endpoint_type => 'internalURL',
       :root_helper           => 'sudo designate-rootwrap /etc/designate/rootwrap.conf'
@@ -76,7 +75,6 @@ describe 'designate' do
   shared_examples_for 'a designate base installation' do
 
     it { is_expected.to contain_class('designate::deps') }
-    it { is_expected.to contain_class('designate::logging') }
     it { is_expected.to contain_class('designate::params') }
 
     it 'installs designate common package' do
@@ -93,7 +91,7 @@ describe 'designate' do
       })
     end
 
-    it 'configures debug and verbosity' do
+    it 'configures root_helper' do
       is_expected.to contain_designate_config('DEFAULT/root_helper').with_value( params[:root_helper] )
     end
 

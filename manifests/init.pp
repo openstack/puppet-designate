@@ -16,27 +16,6 @@
 #  (optional) Whether the designate-common package will be present..
 #  Defaults to 'present'
 #
-# [*debug*]
-#   (optional) should the daemons log debug messages.
-#   Defaults to undef
-#
-# [*use_syslog*]
-#   (Optional) Use syslog for logging.
-#   Defaults to undef
-#
-# [*use_stderr*]
-#   (optional) Use stderr for logging
-#   Defaults to undef
-#
-# [*log_facility*]
-#   (Optional) Syslog facility to receive log lines.
-#   Defaults to undef
-#
-# [*log_dir*]
-#   (optional) Directory where logs should be stored.
-#   If set to $::os_service_default, it will not log to any directory.
-#   Defaults to undef
-#
 # [*root_helper*]
 #   (optional) Command for designate rootwrap helper.
 #   Defaults to 'sudo designate-rootwrap /etc/designate/rootwrap.conf'.
@@ -124,11 +103,6 @@
 class designate(
   $package_ensure             = present,
   $common_package_name        = $::designate::params::common_package_name,
-  $debug                      = undef,
-  $log_dir                    = undef,
-  $use_syslog                 = undef,
-  $use_stderr                 = undef,
-  $log_facility               = undef,
   $root_helper                = 'sudo designate-rootwrap /etc/designate/rootwrap.conf',
   $notification_transport_url = $::os_service_default,
   $rabbit_use_ssl             = false,
@@ -164,7 +138,6 @@ class designate(
   }
 
   include ::designate::deps
-  include ::designate::logging
 
   exec { 'post-designate_config':
     command     => '/bin/echo "designate config has changed"',
