@@ -5,7 +5,7 @@
 # === Parameters
 #
 # [*policies*]
-#   (optional) Set of policies to configure for designate
+#   (Optional) Set of policies to configure for designate
 #   Example :
 #     {
 #       'designate-context_is_admin' => {
@@ -20,7 +20,7 @@
 #   Defaults to empty hash.
 #
 # [*policy_path*]
-#   (optional) Path to the designate policy.json file
+#   (Optional) Path to the designate policy.json file
 #   Defaults to /etc/designate/policy.json
 #
 class designate::policy (

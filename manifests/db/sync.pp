@@ -4,7 +4,7 @@
 # ==Parameters
 #
 # [*extra_params*]
-#   (optional) String of extra command line parameters to append
+#   (Optional) String of extra command line parameters to append
 #   to the designate-manage database sync command. These will be
 #   inserted in the command line between 'designate-manage' and
 #   'database sync'.

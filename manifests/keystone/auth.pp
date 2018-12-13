@@ -5,52 +5,62 @@
 # === Parameters
 #
 # [*password*]
-#   Password for designate user. Required.
+#   (Required) Password for designate user.
 #
 # [*email*]
-#   Email for designate user. Optional. Defaults to 'designate@localhost'.
+#   (Optional) Email for designate user.
+#   Defaults to 'designate@localhost'.
 #
 # [*auth_name*]
-#   Username for designate service. Optional. Defaults to 'designate'.
+#   (Optional) Username for designate service.
+#   Defaults to 'designate'.
 #
 # [*configure_endpoint*]
-#   Should designate endpoint be configured? Optional. Defaults to 'true'.
+#   (Optional) Should designate endpoint be configured?
+#   Defaults to true
 #
 # [*configure_user*]
-#   Should designate user be configured?
-#   Defaults to 'true'.
+#   (Optional) Should designate user be configured?
+#   Defaults to true
 #
 # [*configure_user_role*]
-#   Should designate user_role be configured?
-#   Defaults to 'true'.
+#   (Optional) Should designate user_role be configured?
+#   Defaults to true
 #
 # [*service_name*]
-#   (optional) Name of the service.
+#   (Optional) Name of the service.
 #   Defaults to 'designate'.
 #
 # [*service_type*]
-#    Type of service. Optional. Defaults to 'metering'.
+#   (Optional) Type of service.
+#   Defaults to 'metering'.
 #
 # [*service_description*]
-#    Description for keystone service. Optional. Defaults to 'Openstack DNSaas Service'.
+#   (Optional) Description for keystone service.
+#   Defaults to 'Openstack DNSaas Service'.
 #
 # [*region*]
-#    Region for endpoint. Optional. Defaults to 'RegionOne'.
+#   (Optional) Region for endpoint.
+#   Defaults to 'RegionOne'.
 #
 # [*tenant*]
-#    Tenant for designate user. Optional. Defaults to 'services'.
+#   (Optional) Tenant for designate user.
+#   Defaults to 'services'.
 #
 # [*public_url*]
-#   (optional) The endpoint's public url. (Defaults to 'http://127.0.0.1:9001')
+#   (0ptional) The endpoint's public url.
 #   This url should *not* contain any trailing '/'.
+#   Defaults to 'http://127.0.0.1:9001'
 #
 # [*admin_url*]
-#   (optional) The endpoint's admin url. (Defaults to 'http://127.0.0.1:9001')
+#   (Optional) The endpoint's admin url.
 #   This url should *not* contain any trailing '/'.
+#   Defaults to 'http://127.0.0.1:9001'
 #
 # [*internal_url*]
-#   (optional) The endpoint's internal url. (Defaults to 'http://127.0.0.1:9001')
+#   (Optional) The endpoint's internal url.
 #   This url should *not* contain any trailing '/'.
+#   Defaults to 'http://127.0.0.1:9001'
 #
 # === Examples
 #
