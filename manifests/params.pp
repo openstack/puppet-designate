@@ -4,13 +4,7 @@
 #
 class designate::params {
   include ::openstacklib::defaults
-
-  if ($::os_package_type == 'debian') or ($::os['name'] == 'Fedora') or
-      ($::os['family'] == 'RedHat' and Integer.new($::os['release']['major']) > 7){
-    $pyvers = '3'
-  } else {
-    $pyvers = ''
-  }
+  $pyvers = $::openstacklib::defaults::pyvers
 
   $state_path                = '/var/lib/designate'
   $log_dir                   = '/var/log/designate'
@@ -48,7 +42,7 @@ class designate::params {
       $central_package_name      = 'designate-central'
       $agent_package_name        = 'designate-agent'
       $sink_package_name         = 'designate-sink'
-      $pymysql_package_name      = 'python-pymysql'
+      $pymysql_package_name      = "python${pyvers}-pymysql"
       $pool_manager_package_name = 'designate-pool-manager'
       $mdns_package_name         = 'designate-mdns'
       $zone_manager_package_name = 'designate-zone-manager'

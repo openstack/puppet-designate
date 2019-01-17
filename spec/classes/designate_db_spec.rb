@@ -69,7 +69,7 @@ describe 'designate::db' do
       it 'install the proper backend package' do
         is_expected.to contain_package('designate-backend-package').with(
           :ensure => 'present',
-          :name   => 'python-pymysql',
+          :name   => 'python3-pymysql',
           :tag    => 'openstack'
         )
       end
