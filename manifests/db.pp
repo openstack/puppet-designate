@@ -57,8 +57,8 @@ class designate::db (
   include ::designate::deps
   include ::designate::params
 
-  validate_re($database_connection,
-    '(mysql(\+pymysql)?):\/\/(\S+:\S+@\S+\/\S+)?')
+  validate_legacy(String, 'validate_re', $database_connection,
+    ['(mysql(\+pymysql)?):\/\/(\S+:\S+@\S+\/\S+)?'])
 
   case $database_connection {
     /^mysql(\+pymysql)?:\/\//: {

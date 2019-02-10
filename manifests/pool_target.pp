@@ -35,8 +35,9 @@ define designate::pool_target (
     include ::powerdns::mysql
   }
 
-  validate_re($name, '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')
-  validate_array($masters)
+  validate_legacy(Pattern[/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/],
+    'validate_re', $name, ['[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'])
+  validate_legacy(Array, 'validate_array', $masters)
 
   if is_hash($options) {
     $options_real = join(join_keys_to_values($options,':'),',')

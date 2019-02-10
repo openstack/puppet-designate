@@ -39,7 +39,7 @@ describe 'designate::db' do
         { :database_connection     => 'redis://designate:designate@localhost/designate', }
       end
 
-      it_raises 'a Puppet::Error', /validate_re/
+      it { should raise_error(Puppet::Error) }
     end
 
     context 'with specific parameters' do

@@ -15,8 +15,9 @@ define designate::pool_nameserver(
 
   include ::designate::deps
 
-  validate_re($name, '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}',
-    'Name should be a UUID.')
+  validate_legacy(Pattern[/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/],
+    'validate_re', $name, ['[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}',
+    'Name should be a UUID.'])
 
   designate_config {
     "pool_nameserver:${name}/port": value => $port;

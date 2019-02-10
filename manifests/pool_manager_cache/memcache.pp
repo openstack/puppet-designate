@@ -19,7 +19,7 @@ class designate::pool_manager_cache::memcache(
 
   include ::designate::deps
 
-  validate_array($memcached_servers)
+  validate_legacy(Array, 'validate_array', $memcached_servers)
 
   designate_config {
     'service:pool_manager/cache_driver':             value => 'memcache';
