@@ -21,11 +21,13 @@ define designate::pool(
 
   include ::designate::deps
 
-  validate_re($name, '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}',
-    'Pool name should be a UUID.')
-  validate_array($nameservers)
-  validate_array($targets)
-  validate_array($also_notifies)
+  validate_legacy(Pattern[/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/],
+    'validate_re', $name, ['[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}',
+    'Pool name should be a UUID.'])
+
+  validate_legacy(Array, 'validate_array', $nameservers)
+  validate_legacy(Array, 'validate_array', $targets)
+  validate_legacy(Array, 'validate_array', $also_notifies)
 
   designate_config {
     "pool:${name}/nameservers":   value => join($nameservers,',');
