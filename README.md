@@ -151,6 +151,6 @@ Release Notes
 Repository
 ----------
 
-* https://git.openstack.org/cgit/openstack/puppet-designate
+* https://opendev.org/openstack/puppet-designate
 
 
