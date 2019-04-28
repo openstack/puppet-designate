@@ -40,9 +40,6 @@
 #   (Optional) Run db sync on nodes after connection setting has been set.
 #   Defaults to true
 #
-# [*sync_db*]
-#   Enable dbsync.
-#
 class designate::db (
   $database_connection     = 'mysql://designate:designate@localhost/designate',
   $database_idle_timeout   = 3600,
