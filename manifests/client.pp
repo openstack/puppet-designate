@@ -25,4 +25,6 @@ class designate::client (
     tag    => 'openstack',
   }
 
+  include '::openstacklib::openstackclient'
+
 }

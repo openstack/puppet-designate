@@ -21,6 +21,8 @@ describe 'designate::client' do
           :tag    => 'openstack'
         )
       end
+
+      it { is_expected.to contain_class('openstacklib::openstackclient') }
     end
 
     context 'with custom package name' do
