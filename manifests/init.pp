@@ -50,6 +50,16 @@
 #   option, you must wipe the RabbitMQ database. (boolean value).
 #   Defaults to $::os_service_default
 #
+# [*rabbit_heartbeat_in_pthread*]
+#   (Optional) EXPERIMENTAL: Run the health check heartbeat thread
+#   through a native python thread. By default if this
+#   option isn't provided the  health check heartbeat will
+#   inherit the execution model from the parent process. By
+#   example if the parent process have monkey patched the
+#   stdlib by using eventlet/greenlet then the heartbeat
+#   will be run through a green thread.
+#   Defaults to $::os_service_default
+#
 # [*kombu_ssl_ca_certs*]
 #   (optional) SSL certification authority file (valid only if SSL enabled).
 #   Defaults to $::os_service_default
@@ -101,26 +111,27 @@
 #   Defaults to $::os_service_default.
 #
 class designate(
-  $package_ensure             = present,
-  $common_package_name        = $::designate::params::common_package_name,
-  $root_helper                = 'sudo designate-rootwrap /etc/designate/rootwrap.conf',
-  $notification_transport_url = $::os_service_default,
-  $rabbit_use_ssl             = false,
-  $rabbit_ha_queues           = $::os_service_default,
-  $kombu_ssl_ca_certs         = $::os_service_default,
-  $kombu_ssl_certfile         = $::os_service_default,
-  $kombu_ssl_keyfile          = $::os_service_default,
-  $kombu_ssl_version          = $::os_service_default,
-  $kombu_reconnect_delay      = $::os_service_default,
-  $kombu_failover_strategy    = $::os_service_default,
-  $notification_driver        = 'messaging',
-  $default_transport_url      = $::os_service_default,
-  $rpc_response_timeout       = $::os_service_default,
-  $control_exchange           = $::os_service_default,
-  $notification_topics        = 'notifications',
-  $purge_config               = false,
-  $amqp_durable_queues        = $::os_service_default,
-  $neutron_endpoint_type      = $::os_service_default,
+  $package_ensure              = present,
+  $common_package_name         = $::designate::params::common_package_name,
+  $root_helper                 = 'sudo designate-rootwrap /etc/designate/rootwrap.conf',
+  $notification_transport_url  = $::os_service_default,
+  $rabbit_use_ssl              = false,
+  $rabbit_ha_queues            = $::os_service_default,
+  $rabbit_heartbeat_in_pthread = $::os_service_default,
+  $kombu_ssl_ca_certs          = $::os_service_default,
+  $kombu_ssl_certfile          = $::os_service_default,
+  $kombu_ssl_keyfile           = $::os_service_default,
+  $kombu_ssl_version           = $::os_service_default,
+  $kombu_reconnect_delay       = $::os_service_default,
+  $kombu_failover_strategy     = $::os_service_default,
+  $notification_driver         = 'messaging',
+  $default_transport_url       = $::os_service_default,
+  $rpc_response_timeout        = $::os_service_default,
+  $control_exchange            = $::os_service_default,
+  $notification_topics         = 'notifications',
+  $purge_config                = false,
+  $amqp_durable_queues         = $::os_service_default,
+  $neutron_endpoint_type       = $::os_service_default,
 ) inherits designate::params {
 
   if !is_service_default($kombu_ssl_ca_certs) and !$rabbit_use_ssl {
@@ -165,6 +176,7 @@ class designate(
     kombu_failover_strategy => $kombu_failover_strategy,
     rabbit_use_ssl          => $rabbit_use_ssl,
     rabbit_ha_queues        => $rabbit_ha_queues,
+    heartbeat_in_pthread    => $rabbit_heartbeat_in_pthread,
     amqp_durable_queues     => $amqp_durable_queues,
   }
 

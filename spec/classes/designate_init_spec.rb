@@ -103,6 +103,7 @@ describe 'designate' do
       is_expected.to contain_designate_config('oslo_messaging_notifications/driver').with_value('messaging' )
       is_expected.to contain_designate_config('oslo_messaging_notifications/topics').with_value('notifications')
       is_expected.to contain_designate_config('oslo_messaging_notifications/transport_url').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_designate_config('oslo_messaging_rabbit/heartbeat_in_pthread').with_value('<SERVICE DEFAULT>')
       is_expected.to contain_designate_config('DEFAULT/transport_url').with_value('<SERVICE DEFAULT>')
       is_expected.to contain_designate_config('DEFAULT/rpc_response_timeout').with_value('<SERVICE DEFAULT>')
       is_expected.to contain_designate_config('DEFAULT/control_exchange').with_value('<SERVICE DEFAULT>')
@@ -113,13 +114,15 @@ describe 'designate' do
   shared_examples_for 'rabbit transport' do
     before do
       params.merge!({
-        :default_transport_url => 'rabbit://designate:secret@127.0.0.1:5672/designate',
-        :rabbit_ha_queues      => true,
+        :default_transport_url       => 'rabbit://designate:secret@127.0.0.1:5672/designate',
+        :rabbit_ha_queues            => true,
+        :rabbit_heartbeat_in_pthread => true,
       })
     end
 
     it { is_expected.to contain_designate_config('DEFAULT/transport_url').with_value('rabbit://designate:secret@127.0.0.1:5672/designate') }
     it { is_expected.to contain_designate_config('oslo_messaging_rabbit/rabbit_ha_queues').with_value(true) }
+    it { is_expected.to contain_designate_config('oslo_messaging_rabbit/heartbeat_in_pthread').with_value(true) }
     it { is_expected.to contain_designate_config('oslo_messaging_rabbit/amqp_durable_queues').with_value('<SERVICE DEFAULT>') }
 
   end
