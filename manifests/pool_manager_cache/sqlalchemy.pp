@@ -1,5 +1,7 @@
 # Class: designate::pool_manager_cache::sqlalchemy
 #
+# DEPRECATED!
+#
 # === Parameters
 #
 # [*connection*]
@@ -41,16 +43,6 @@ class designate::pool_manager_cache::sqlalchemy(
   $retry_interval     = $::os_service_default,
 ){
 
-  include ::designate::deps
-
-  designate_config {
-    'service:pool_manager/cache_driver':                value => 'sqlalchemy';
-    'pool_manager_cache:sqlalchemy/connection':         value => $connection;
-    'pool_manager_cache:sqlalchemy/connection_debug':   value => $connection_debug;
-    'pool_manager_cache:sqlalchemy/connection_trace':   value => $connection_trace;
-    'pool_manager_cache:sqlalchemy/sqlite_synchronous': value => $sqlite_synchronous;
-    'pool_manager_cache:sqlalchemy/idle_timeout':       value => $idle_timeout;
-    'pool_manager_cache:sqlalchemy/max_retries':        value => $max_retries;
-    'pool_manager_cache:sqlalchemy/retry_interval':     value => $retry_interval;
-  }
+  warning('designate::pool_manager_cache::sqlalchemy is deprecated, \
+has no effect and will be removed in the next release')
 }

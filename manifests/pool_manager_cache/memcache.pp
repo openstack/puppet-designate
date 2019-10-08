@@ -1,5 +1,7 @@
 # == Class: designate::pool_manager_cache::memcache
 #
+# DEPRECATED!
+#
 # Configure Memcache as caching service for the pool manager.
 #
 # == Parameters
@@ -17,13 +19,6 @@ class designate::pool_manager_cache::memcache(
   $expiration        = $::os_service_default,
 ){
 
-  include ::designate::deps
-
-  validate_legacy(Array, 'validate_array', $memcached_servers)
-
-  designate_config {
-    'service:pool_manager/cache_driver':             value => 'memcache';
-    'pool_manager_cache:memcache/memcached_servers': value => join($memcached_servers,',');
-    'pool_manager_cache:memcache/expiration':        value => $expiration;
-  }
+  warning('designate::pool_manager_cache::memcache is deprecated, \
+has no effect and will be removed in the next release')
 }

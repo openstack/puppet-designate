@@ -1,0 +1,10 @@
+---
+upgrade:
+  - |
+    The pool-manager is removed in this release so all related classes are
+    deprecated and has no effect. You should move to using the producer instead.
+deprecations:
+  - |
+    The designate::pool_manager, designate::pool_manager_cache::memcache,
+    designate::pool_manager_cache::sqlalchemy classes is deprecated and
+    has no effect. You should use the designate::producer class instead.

@@ -1,5 +1,7 @@
 # == Class: designate::pool_manager
 #
+# DEPRECATED!
+#
 # Configure designate pool manager service
 #
 # == Parameters
@@ -107,45 +109,5 @@ class designate::pool_manager(
   $periodic_sync_retry_interval = $::os_service_default,
 ) {
 
-  include ::designate::deps
-  include ::designate::params
-
-  if $pool_id !~ /^[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}$/ {
-    fail('pool_id should be a valid UUID')
-  }
-
-  if $manage_package {
-    package { 'designate-pool-manager':
-      ensure => $package_ensure,
-      name   => pick($pool_manager_package_name, $::designate::params::pool_manager_package_name),
-      tag    => ['openstack', 'designate-package'],
-    }
-  }
-
-  service { 'designate-pool-manager':
-    ensure     => $service_ensure,
-    name       => $::designate::params::pool_manager_service_name,
-    enable     => $enabled,
-    hasstatus  => true,
-    hasrestart => true,
-    tag        => ['openstack', 'designate-service'],
-  }
-
-  designate_config {
-    'service:pool_manager/pool_id':                      value => $pool_id;
-    'service:pool_manager/workers':                      value => $workers;
-    'service:pool_manager/threads':                      value => $threads;
-    'service:pool_manager/threshold_percentage':         value => $threshold_percentage;
-    'service:pool_manager/poll_timeout':                 value => $poll_timeout;
-    'service:pool_manager/poll_retry_interval':          value => $poll_retry_interval;
-    'service:pool_manager/poll_max_retries':             value => $poll_max_retries;
-    'service:pool_manager/poll_delay':                   value => $poll_delay;
-    'service:pool_manager/periodic_recovery_interval':   value => $periodic_recovery_interval;
-    'service:pool_manager/periodic_sync_interval':       value => $periodic_sync_interval;
-    'service:pool_manager/periodic_sync_seconds':        value => $periodic_sync_seconds;
-    'service:pool_manager/enable_recovery_timer':        value => $enable_recovery_timer;
-    'service:pool_manager/enable_sync_timer':            value => $enable_sync_timer;
-    'service:pool_manager/periodic_sync_max_attempts':   value => $periodic_sync_max_attempts;
-    'service:pool_manager/periodic_sync_retry_interval': value => $periodic_sync_retry_interval;
-  }
+  warning('designate::pool_manager is deprecated, has no effect and will be removed in the next release')
 }
