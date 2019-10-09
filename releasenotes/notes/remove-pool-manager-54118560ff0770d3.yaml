@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The designate::pool_manager, designate::pool_manager_cache::memcache and
+    designate::pool_manager_cache::sqlalchemy class is now removed.
