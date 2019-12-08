@@ -37,7 +37,7 @@ class designate::agent (
   $listen             = $::os_service_default,
 ) inherits designate {
 
-  include ::designate::deps
+  include designate::deps
 
   designate_config {
     'service:agent/backend_driver' : value => $backend_driver;

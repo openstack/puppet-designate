@@ -148,7 +148,7 @@ class designate(
     fail('The kombu_ssl_certfile and kombu_ssl_keyfile parameters must be used together')
   }
 
-  include ::designate::deps
+  include designate::deps
 
   exec { 'post-designate_config':
     command     => '/bin/echo "designate config has changed"',

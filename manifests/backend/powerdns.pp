@@ -24,10 +24,10 @@ class designate::backend::powerdns (
   $sync_db          = true,
 ) {
 
-  include ::designate::deps
-  include ::designate
-  include ::powerdns
-  include ::powerdns::mysql
+  include designate::deps
+  include designate
+  include powerdns
+  include powerdns::mysql
 
   # The Ubuntu packages install several example config files in here, but only
   # one of them can exist, since they all load different powerdns backends.  We
@@ -43,6 +43,6 @@ class designate::backend::powerdns (
   }
 
   if $sync_db {
-    include ::designate::db::powerdns::sync
+    include designate::db::powerdns::sync
   }
 }

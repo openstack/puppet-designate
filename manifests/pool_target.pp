@@ -28,11 +28,11 @@ define designate::pool_target (
   $masters = ['127.0.0.1:5354'],
 ) {
 
-  include ::designate::deps
+  include designate::deps
 
   if target == 'powerdns' {
-    include ::powerdns
-    include ::powerdns::mysql
+    include powerdns
+    include powerdns::mysql
   }
 
   validate_legacy(Pattern[/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/],

@@ -119,7 +119,7 @@ class designate::logging(
   $log_date_format               = $::os_service_default,
 ) inherits ::designate::params {
 
-  include ::designate::deps
+  include designate::deps
 
   oslo::log { 'designate_config':
     debug                         => $debug,

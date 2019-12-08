@@ -19,7 +19,7 @@ define designate::pool(
   $also_notifies = [],
 ){
 
-  include ::designate::deps
+  include designate::deps
 
   validate_legacy(Pattern[/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/],
     'validate_re', $name, ['[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}',

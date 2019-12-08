@@ -13,8 +13,8 @@ class designate::db::powerdns::sync(
   $extra_params = undef,
 ) {
 
-  include ::designate::deps
-  include ::designate::params
+  include designate::deps
+  include designate::params
 
   exec { 'designate-powerdns-dbsync':
     command     => "designate-manage ${extra_params} powerdns sync",

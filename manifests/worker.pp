@@ -83,8 +83,8 @@ class designate::worker(
   $worker_topic         = $::os_service_default,
 ) {
 
-  include ::designate::deps
-  include ::designate::params
+  include designate::deps
+  include designate::params
 
   if $manage_package {
     package { 'designate-worker':

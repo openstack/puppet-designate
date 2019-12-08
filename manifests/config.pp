@@ -36,7 +36,7 @@ class designate::config (
   $rootwrap_config      = {},
 ) {
 
-  include ::designate::deps
+  include designate::deps
 
   validate_legacy(Hash, 'validate_hash', $designate_config)
   validate_legacy(Hash, 'validate_hash', $api_paste_ini_config)

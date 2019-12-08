@@ -23,12 +23,12 @@ node /designate/ {
   $db_host               = '127.0.0.1'
 
   # == Keystone == #
-  class { '::keystone::db::mysql':
+  class { 'keystone::db::mysql':
     password      => $keystone_db_password,
     allowed_hosts =>  '%',
   }
 
-  class { '::keystone':
+  class { 'keystone':
     validate_service    => true,
     catalog_type        => 'sql',
     enable_pki_setup    => false,
@@ -39,14 +39,14 @@ node /designate/ {
   }
 
   ## Adds the admin credential to keystone.
-  class { '::keystone::roles::admin':
+  class { 'keystone::roles::admin':
     email        => 'admin@example.com',
     password     =>  $keystone_password,
     admin_tenant => 'admin',
   }
 
   ## Installs the service user endpoint.
-  class { '::keystone::endpoint': }
+  class { 'keystone::endpoint': }
 
 
   # == Designate == #

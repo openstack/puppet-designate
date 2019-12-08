@@ -39,8 +39,8 @@ define designate::generic_service(
   $package_ensure = 'present',
 ) {
 
-  include ::designate::deps
-  include ::designate::params
+  include designate::deps
+  include designate::params
 
   $designate_title = "designate-${name}"
   Exec['post-designate_config'] ~> Anchor['designate::service::end']

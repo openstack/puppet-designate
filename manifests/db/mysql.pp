@@ -41,7 +41,7 @@ class designate::db::mysql(
   $allowed_hosts = undef,
 ) {
 
-  include ::designate::deps
+  include designate::deps
 
   ::openstacklib::db::mysql { 'designate':
     user          => $user,

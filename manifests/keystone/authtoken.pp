@@ -208,7 +208,7 @@ class designate::keystone::authtoken(
   $service_token_roles_required   = $::os_service_default,
 ) {
 
-  include ::designate::deps
+  include designate::deps
 
   if is_service_default($password) {
     fail('Please set password for designate service user')

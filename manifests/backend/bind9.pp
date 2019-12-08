@@ -32,14 +32,14 @@ class designate::backend::bind9 (
   $rndc_controls       = undef,
 ) {
 
-  include ::designate::deps
-  include ::designate
+  include designate::deps
+  include designate
   if $rndc_controls {
-    class { '::dns':
+    class { 'dns':
       controls => $rndc_controls,
     }
   } else {
-    include ::dns
+    include dns
   }
 
   designate_config {

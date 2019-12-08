@@ -28,8 +28,8 @@ class designate::policy (
   $policy_path = '/etc/designate/policy.json',
 ) {
 
-  include ::designate::deps
-  include ::designate::params
+  include designate::deps
+  include designate::params
 
   validate_legacy(Hash, 'validate_hash', $policies)
 

@@ -41,7 +41,7 @@ class designate::db::powerdns::mysql (
   $allowed_hosts    = undef,
 ) {
 
-  include ::designate::deps
+  include designate::deps
 
   ::openstacklib::db::mysql { 'powerdns':
     user          => $user,

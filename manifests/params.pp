@@ -3,7 +3,7 @@
 #  Parameters for puppet-designate
 #
 class designate::params {
-  include ::openstacklib::defaults
+  include openstacklib::defaults
   $pyvers = $::openstacklib::defaults::pyvers
 
   $state_path                = '/var/lib/designate'

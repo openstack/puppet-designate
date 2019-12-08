@@ -51,8 +51,8 @@ class designate::db (
   $sync_db                 = true,
 ) {
 
-  include ::designate::deps
-  include ::designate::params
+  include designate::deps
+  include designate::params
 
   validate_legacy(String, 'validate_re', $database_connection,
     ['(mysql(\+pymysql)?):\/\/(\S+:\S+@\S+\/\S+)?'])
@@ -91,7 +91,7 @@ class designate::db (
   }
 
   if $sync_db {
-    include ::designate::db::sync
+    include designate::db::sync
   }
 
 }

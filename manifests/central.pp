@@ -68,8 +68,8 @@ class designate::central (
   $default_pool_id            = $::os_service_default,
 ) inherits designate {
 
-  include ::designate::deps
-  include ::designate::db
+  include designate::deps
+  include designate::db
 
   designate_config {
     'service:central/managed_resource_email'     : value => $managed_resource_email;

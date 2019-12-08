@@ -87,7 +87,7 @@ class designate::keystone::auth (
   $internal_url        = 'http://127.0.0.1:9001/v1',
 ) {
 
-  include ::designate::deps
+  include designate::deps
 
   if $configure_user_role {
     Keystone_user_role["${auth_name}@${tenant}"] ~> Anchor['designate::service::end']

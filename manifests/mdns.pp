@@ -67,8 +67,8 @@ class designate::mdns (
   $listen             = $::os_service_default,
 ) inherits designate {
 
-  include ::designate::deps
-  include ::designate::db
+  include designate::deps
+  include designate::db
 
   designate_config {
     'service:mdns/workers'            : value => $workers;

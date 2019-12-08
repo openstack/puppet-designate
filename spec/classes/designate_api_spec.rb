@@ -6,7 +6,7 @@ require 'spec_helper'
 describe 'designate::api' do
 
   let :pre_condition do
-    "class { '::designate::keystone::authtoken':
+    "class { 'designate::keystone::authtoken':
       password => 'a_big_secret',
     }"
   end

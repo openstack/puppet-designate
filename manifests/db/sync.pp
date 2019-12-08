@@ -14,7 +14,7 @@ class designate::db::sync(
   $extra_params = undef,
 ) {
 
-  include ::designate::deps
+  include designate::deps
 
   exec { 'designate-dbsync':
     command     => "designate-manage ${extra_params} database sync",

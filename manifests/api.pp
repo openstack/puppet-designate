@@ -117,7 +117,7 @@ class designate::api (
   $enabled_extensions_admin = $::os_service_default,
 ) inherits designate {
 
-  include ::designate::deps
+  include designate::deps
 
   if !is_service_default($enable_api_v1) {
     warning('Version 1 of API is deprecated.')
@@ -146,7 +146,7 @@ class designate::api (
   }
 
   if $auth_strategy == 'keystone' {
-    include ::designate::keystone::authtoken
+    include designate::keystone::authtoken
   }
 
   designate::generic_service { 'api':
