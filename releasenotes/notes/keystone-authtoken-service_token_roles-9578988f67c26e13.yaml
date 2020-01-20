@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    New parameter designate::keystone::authtoken::service_token_roles is
+    introduced so that specific role can be assigned to the servide user
+    who can use service token feature.
