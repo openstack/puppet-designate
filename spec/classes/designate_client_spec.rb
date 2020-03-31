@@ -53,7 +53,15 @@ describe 'designate::client' do
         when 'Debian'
           { :client_package_name => 'python3-designateclient' }
         when 'RedHat'
-          { :client_package_name => 'python-designateclient' }
+          if facts[:operatingsystem] == 'Fedora'
+            { :client_package_name => 'python3-designateclient' }
+          else
+            if facts[:operatingsystemmajrelease] > '7'
+              { :client_package_name => 'python3-designateclient' }
+            else
+              { :client_package_name => 'python-designateclient' }
+            end
+          end
         end
       end
       it_behaves_like 'designate-client'
