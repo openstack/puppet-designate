@@ -7,7 +7,7 @@
         },
         {
             "name": "openstack/keystone",
-            "version_requirement": ">=16.1.0 <17.0.0"
+            "version_requirement": ">=16.2.0 <17.0.0"
         },
         {
             "name": "puppet/rabbitmq",
@@ -27,11 +27,11 @@
         },
         {
             "name": "openstack/openstacklib",
-            "version_requirement": ">=16.1.0 <17.0.0"
+            "version_requirement": ">=16.2.0 <17.0.0"
         },
         {
             "name": "openstack/oslo",
-            "version_requirement": ">=16.1.0 <17.0.0"
+            "version_requirement": ">=16.2.0 <17.0.0"
         },
         {
             "name": "antonlindstrom/powerdns",
@@ -87,5 +87,5 @@
     ],
     "source": "git://github.com/openstack/puppet-designate.git",
     "summary": "Puppet module for OpenStack Designate",
-    "version": "16.1.0"
+    "version": "16.2.0"
 }
