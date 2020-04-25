@@ -55,7 +55,6 @@ describe 'designate::worker' do
         is_expected.to contain_designate_config('service:worker/poll_retry_interval').with_value( '<SERVICE DEFAULT>' )
         is_expected.to contain_designate_config('service:worker/poll_max_retries').with_value( '<SERVICE DEFAULT>' )
         is_expected.to contain_designate_config('service:worker/poll_delay').with_value( '<SERVICE DEFAULT>' )
-        is_expected.to contain_designate_config('service:worker/notify').with_value( '<SERVICE DEFAULT>' )
         is_expected.to contain_designate_config('service:worker/export_synchronous').with_value( '<SERVICE DEFAULT>' )
         is_expected.to contain_designate_config('service:worker/worker_topic').with_value( '<SERVICE DEFAULT>' )
         is_expected.to contain_designate_config('service:worker/enabled').with_value( 'true' )

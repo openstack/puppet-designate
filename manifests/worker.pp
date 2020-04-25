@@ -53,10 +53,6 @@
 #   (optional) Poll delay.
 #   Defaults to $::os_service_default
 #
-# [*worker_notify*]
-#   (optional) Whether to allow worker to send NOTIFYs.
-#   Defaults to $::os_service_default
-#
 # [*export_synchronous*]
 #   (optional) Whether to allow synchronous zone exports.
 #   Defaults to $::os_service_default
@@ -64,6 +60,13 @@
 # [*worker_topic*]
 #   (optional) RPC topic for worker component.
 #   Defaults to $::os_service_default
+#
+# DEPRECATED PARAMETERS
+#
+# [*worker_notify*]
+#
+#   (optional) Whether to allow worker to send NOTIFYs.
+#   Defaults to undef
 #
 class designate::worker(
   $manage_package       = true,
@@ -78,9 +81,10 @@ class designate::worker(
   $poll_retry_interval  = $::os_service_default,
   $poll_max_retries     = $::os_service_default,
   $poll_delay           = $::os_service_default,
-  $worker_notify        = $::os_service_default,
   $export_synchronous   = $::os_service_default,
   $worker_topic         = $::os_service_default,
+  # DEPRECATED PARAMETERS
+  $worker_notify        = undef,
 ) {
 
   include designate::deps
@@ -111,9 +115,15 @@ class designate::worker(
     'service:worker/poll_retry_interval':  value => $poll_retry_interval;
     'service:worker/poll_max_retries':     value => $poll_max_retries;
     'service:worker/poll_delay':           value => $poll_delay;
-    'service:worker/notify':               value => $worker_notify;
     'service:worker/export_synchronous':   value => $export_synchronous;
     'service:worker/worker_topic':         value => $worker_topic;
     'service:worker/enabled':              value => $enabled;
+  }
+
+  if $worker_notify != undef {
+    warning('worker_notify is deprecated nad will be removed in a future release')
+    designate_config {
+      'service:worker/notify': value => $worker_notify;
+    }
   }
 }
