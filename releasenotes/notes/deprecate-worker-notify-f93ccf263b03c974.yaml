@@ -1,0 +1,5 @@
+---
+deprecations:
+  - |
+    The designate::worker::worker_notify parameter has been deprecated because
+    its actual parameter in designate was alreday rdeprecated.
