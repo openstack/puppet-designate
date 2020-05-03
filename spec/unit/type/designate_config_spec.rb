@@ -1,5 +1,6 @@
 require 'puppet'
 require 'puppet/type/designate_config'
+
 describe 'Puppet::Type.type(:designate_config)' do
   before :each do
     @designate_config = Puppet::Type.type(:designate_config).new(:name => 'DEFAULT/foo', :value => 'bar')
@@ -52,12 +53,12 @@ describe 'Puppet::Type.type(:designate_config)' do
 
   it 'should autorequire the package that install the file' do
     catalog = Puppet::Resource::Catalog.new
-    package = Puppet::Type.type(:package).new(:name => 'designate-common')
-    catalog.add_resource package, @designate_config
+    anchor = Puppet::Type.type(:anchor).new(:name => 'designate::install::end')
+    catalog.add_resource anchor, @designate_config
     dependency = @designate_config.autorequire
     expect(dependency.size).to eq(1)
     expect(dependency[0].target).to eq(@designate_config)
-    expect(dependency[0].source).to eq(package)
+    expect(dependency[0].source).to eq(anchor)
   end
 
 end
