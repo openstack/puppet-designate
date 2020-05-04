@@ -17,8 +17,8 @@ Puppet::Type.newtype(:designate_rootwrap_config) do
     newvalues(/^[\S ]*$/)
   end
 
-  autorequire(:package) do
-    'designate-common'
+  autorequire(:anchor) do
+    ['designate::install::end']
   end
 
 end

@@ -45,9 +45,8 @@ Puppet::Type.newtype(:designate_api_paste_ini) do
     defaultto('<SERVICE DEFAULT>')
   end
 
-
-  autorequire(:package) do
-    'designate-common'
+  autorequire(:anchor) do
+    ['designate::install::end']
   end
 
 end
