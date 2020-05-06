@@ -120,7 +120,7 @@ class designate::worker(
   }
 
   if $worker_notify != undef {
-    warning('worker_notify is deprecated nad will be removed in a future release')
+    warning('worker_notify is deprecated and will be removed in a future release')
     designate_config {
       'service:worker/notify': value => $worker_notify;
     }
