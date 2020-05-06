@@ -33,7 +33,6 @@ describe 'designate::api' do
 
       it 'configures designate-api with default parameters' do
         is_expected.to contain_designate_config('service:api/auth_strategy').with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_designate_config('service:api/enable_api_v1').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:api/enable_api_v2').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:api/enable_api_admin').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:api/api_base_uri').with_value('<SERVICE DEFAULT>')
@@ -58,7 +57,6 @@ describe 'designate::api' do
       before do
         params.merge!({
           :auth_strategy                 => 'noauth',
-          :enable_api_v1                 => false,
           :enable_api_v2                 => true,
           :enable_api_admin              => true,
           :api_base_uri                  => 'http://myhost.es:9001/',
@@ -80,7 +78,6 @@ describe 'designate::api' do
 
       it 'configure service_api' do
         is_expected.to contain_designate_config('service:api/auth_strategy').with_value(params[:auth_strategy])
-        is_expected.to contain_designate_config('service:api/enable_api_v1').with_value(params[:enable_api_v1])
         is_expected.to contain_designate_config('service:api/enable_api_v2').with_value(params[:enable_api_v2])
         is_expected.to contain_designate_config('service:api/enable_api_admin').with_value(params[:enable_api_admin])
         is_expected.to contain_designate_config('service:api/api_base_uri').with_value(params[:api_base_uri])
