@@ -25,10 +25,6 @@
 #  "keystone".
 #  Defaults to $::os_service_default
 #
-# [*enable_api_v1*]
-#  (optional) Enable Designate API Version 1 (deprecated).
-#  Defaults to $::os_service_default
-#
 # [*enable_api_v2*]
 #  (optional) Enable Designate API Version 2.
 #  Defaults to $::os_service_default
@@ -98,7 +94,6 @@ class designate::api (
   $enabled                  = true,
   $service_ensure           = 'running',
   $auth_strategy            = $::os_service_default,
-  $enable_api_v1            = $::os_service_default,
   $enable_api_v2            = $::os_service_default,
   $enable_api_admin         = $::os_service_default,
   $api_base_uri             = $::os_service_default,
@@ -119,15 +114,10 @@ class designate::api (
 
   include designate::deps
 
-  if !is_service_default($enable_api_v1) {
-    warning('Version 1 of API is deprecated.')
-  }
-
   # API Service
   designate_config {
     'service:api/listen'                    : value => $listen;
     'service:api/auth_strategy'             : value => $auth_strategy;
-    'service:api/enable_api_v1'             : value => $enable_api_v1;
     'service:api/enable_api_v2'             : value => $enable_api_v2;
     'service:api/enable_api_admin'          : value => $enable_api_admin;
     'service:api/api_base_uri'              : value => $api_base_uri;

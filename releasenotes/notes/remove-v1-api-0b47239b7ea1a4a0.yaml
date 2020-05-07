@@ -1,0 +1,4 @@
+---
+deprecations:
+  - |
+    The ``designate::api::enable_v1_api`` parameter has been removed.
