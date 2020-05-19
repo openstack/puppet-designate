@@ -1,3 +1,4 @@
+require 'spec_helper'
 
 describe 'designate::db::mysql' do
 
@@ -6,7 +7,7 @@ describe 'designate::db::mysql' do
   end
 
   let :required_params do
-    { :password => "qwerty" }
+    { :password => "designatepass" }
   end
 
   shared_examples_for 'designate-db-mysql' do
@@ -16,35 +17,9 @@ describe 'designate::db::mysql' do
       end
 
       it { is_expected.to contain_openstacklib__db__mysql('designate').with(
-        :user          => 'designate',
-        :password_hash => '*AA1420F182E88B9E5F874F6FBE7459291E8F4601',
-        :charset       => 'utf8'
-      )}
-    end
-
-    context 'when overriding charset' do
-      let :params do
-        { :charset => 'latin1' }.merge(required_params)
-      end
-
-      it { is_expected.to contain_openstacklib__db__mysql('designate').with_charset(params[:charset]) }
-    end
-  end
-
-  context 'on a RedHat osfamily' do
-    let :facts do
-      { :osfamily => 'RedHat' }
-    end
-
-    context 'with only required parameters' do
-      let :params do
-        required_params
-      end
-
-      it { is_expected.to contain_openstacklib__db__mysql('designate').with(
-        :user          => 'designate',
-        :password_hash => '*AA1420F182E88B9E5F874F6FBE7459291E8F4601',
-        :charset       => 'utf8'
+        :user     => 'designate',
+        :password => 'designatepass',
+        :charset  => 'utf8'
       )}
     end
 
