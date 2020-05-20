@@ -45,7 +45,7 @@ class designate::db::powerdns::mysql (
 
   ::openstacklib::db::mysql { 'powerdns':
     user          => $user,
-    password_hash => mysql::password($password),
+    password      => $password,
     dbname        => $dbname,
     host          => $host,
     charset       => $charset,

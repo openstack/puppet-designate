@@ -7,7 +7,7 @@ describe 'designate::db::powerdns::mysql' do
   end
 
   let :required_params do
-    { :password => "qwerty" }
+    { :password => "designatepass" }
   end
 
 
@@ -18,9 +18,9 @@ describe 'designate::db::powerdns::mysql' do
       end
 
       it { is_expected.to contain_openstacklib__db__mysql('powerdns').with(
-        :user          => 'powerdns',
-        :password_hash => '*AA1420F182E88B9E5F874F6FBE7459291E8F4601',
-        :charset       => 'utf8'
+        :user     => 'powerdns',
+        :password => 'designatepass',
+        :charset  => 'utf8'
       )}
     end
 
