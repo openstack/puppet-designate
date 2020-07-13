@@ -6,9 +6,9 @@
 #
 node /designate/ {
 
-  include '::apt'
-  include '::rabbitmq'
-  include '::mysql::server'
+  include apt
+  include rabbitmq
+  include mysql::server
 
   # Keystone parameters
   $keystone_db_host     = '127.0.0.1'
@@ -50,11 +50,11 @@ node /designate/ {
 
 
   # == Designate == #
-  class {'::designate::db::mysql':
+  class {'designate::db::mysql':
     password => $designate_db_password,
   }
 
-  class {'::designate':
+  class {'designate':
     default_transport_url => os_transport_url({
         'transport'    => 'rabbit',
         'host'         => '127.0.0.1',
@@ -64,25 +64,25 @@ node /designate/ {
     }),
   }
 
-  class {'::designate::db':
+  class {'designate::db':
     database_connection => "mysql://designate:${designate_db_password}@${db_host}/designate"
   }
 
-  include '::designate::client'
-  class {'::designate::api':
+  include designate::client
+  class {'designate::api':
     auth_strategy     => $auth_strategy,
     keystone_password => $keystone_password,
   }
 
-  include '::designate::central'
+  include designate::central
 
-  include '::designate::dns'
-  class {'::designate::backend::bind9':
+  include designate::dns
+  class {'designate::backend::bind9':
     rndc_config_file => '',
     rndc_key_file    => '',
   }
 
-  class {'::designate::keystone::auth':
+  class {'designate::keystone::auth':
     password => $keystone_password,
   }
 }
