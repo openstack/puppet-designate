@@ -32,6 +32,10 @@
 #  (optional) List of tasks to enable, the default enables all tasks.
 #  Defaults to $::os_service_default.
 #
+# [*backend_url*]
+#  (optional) URL to use for coordination, should be a tooz URL.
+#  Defaults to $::os_service_default.
+#
 class designate::producer (
   $package_ensure = 'present',
   $package_name   = $::designate::params::producer_package_name,
@@ -40,12 +44,14 @@ class designate::producer (
   $workers        = $::os_workers,
   $threads        = $::os_service_default,
   $enabled_tasks  = $::os_service_default,
+  $backend_url    = $::os_service_default,
   ) inherits designate {
 
   designate_config {
     'service:producer/workers'       : value => $workers;
     'service:producer/threads'       : value => $threads;
     'service:producer/enabled_tasks' : value => $enabled_tasks;
+    'coordination/backend_url'       : value => $backend_url;
   }
 
   designate::generic_service { 'producer':
