@@ -7,17 +7,18 @@
 #
 # == Parameters
 #
+# [*database_db_max_retries*]
+#   (optional) Maximum retries in case of connection error or deadlock error
+#   before error is raised. Set to -1 to specify an infinite retry count.
+#   Defaults to $::os_service_default
+#
 # [*database_connection*]
 #   Url used to connect to database.
 #   (Optional) Defaults to 'mysql://designate:designate@localhost/designate'.
 #
-# [*database_idle_timeout*]
+# [*database_connection_recycle_time*]
 #   Timeout when db connections should be reaped.
-#   (Optional) Defaults to 3600.
-#
-# [*database_min_pool_size*]
-#   Minimum number of SQL connections to keep open in a pool.
-#   (Optional) Defaults to 1.
+#   (Optional) Defaults to $::os_service_default
 #
 # [*database_max_pool_size*]
 #   Maximum number of SQL connections to keep open in a pool.
@@ -36,58 +37,68 @@
 #   If set, use this value for max_overflow with sqlalchemy.
 #   (Optional) Defaults to 20.
 #
+# [*database_pool_timeout*]
+#   (Optional) If set, use this value for pool_timeout with SQLAlchemy.
+#   Defaults to $::os_service_default
+#
+# [*mysql_enable_ndb*]
+#   (Optional) If True, transparently enables support for handling MySQL
+#   Cluster (NDB).
+#   Defaults to $::os_service_default
+#
 # [*sync_db*]
 #   (Optional) Run db sync on nodes after connection setting has been set.
 #   Defaults to true
 #
+# DEPRECATED PARAMETERS
+#
+# [*database_idle_timeout*]
+#   Timeout when db connections should be reaped.
+#   (Optional) Defaults to undef.
+#
+# [*database_min_pool_size*]
+#   Minimum number of SQL connections to keep open in a pool.
+#   (Optional) Defaults to undef.
+#
 class designate::db (
-  $database_connection     = 'mysql://designate:designate@localhost/designate',
-  $database_idle_timeout   = 3600,
-  $database_min_pool_size  = 1,
-  $database_max_pool_size  = 10,
-  $database_max_retries    = 10,
-  $database_retry_interval = 10,
-  $database_max_overflow   = 20,
-  $sync_db                 = true,
+  $database_db_max_retries          = $::os_service_default,
+  $database_connection              = 'mysql://designate:designate@localhost/designate',
+  $database_max_pool_size           = 10,
+  $database_connection_recycle_time = $::os_service_default,
+  $database_max_retries             = 10,
+  $database_retry_interval          = 10,
+  $database_max_overflow            = 20,
+  $database_pool_timeout            = $::os_service_default,
+  $mysql_enable_ndb                 = $::os_service_default,
+  $sync_db                          = true,
+  # DEPRECATED PARAMETERS
+  $database_idle_timeout            = undef,
+  $database_min_pool_size           = undef,
 ) {
 
   include designate::deps
-  include designate::params
 
-  validate_legacy(String, 'validate_re', $database_connection,
-    ['(mysql(\+pymysql)?):\/\/(\S+:\S+@\S+\/\S+)?'])
-
-  case $database_connection {
-    /^mysql(\+pymysql)?:\/\//: {
-      require mysql::bindings
-      require mysql::bindings::python
-      if $database_connection =~ /^mysql\+pymysql/ {
-        $backend_package = $::designate::params::pymysql_package_name
-      } else {
-        $backend_package = false
-      }
-    }
-    default: {
-      fail('Unsupported backend configured')
-    }
+  if $database_idle_timeout != undef {
+    warning('The database_min_pool_size parameter is deprecated, and will be \
+removed in a future release.')
   }
 
-  if $backend_package and !defined(Package[$backend_package]) {
-    package {'designate-backend-package':
-      ensure => present,
-      name   => $backend_package,
-      tag    => 'openstack',
-    }
+  if $database_min_pool_size != undef {
+    warning('The database_min_pool_size parameter is deprecated, and will be \
+removed in a future release.')
   }
 
-  designate_config {
-    'storage:sqlalchemy/connection':     value => $database_connection, secret => true;
-    'storage:sqlalchemy/idle_timeout':   value => $database_idle_timeout;
-    'storage:sqlalchemy/min_pool_size':  value => $database_min_pool_size;
-    'storage:sqlalchemy/max_retries':    value => $database_max_retries;
-    'storage:sqlalchemy/retry_interval': value => $database_retry_interval;
-    'storage:sqlalchemy/max_pool_size':  value => $database_max_pool_size;
-    'storage:sqlalchemy/max_overflow':   value => $database_max_overflow;
+  oslo::db { 'designate_config':
+    config_group            => 'storage:sqlalchemy',
+    db_max_retries          => $database_db_max_retries,
+    connection              => $database_connection,
+    connection_recycle_time => $database_connection_recycle_time,
+    max_retries             => $database_max_retries,
+    retry_interval          => $database_retry_interval,
+    max_pool_size           => $database_max_pool_size,
+    max_overflow            => $database_max_overflow,
+    pool_timeout            => $database_pool_timeout,
+    mysql_enable_ndb        => $mysql_enable_ndb,
   }
 
   if $sync_db {

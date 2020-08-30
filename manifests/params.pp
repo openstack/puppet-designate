@@ -27,7 +27,6 @@ class designate::params {
       $central_package_name      = 'openstack-designate-central'
       $agent_package_name        = 'openstack-designate-agent'
       $sink_package_name         = 'openstack-designate-sink'
-      $pymysql_package_name      = undef
       $mdns_package_name         = 'openstack-designate-mdns'
       $zone_manager_package_name = 'openstack-designate-zone-manager'
       $producer_package_name     = 'openstack-designate-producer'
@@ -40,7 +39,6 @@ class designate::params {
       $central_package_name      = 'designate-central'
       $agent_package_name        = 'designate-agent'
       $sink_package_name         = 'designate-sink'
-      $pymysql_package_name      = "python${pyvers}-pymysql"
       $mdns_package_name         = 'designate-mdns'
       $zone_manager_package_name = 'designate-zone-manager'
       $producer_package_name     = 'designate-producer'

@@ -1,0 +1,14 @@
+---
+features:
+  - |
+    The following parameters have been added to the ``designate::db`` class.
+
+    - ``database_connection_recycle_time``
+    - ``database_pool_timeout``
+
+deprecations:
+  - |
+    The following parameters have been deprecated and have no effect.
+
+    - ``designate::db::database_idle_timeout``
+    - ``designate::db::database_min_pool_size``
