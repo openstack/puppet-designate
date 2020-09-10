@@ -15,11 +15,10 @@ puppet-designate
 3. [Setup - The basics of getting started with designate](#setup)
 4. [Implementation - An under-the-hood peek at what the module is doing](#implementation)
 5. [Limitations - OS compatibility, etc.](#limitations)
-6. [Beaker-Rspec - Beaker-rspec tests for the project](#beaker-rspec)
-7. [Development - Guide for contributing to the module](#development)
-8. [Contributors - Those with commits](#contributors)
-9. [Release Notes - Notes on the most recent updates to the module](#release-notes)
-10. [Repository - The project source code repository](#repository)
+6. [Development - Guide for contributing to the module](#development)
+7. [Contributors - Those with commits](#contributors)
+8. [Release Notes - Notes on the most recent updates to the module](#release-notes)
+9. [Repository - The project source code repository](#repository)
 
 Overview
 --------
@@ -81,18 +80,6 @@ Limitations
 -----------
 
 None.
-
-Beaker-Rspec
-------------
-
-This module has beaker-rspec tests
-
-To run:
-
-```shell
-bundle install
-bundle exec rspec spec/acceptance
-```
 
 Development
 -----------
