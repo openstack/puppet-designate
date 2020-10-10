@@ -17,6 +17,8 @@ describe 'designate::db::powerdns::mysql' do
         required_params
       end
 
+      it { is_expected.to contain_class('designate::deps') }
+
       it { is_expected.to contain_openstacklib__db__mysql('powerdns').with(
         :user     => 'powerdns',
         :password => 'designatepass',
