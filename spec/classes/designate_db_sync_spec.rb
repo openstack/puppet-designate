@@ -7,6 +7,9 @@ describe 'designate::db::sync' do
 
   shared_examples_for 'designate-db-sync' do
     context 'with default parameters' do
+
+      it { is_expected.to contain_class('designate::deps') }
+
       it 'runs designate-db-sync' do
         is_expected.to contain_exec('designate-dbsync').with(
           :command     => 'designate-manage  database sync',
