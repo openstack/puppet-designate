@@ -12,10 +12,6 @@
 #  (optional) Name of the package containing shared resources
 #  Defaults to $::designate::params::common_package_name
 #
-# [*service_ensure*]
-#  (optional) Whether the designate-common package will be present..
-#  Defaults to 'present'
-#
 # [*root_helper*]
 #   (optional) Command for designate rootwrap helper.
 #   Defaults to 'sudo designate-rootwrap /etc/designate/rootwrap.conf'.
