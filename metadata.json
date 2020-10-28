@@ -73,7 +73,7 @@
             "version_requirement": ">= 6.0.0 < 7.0.0"
         }
     ],
-    "source": "git://github.com/openstack/puppet-designate.git",
+    "source": "https://opendev.org/openstack/puppet-designate.git",
     "summary": "Puppet module for OpenStack Designate",
     "version": "18.0.0"
 }
