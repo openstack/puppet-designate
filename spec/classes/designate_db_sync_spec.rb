@@ -18,6 +18,7 @@ describe 'designate::db::sync' do
           :refreshonly => 'true',
           :try_sleep   => 5,
           :tries       => 10,
+          :timeout     => 300,
           :logoutput   => 'on_failure',
           :subscribe   => ['Anchor[designate::install::end]',
                            'Anchor[designate::config::end]',
@@ -31,7 +32,8 @@ describe 'designate::db::sync' do
     context 'with parameter overrides' do
       let :params do
         {
-          :extra_params => '--config-file /etc/designate/designate.conf'
+          :extra_params    => '--config-file /etc/designate/designate.conf',
+          :db_sync_timeout => 750,
         }
       end
       it 'runs designate manage with diffent config' do
@@ -42,6 +44,7 @@ describe 'designate::db::sync' do
           :refreshonly => 'true',
           :try_sleep   => 5,
           :tries       => 10,
+          :timeout     => 750,
           :logoutput   => 'on_failure',
           :subscribe   => ['Anchor[designate::install::end]',
                            'Anchor[designate::config::end]',
