@@ -1,4 +1,5 @@
 #
+# DEPRECATED !!
 # Class to execute designate powerdns dbsync
 #
 # ==Parameters
@@ -13,22 +14,7 @@ class designate::db::powerdns::sync(
   $extra_params = undef,
 ) {
 
-  include designate::deps
-  include designate::params
-
-  exec { 'designate-powerdns-dbsync':
-    command     => "designate-manage ${extra_params} powerdns sync",
-    path        => '/usr/bin',
-    user        => 'root',
-    refreshonly => true,
-    logoutput   => on_failure,
-    subscribe   => [
-      Anchor['designate::install::end'],
-      Anchor['designate::config::end'],
-      Anchor['designate::dbsync::begin']
-    ],
-    notify      => Anchor['designate::dbsync::end'],
-  }
-
+  warning('The designate::db::powerdns::sync class has been deprecaed \
+and has no effect. This class will be removed in a future release.')
 
 }

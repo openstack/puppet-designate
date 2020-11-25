@@ -1,0 +1,9 @@
+---
+deprecations:
+  - |
+    The following classes for powerdns 3 driver have been deprecated and has no
+    effect. These classes will be removed in a future relesae.
+
+    - ``designate::backend::powerdns``
+    - ``designate::db::powerdns::mysql``
+    - ``designate::db::powerdns::sync``

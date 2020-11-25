@@ -1,5 +1,6 @@
 # == Class: designate::db::powerdns::mysql
 #
+# DEPRECATED !
 # Class that configures mysql for the designate PowerDNS backend.
 #
 # === Parameters:
@@ -41,20 +42,6 @@ class designate::db::powerdns::mysql (
   $allowed_hosts    = undef,
 ) {
 
-  include designate::deps
-
-  ::openstacklib::db::mysql { 'powerdns':
-    user          => $user,
-    password      => $password,
-    dbname        => $dbname,
-    host          => $host,
-    charset       => $charset,
-    collate       => $collate,
-    allowed_hosts => $allowed_hosts,
-  }
-
-  Anchor['designate::db::begin']
-  ~> Class['designate::db::powerdns::mysql']
-  ~> Anchor['designate::db::end']
-
+  warning('The designate::db::powerdns::mysql class has been deprecaed \
+and has no effect. This class will be removed in a future release.')
 }
