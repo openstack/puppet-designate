@@ -46,7 +46,6 @@ describe 'designate::api' do
         is_expected.to contain_designate_config('service:api/default_limit_v2').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:api/max_limit_v2').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:api/pecan_debug').with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_designate_config('service:api/enabled_extensions_v1').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:api/enabled_extensions_v2').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:api/enabled_extensions_admin').with_value('<SERVICE DEFAULT>')
         is_expected.to_not contain_designate__keystone__authtoken('designate_config')
@@ -70,7 +69,6 @@ describe 'designate::api' do
           :default_limit_v2              => '25',
           :max_limit_v2                  => '1500',
           :pecan_debug                   => true,
-          :enabled_extensions_v1         => 'diagnostics,quotas,reports,sync,touch',
           :enabled_extensions_v2         => 'experimental',
           :enabled_extensions_admin      => 'reports,quotas,counts,tenants,target_sync',
         })
@@ -91,7 +89,6 @@ describe 'designate::api' do
         is_expected.to contain_designate_config('service:api/default_limit_v2').with_value(params[:default_limit_v2])
         is_expected.to contain_designate_config('service:api/max_limit_v2').with_value(params[:max_limit_v2])
         is_expected.to contain_designate_config('service:api/pecan_debug').with_value(params[:pecan_debug])
-        is_expected.to contain_designate_config('service:api/enabled_extensions_v1').with_value(params[:enabled_extensions_v1])
         is_expected.to contain_designate_config('service:api/enabled_extensions_v2').with_value(params[:enabled_extensions_v2])
         is_expected.to contain_designate_config('service:api/enabled_extensions_admin').with_value(params[:enabled_extensions_admin])
       end

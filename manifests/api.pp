@@ -76,16 +76,18 @@
 #  (optional) Show the pecan HTML based debug interface (v2 only).
 #  Defaults to $::os_service_default
 #
-# [*enabled_extensions_v1*]
-#  (optional) API Version 1 extensions.
-#  Defaults to $::os_service_default
-#
 # [*enabled_extensions_v2*]
 #  (optional) API Version 2 extensions.
 #  Defaults to $::os_service_default
 #
 # [*enabled_extensions_admin*]
 #  (optional) Admin API extensions.
+#  Defaults to $::os_service_default
+#
+# DEPRECATED PARAMETERS
+#
+# [*enabled_extensions_v1*]
+#  (optional) API Version 1 extensions.
 #  Defaults to $::os_service_default
 #
 class designate::api (
@@ -107,12 +109,18 @@ class designate::api (
   $default_limit_v2         = $::os_service_default,
   $max_limit_v2             = $::os_service_default,
   $pecan_debug              = $::os_service_default,
-  $enabled_extensions_v1    = $::os_service_default,
   $enabled_extensions_v2    = $::os_service_default,
   $enabled_extensions_admin = $::os_service_default,
+  # DEPRECATED PARAMETERS
+  $enabled_extensions_v1    = undef,
 ) inherits designate {
 
   include designate::deps
+
+  if $enabled_extensions_v1 != undef {
+    warning('The enabled_extensions_v1 parameter has been deprecated and has \
+no effect now')
+  }
 
   # API Service
   designate_config {
@@ -130,7 +138,6 @@ class designate::api (
     'service:api/default_limit_v2'          : value => $default_limit_v2;
     'service:api/max_limit_v2'              : value => $max_limit_v2;
     'service:api/pecan_debug'               : value => $pecan_debug;
-    'service:api/enabled_extensions_v1'     : value => $enabled_extensions_v1;
     'service:api/enabled_extensions_v2'     : value => $enabled_extensions_v2;
     'service:api/enabled_extensions_admin'  : value => $enabled_extensions_admin;
   }

@@ -28,9 +28,9 @@ describe 'designate::keystone::auth' do
 
       it { is_expected.to contain_keystone_endpoint('RegionOne/designate::dns').with(
         :ensure       => 'present',
-        :public_url   => "http://127.0.0.1:9001/v1",
-        :admin_url    => "http://127.0.0.1:9001/v1",
-        :internal_url => "http://127.0.0.1:9001/v1"
+        :public_url   => "http://127.0.0.1:9001",
+        :admin_url    => "http://127.0.0.1:9001",
+        :internal_url => "http://127.0.0.1:9001"
       ) }
     end
 
