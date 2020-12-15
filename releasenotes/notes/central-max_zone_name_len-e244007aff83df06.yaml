@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    The new ``designate::central::max_zone_name_len`` parameter has been added
+    to set the maximum zone name length.
+
+deprecations:
+  - |
+    The ``designate::central::max_domain_name_len`` parameter has been
+    deprecated and has no effect now. This parameter doesn't work as intended
+    since the corresponding parameter was renamed in Designate. Use the
+    ``designate::central::max_zone_name_len`` parameter instead.

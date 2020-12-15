@@ -33,14 +33,27 @@ describe 'designate::central' do
       it 'configures designate-central with default parameters' do
         is_expected.to contain_designate_config('service:central/managed_resource_email').with_value('hostmaster@example.com')
         is_expected.to contain_designate_config('service:central/managed_resource_tenant_id').with_value('123456')
-        is_expected.to contain_designate_config('service:central/max_domain_name_len').with_value('255')
-        is_expected.to contain_designate_config('service:central/max_recordset_name_len').with_value('255')
+        is_expected.to contain_designate_config('service:central/max_zone_name_len').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_designate_config('service:central/max_recordset_name_len').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:central/min_ttl').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:central/workers').with_value(8)
         is_expected.to contain_designate_config('service:central/threads').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:central/default_pool_id').with_value('<SERVICE DEFAULT>')
       end
+    end
 
+    context 'with parameters overridden' do
+      before do
+        params.merge!({
+          :max_zone_name_len      => 100,
+          :max_recordset_name_len => 200,
+        })
+      end
+
+      it 'configures the values set' do
+        is_expected.to contain_designate_config('service:central/max_zone_name_len').with_value(100)
+        is_expected.to contain_designate_config('service:central/max_recordset_name_len').with_value(200)
+      end
     end
 
     context 'with custom package name' do

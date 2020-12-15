@@ -28,14 +28,14 @@
 #  (optional) Tenant ID to own all managed resources - like auto-created records etc.
 #  Defaults to '123456'
 #
-# [*max_domain_name_len*]
-#  (optional) Maximum domain name length.
-#  Defaults to 255
+# [*max_zone_name_len*]
+#  (optional) Maximum zone name length.
+#  Defaults to $::os_service_default
 #
 # [*max_recordset_name_len*]
 #  (optional) Maximum record name length.
 #  warning('The max_record_name_len parameter is deprecated, use max_recordset_name_len instead.')
-#  Defaults to 255
+#  Defaults to $::os_service_default
 #
 # [*min_ttl*]
 #  (optional) Minimum TTL.
@@ -53,6 +53,12 @@
 #  (optional) The name of the default pool.
 #  Defaults to $::os_service_default
 #
+# DEPRECATED PARAMETERS
+#
+# [*max_domain_name_len*]
+#  (optional) Maximum domain name length.
+#  Defaults to undef
+#
 class designate::central (
   $package_ensure             = present,
   $central_package_name       = $::designate::params::central_package_name,
@@ -60,12 +66,14 @@ class designate::central (
   $service_ensure             = 'running',
   $managed_resource_email     = 'hostmaster@example.com',
   $managed_resource_tenant_id = '123456',
-  $max_domain_name_len        = '255',
-  $max_recordset_name_len     = '255',
+  $max_zone_name_len          = $::os_service_default,
+  $max_recordset_name_len     = $::os_service_default,
   $min_ttl                    = $::os_service_default,
   $workers                    = $::os_workers,
   $threads                    = $::os_service_default,
   $default_pool_id            = $::os_service_default,
+  # DEPRECATED PARAMETERS
+  $max_domain_name_len        = undef
 ) inherits designate {
 
   include designate::deps
@@ -74,12 +82,18 @@ class designate::central (
   designate_config {
     'service:central/managed_resource_email'     : value => $managed_resource_email;
     'service:central/managed_resource_tenant_id' : value => $managed_resource_tenant_id;
-    'service:central/max_domain_name_len'        : value => $max_domain_name_len;
+    'service:central/max_zone_name_len'          : value => $max_zone_name_len;
     'service:central/max_recordset_name_len'     : value => $max_recordset_name_len;
     'service:central/min_ttl'                    : value => $min_ttl;
     'service:central/workers'                    : value => $workers;
     'service:central/threads'                    : value => $threads;
     'service:central/default_pool_id'            : value => $default_pool_id;
+  }
+
+  # TODO(tkajinam): Remove this when the max_domain_name_len parameter
+  #                 is removed
+  designate_config {
+    'service:central/max_domain_name_len' : ensure => absent;
   }
 
   designate::generic_service { 'central':
