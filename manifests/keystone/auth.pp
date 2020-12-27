@@ -82,9 +82,9 @@ class designate::keystone::auth (
   $configure_user      = true,
   $configure_user_role = true,
   $configure_endpoint  = true,
-  $public_url          = 'http://127.0.0.1:9001/v1',
-  $admin_url           = 'http://127.0.0.1:9001/v1',
-  $internal_url        = 'http://127.0.0.1:9001/v1',
+  $public_url          = 'http://127.0.0.1:9001',
+  $admin_url           = 'http://127.0.0.1:9001',
+  $internal_url        = 'http://127.0.0.1:9001',
 ) {
 
   include designate::deps
