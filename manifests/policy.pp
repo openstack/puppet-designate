@@ -20,12 +20,12 @@
 #   Defaults to empty hash.
 #
 # [*policy_path*]
-#   (Optional) Path to the designate policy.json file
-#   Defaults to /etc/designate/policy.json
+#   (Optional) Path to the designate policy.yaml file
+#   Defaults to /etc/designate/policy.yaml
 #
 class designate::policy (
   $policies    = {},
-  $policy_path = '/etc/designate/policy.json',
+  $policy_path = '/etc/designate/policy.yaml',
 ) {
 
   include designate::deps
@@ -34,9 +34,10 @@ class designate::policy (
   validate_legacy(Hash, 'validate_hash', $policies)
 
   Openstacklib::Policy::Base {
-    file_path  => $policy_path,
-    file_user  => 'root',
-    file_group => $::designate::params::group,
+    file_path   => $policy_path,
+    file_user   => 'root',
+    file_group  => $::designate::params::group,
+    file_format => 'yaml',
   }
 
   create_resources('openstacklib::policy::base', $policies)
