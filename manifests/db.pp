@@ -55,7 +55,7 @@ class designate::db (
   include ::designate::params
 
   validate_legacy(String, 'validate_re', $database_connection,
-    ['(mysql(\+pymysql)?):\/\/(\S+:\S+@\S+\/\S+)?'])
+    ['^(sqlite|mysql(\+pymysql)?):\/\/(\S+:\S+@\S+\/\S+)?'])
 
   case $database_connection {
     /^mysql(\+pymysql)?:\/\//: {
@@ -66,6 +66,9 @@ class designate::db (
       } else {
         $backend_package = false
       }
+    }
+    /^sqlite:\/\//: {
+      $backend_package = false
     }
     default: {
       fail('Unsupported backend configured')
