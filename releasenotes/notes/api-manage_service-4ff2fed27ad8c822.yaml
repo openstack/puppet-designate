@@ -1,0 +1,6 @@
+---
+deprecations:
+  - |
+    The ``designate::api::service_ensure`` parameter has been deprecated. Use
+    the ``designate::api::manage_service`` parameter instead, which accepts
+    True or False instead.

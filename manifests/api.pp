@@ -16,9 +16,9 @@
 #   (optional) Whether to enable services.
 #   Defaults to true
 #
-# [*service_ensure*]
-#  (optional) Whether the designate api service will be running.
-#  Defaults to 'running'
+# [*manage_service*]
+#   (optional) Whether to manage services
+#   Defaults to true
 #
 # [*auth_strategy*]
 #  (optional) Authentication strategy to use, can be either "noauth" or
@@ -88,13 +88,17 @@
 #
 # [*enabled_extensions_v1*]
 #  (optional) API Version 1 extensions.
-#  Defaults to $::os_service_default
+#  Defaults to undef
+#
+# [*service_ensure*]
+#  (optional) Whether the designate api service will be running.
+#  Defaults to 'DEPRECATED'
 #
 class designate::api (
   $package_ensure           = present,
   $api_package_name         = $::designate::params::api_package_name,
   $enabled                  = true,
-  $service_ensure           = 'running',
+  $manage_service           = true,
   $auth_strategy            = $::os_service_default,
   $enable_api_v2            = $::os_service_default,
   $enable_api_admin         = $::os_service_default,
@@ -113,6 +117,7 @@ class designate::api (
   $enabled_extensions_admin = $::os_service_default,
   # DEPRECATED PARAMETERS
   $enabled_extensions_v1    = undef,
+  $service_ensure           = 'DEPRECATED',
 ) inherits designate {
 
   include designate::deps
@@ -120,6 +125,13 @@ class designate::api (
   if $enabled_extensions_v1 != undef {
     warning('The enabled_extensions_v1 parameter has been deprecated and has \
 no effect now')
+  }
+
+  if $service_ensure != 'DEPRECATED' {
+    warning('The service_ensure parameter is deprecated. Use the manage_service parameter.')
+    $manage_service_real = $service_ensure
+  } else {
+    $manage_service_real = $manage_service
   }
 
   # API Service
@@ -148,7 +160,7 @@ no effect now')
 
   designate::generic_service { 'api':
     enabled        => $enabled,
-    manage_service => $service_ensure,
+    manage_service => $manage_service_real,
     package_ensure => $package_ensure,
     package_name   => $api_package_name,
     service_name   => $::designate::params::api_service_name,
