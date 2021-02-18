@@ -24,22 +24,55 @@
 #  (optional) Hash defining controls configuration for rndc.
 #  Defaults to undef, which uses the puppet-dns default
 #
+# [*configure_bind*]
+#  (optional) Enables running named configuration for hosts where designate and
+#  designate bind services are collocated.
+#  Defaults to true
+#
 class designate::backend::bind9 (
   $rndc_host           = '127.0.0.1',
   $rndc_port           = '953',
   $rndc_config_file    = '/etc/rndc.conf',
   $rndc_key_file       = '/etc/rndc.key',
   $rndc_controls       = undef,
+  $configure_bind      = true,
 ) {
 
   include designate::deps
   include designate
-  if $rndc_controls {
-    class { 'dns':
-      controls => $rndc_controls,
+  if $configure_bind {
+    if $rndc_controls {
+      class { 'dns':
+        controls => $rndc_controls,
+      }
+    } else {
+      include dns
     }
-  } else {
-    include dns
+    concat::fragment { 'dns allow-new-zones':
+      target  => $::dns::optionspath,
+      content => 'allow-new-zones yes;',
+      order   => '20',
+    }
+
+    # Recommended by Designate docs as a mitigation for potential cache
+    # poisoning attacks:
+    # https://docs.openstack.org/designate/queens/admin/production-guidelines.html#bind9-mitigation
+    concat::fragment { 'dns minimal-responses':
+      target  => $::dns::optionspath,
+      content => 'minimal-responses yes;',
+      order   => '21',
+    }
+
+    # /var/named is root:named on RedHat and /var/cache/bind is root:bind on
+    # Debian. Both groups only have read access but require write permission in
+    # order to be able to use rndc addzone/delzone commands that Designate uses.
+    # NOTE(bnemec): ensure_resource is to avoid a chicken and egg problem with
+    # removing this from puppet-openstack-integration.  Once that has been done
+    # the ensure_resource wrapper could be removed.
+    ensure_resource('file', $::dns::params::vardir, {
+      mode    => 'g+w',
+      require => Package[$::dns::params::dns_server_package]
+    })
   }
 
   designate_config {
@@ -49,29 +82,4 @@ class designate::backend::bind9 (
     'backend:bind9/rndc_key_file'    : value => $rndc_key_file;
   }
 
-  concat::fragment { 'dns allow-new-zones':
-    target  => $::dns::optionspath,
-    content => 'allow-new-zones yes;',
-    order   => '20',
-  }
-
-  # Recommended by Designate docs as a mitigation for potential cache
-  # poisoning attacks:
-  # https://docs.openstack.org/designate/queens/admin/production-guidelines.html#bind9-mitigation
-  concat::fragment { 'dns minimal-responses':
-    target  => $::dns::optionspath,
-    content => 'minimal-responses yes;',
-    order   => '21',
-  }
-
-  # /var/named is root:named on RedHat and /var/cache/bind is root:bind on
-  # Debian. Both groups only have read access but require write permission in
-  # order to be able to use rndc addzone/delzone commands that Designate uses.
-  # NOTE(bnemec): ensure_resource is to avoid a chicken and egg problem with
-  # removing this from puppet-openstack-integration.  Once that has been done
-  # the ensure_resource wrapper could be removed.
-  ensure_resource('file', $::dns::params::vardir, {
-    mode    => 'g+w',
-    require => Package[$::dns::params::dns_server_package]
-  })
 }
