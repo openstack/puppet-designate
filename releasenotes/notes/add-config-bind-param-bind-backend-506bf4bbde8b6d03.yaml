@@ -1,0 +1,6 @@
+---
+features:
+    - add designate::backend::bind9::configure_bind (defaults to true) to
+      bypass attempts to bind9 configuration in the event that bind9 resides on
+      a different host.
+

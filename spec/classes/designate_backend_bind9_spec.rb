@@ -18,6 +18,19 @@ describe 'designate::backend::bind9' do
       end
     end
 
+    context 'with named configuration disabled ' do
+      let :params do
+        { :configure_bind => false }
+      end
+      it 'configures designate backend bind9 with default parameters' do
+        is_expected.to contain_designate_config('backend:bind9/rndc_host').with_value('127.0.0.1')
+        is_expected.to contain_designate_config('backend:bind9/rndc_port').with_value('953')
+        is_expected.to contain_designate_config('backend:bind9/rndc_config_file').with_value('/etc/rndc.conf')
+        is_expected.to contain_designate_config('backend:bind9/rndc_key_file').with_value('/etc/rndc.key')
+        is_expected.not_to contain_concat_fragment('dns allow-new-zones')
+      end
+    end
+
     context 'when overriding rndc_config_file' do
       let :params do
         { :rndc_config_file => '/srv/designate/rndc.conf' }
