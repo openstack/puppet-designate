@@ -55,8 +55,7 @@ class designate::db (
   include designate::params
 
   validate_legacy(String, 'validate_re', $database_connection,
-    ['^(sqlite|mysql(\+pymysql)?):\/\/(\S+:\S+@\S+\/\S+)?'])
-
+    ['^(sqlite|mysql(\+pymysql)?|postgresql(\+psycopg2)?):\/\/(\S+:\S+@\S+\/\S+)?'])
   case $database_connection {
     /^mysql(\+pymysql)?:\/\//: {
       require '::mysql::bindings'
@@ -68,6 +67,9 @@ class designate::db (
       }
     }
     /^sqlite:\/\//: {
+      $backend_package = false
+    }
+    /^postgresql(\+psycopg2)?:\/\//: {
       $backend_package = false
     }
     default: {
