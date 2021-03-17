@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    Add support for PostgreSQL database backend via designate::db::postgresql
