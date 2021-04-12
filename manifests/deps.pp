@@ -29,6 +29,11 @@ class designate::deps {
   -> Openstacklib::Policy::Base<||>
   ~> Anchor['designate::config::end']
 
+  # On any uwsgi config change, we must restart Designate APIs.
+  Anchor['designate::config::begin']
+  -> Designate_api_uwsgi_config<||>
+  ~> Anchor['designate::config::end']
+
   # Installation or config changes will always restart services.
   Anchor['designate::install::end'] ~> Anchor['designate::service::begin']
   Anchor['designate::config::end']  ~> Anchor['designate::service::begin']

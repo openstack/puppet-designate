@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    A new calsses designate::wsgi::wsgi exist to allow configuring uwsgi in
+    operating systems that support this (ie: currently Debian). This helps
+    configuring the number of processes, threads and listen socket.
+    Also, a new designate_api_uwsgi_config provider now exist.
