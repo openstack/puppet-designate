@@ -1,4 +1,4 @@
-# == Define: designate::healthcheck
+# == Class: designate::healthcheck
 #
 # Configure oslo_middleware options in healthcheck section
 #
