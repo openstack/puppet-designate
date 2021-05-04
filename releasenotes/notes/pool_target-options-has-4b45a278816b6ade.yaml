@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The ``designate::pool_target::options`` parameter now only accepts a hash
+    value.

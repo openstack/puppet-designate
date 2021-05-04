@@ -37,14 +37,10 @@ define designate::pool_target (
 
   validate_legacy(Pattern[/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/],
     'validate_re', $name, ['[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'])
+  validate_legacy(Hash, 'validate_hash', $options)
   validate_legacy(Array, 'validate_array', $masters)
 
-  if is_hash($options) {
-    $options_real = join(join_keys_to_values($options,':'),',')
-  } else {
-    warning('Passing a string to options is now deprecated, use a hash instead.')
-    $options_real = $options
-  }
+  $options_real = join(join_keys_to_values($options,':'),',')
 
   designate_config {
     "pool_target:${name}/options": value => $options_real;
