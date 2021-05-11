@@ -117,7 +117,7 @@ class designate::logging(
   $instance_format               = $::os_service_default,
   $instance_uuid_format          = $::os_service_default,
   $log_date_format               = $::os_service_default,
-) inherits ::designate::params {
+) inherits designate::params {
 
   include designate::deps
 
