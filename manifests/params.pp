@@ -4,11 +4,10 @@
 #
 class designate::params {
   include openstacklib::defaults
-  $pyvers = $::openstacklib::defaults::pyvers
 
   $state_path                = '/var/lib/designate'
   $log_dir                   = '/var/log/designate'
-  $client_package_name       = "python${pyvers}-designateclient"
+  $client_package_name       = 'python3-designateclient'
   $agent_service_name        = 'designate-agent'
   $api_service_name          = 'designate-api'
   $central_service_name      = 'designate-central'
