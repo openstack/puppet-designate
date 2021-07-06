@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    The new ``designate::coordination`` class has been added.
+
+deprecations:
+  - |
+    The ``designate::producer::backend_url`` parameter has been deprecated in
+    favor of the new ``designate::coordination`` class.
