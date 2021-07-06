@@ -38,7 +38,7 @@ describe 'designate::producer' do
         is_expected.to contain_designate_config("service:producer/workers").with(:value => 8)
         is_expected.to contain_designate_config("service:producer/threads").with(:value => '<SERVICE DEFAULT>')
         is_expected.to contain_designate_config("service:producer/enabled_tasks").with(:value => '<SERVICE DEFAULT>')
-        is_expected.to contain_designate_config("coordination/backend_url").with(:value => '<SERVICE DEFAULT>')
+        is_expected.to_not contain_designate_config("coordination/backend_url")
       end
     end
 

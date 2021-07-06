@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    A new ``designate::coordination`` class has been added to facilitate
+    setting cordinate/backend_url configuration for multiple designate
+    components. Please use the ``designate::coordination::backend_url``
+    parameter instead of ``designate::producer::backend_url`` when
+    using the new dedicated class.
