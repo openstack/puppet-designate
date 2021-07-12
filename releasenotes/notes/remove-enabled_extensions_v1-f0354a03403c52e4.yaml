@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    The ``designate::api::enabled_extensions_v1`` parameter has been removed.

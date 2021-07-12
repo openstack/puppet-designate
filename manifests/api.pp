@@ -86,10 +86,6 @@
 #
 # DEPRECATED PARAMETERS
 #
-# [*enabled_extensions_v1*]
-#  (optional) API Version 1 extensions.
-#  Defaults to undef
-#
 # [*service_ensure*]
 #  (optional) Whether the designate api service will be running.
 #  Defaults to 'DEPRECATED'
@@ -116,16 +112,10 @@ class designate::api (
   $enabled_extensions_v2    = $::os_service_default,
   $enabled_extensions_admin = $::os_service_default,
   # DEPRECATED PARAMETERS
-  $enabled_extensions_v1    = undef,
   $service_ensure           = 'DEPRECATED',
 ) inherits designate {
 
   include designate::deps
-
-  if $enabled_extensions_v1 != undef {
-    warning('The enabled_extensions_v1 parameter has been deprecated and has \
-no effect now')
-  }
 
   if $service_ensure != 'DEPRECATED' {
     warning('The service_ensure parameter is deprecated. Use the manage_service parameter.')
