@@ -72,8 +72,8 @@ describe 'designate::api' do
           :default_limit_v2              => '25',
           :max_limit_v2                  => '1500',
           :pecan_debug                   => true,
-          :enabled_extensions_v2         => 'experimental',
-          :enabled_extensions_admin      => 'reports,quotas,counts,tenants,target_sync',
+          :enabled_extensions_v2         => 'ext1,ext2',
+          :enabled_extensions_admin      => 'reports,quotas,zones',
           :enable_proxy_headers_parsing  => true,
         })
       end
@@ -98,6 +98,20 @@ describe 'designate::api' do
         is_expected.to contain_oslo__middleware('designate_config').with(
           :enable_proxy_headers_parsing => params[:enable_proxy_headers_parsing]
         )
+      end
+    end
+
+    context 'with enabled_extentions in list' do
+      before do
+        params.merge!({
+          :enabled_extensions_v2    => ['ext1', 'ext2'],
+          :enabled_extensions_admin => ['reports', 'quotas', 'zones']
+        })
+      end
+
+      it 'configure service_api' do
+        is_expected.to contain_designate_config('service:api/enabled_extensions_v2').with_value('ext1,ext2')
+        is_expected.to contain_designate_config('service:api/enabled_extensions_admin').with_value('reports,quotas,zones')
       end
     end
 
