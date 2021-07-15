@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The new ``designate::api::enable_proxy_headers_parsing`` parameter has been
+    added.

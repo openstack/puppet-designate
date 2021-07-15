@@ -84,6 +84,11 @@
 #  (optional) Admin API extensions.
 #  Defaults to $::os_service_default
 #
+# [*enable_proxy_headers_parsing*]
+#   (Optional) Enable paste middleware to handle SSL requests through
+#   HTTPProxyToWSGI middleware.
+#   Defaults to $::os_service_default.
+#
 # DEPRECATED PARAMETERS
 #
 # [*service_ensure*]
@@ -91,28 +96,29 @@
 #  Defaults to 'DEPRECATED'
 #
 class designate::api (
-  $package_ensure           = present,
-  $api_package_name         = $::designate::params::api_package_name,
-  $enabled                  = true,
-  $manage_service           = true,
-  $auth_strategy            = $::os_service_default,
-  $enable_api_v2            = $::os_service_default,
-  $enable_api_admin         = $::os_service_default,
-  $api_base_uri             = $::os_service_default,
-  $listen                   = $::os_service_default,
-  $workers                  = $::os_workers,
-  $threads                  = $::os_service_default,
-  $enable_host_header       = $::os_service_default,
-  $max_header_line          = $::os_service_default,
-  $default_limit_admin      = $::os_service_default,
-  $max_limit_admin          = $::os_service_default,
-  $default_limit_v2         = $::os_service_default,
-  $max_limit_v2             = $::os_service_default,
-  $pecan_debug              = $::os_service_default,
-  $enabled_extensions_v2    = $::os_service_default,
-  $enabled_extensions_admin = $::os_service_default,
+  $package_ensure               = present,
+  $api_package_name             = $::designate::params::api_package_name,
+  $enabled                      = true,
+  $manage_service               = true,
+  $auth_strategy                = $::os_service_default,
+  $enable_api_v2                = $::os_service_default,
+  $enable_api_admin             = $::os_service_default,
+  $api_base_uri                 = $::os_service_default,
+  $listen                       = $::os_service_default,
+  $workers                      = $::os_workers,
+  $threads                      = $::os_service_default,
+  $enable_host_header           = $::os_service_default,
+  $max_header_line              = $::os_service_default,
+  $default_limit_admin          = $::os_service_default,
+  $max_limit_admin              = $::os_service_default,
+  $default_limit_v2             = $::os_service_default,
+  $max_limit_v2                 = $::os_service_default,
+  $pecan_debug                  = $::os_service_default,
+  $enabled_extensions_v2        = $::os_service_default,
+  $enabled_extensions_admin     = $::os_service_default,
+  $enable_proxy_headers_parsing = $::os_service_default,
   # DEPRECATED PARAMETERS
-  $service_ensure           = 'DEPRECATED',
+  $service_ensure               = 'DEPRECATED',
 ) inherits designate {
 
   include designate::deps
@@ -146,6 +152,10 @@ class designate::api (
 
   if $auth_strategy == 'keystone' {
     include designate::keystone::authtoken
+  }
+
+  oslo::middleware { 'designate_config':
+    enable_proxy_headers_parsing => $enable_proxy_headers_parsing
   }
 
   designate::generic_service { 'api':
