@@ -146,8 +146,8 @@ class designate::api (
     'service:api/default_limit_v2'          : value => $default_limit_v2;
     'service:api/max_limit_v2'              : value => $max_limit_v2;
     'service:api/pecan_debug'               : value => $pecan_debug;
-    'service:api/enabled_extensions_v2'     : value => $enabled_extensions_v2;
-    'service:api/enabled_extensions_admin'  : value => $enabled_extensions_admin;
+    'service:api/enabled_extensions_v2'     : value => join(any2array($enabled_extensions_v2), ',');
+    'service:api/enabled_extensions_admin'  : value => join(any2array($enabled_extensions_admin), ',');
   }
 
   if $auth_strategy == 'keystone' {
