@@ -35,19 +35,19 @@ describe 'designate::producer' do
       end
 
       it 'configures designate producer with default config options' do
-        is_expected.to contain_designate_config("service:producer/workers").with(:value => 8)
-        is_expected.to contain_designate_config("service:producer/threads").with(:value => '<SERVICE DEFAULT>')
-        is_expected.to contain_designate_config("service:producer/enabled_tasks").with(:value => '<SERVICE DEFAULT>')
+        is_expected.to contain_designate_config("service:producer/workers").with_value(8)
+        is_expected.to contain_designate_config("service:producer/threads").with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_designate_config("service:producer/enabled_tasks").with_value('<SERVICE DEFAULT>')
       end
     end
 
     context 'with non default parameters' do
       before { params.merge!( designate_producer_params ) }
       it 'configures desginate produce with non default parameters' do
-        is_expected.to contain_designate_config("service:producer/workers").with(:value => '3')
-        is_expected.to contain_designate_config("service:producer/threads").with(:value => '3000')
-        is_expected.to contain_designate_config("service:producer/enabled_tasks").with(:value => ['domain_purge','periodic_secondary_refresh'])
-        is_expected.to contain_designate_config("coordination/backend_url").with(:value => 'redis://10.0.0.1:1234')
+        is_expected.to contain_designate_config("service:producer/workers").with_value('3')
+        is_expected.to contain_designate_config("service:producer/threads").with_value('3000')
+        is_expected.to contain_designate_config("service:producer/enabled_tasks").with_value('domain_purge,periodic_secondary_refresh')
+        is_expected.to contain_designate_config("coordination/backend_url").with_value('redis://10.0.0.1:1234')
       end
     end
   end
