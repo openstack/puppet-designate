@@ -16,9 +16,9 @@
 #  (optional) Whether to enable the service.
 #  Defaults to true
 #
-# [*service_ensure*]
-#  (optional) Whether the designate producer service will be running.
-#  Defaults to 'running'
+# [*manage_service*]
+#   (Optional) Whether the designate producer service will be managed.
+#   Defaults to true.
 #
 # [*workers*]
 #  (optional) Number of workers to spawn.
@@ -38,17 +38,30 @@
 #  (optional) URL to use for coordination, should be a tooz URL.
 #  Defaults to undef
 #
+# [*service_ensure*]
+#  (optional) Whether the designate producer service will be running.
+#  Defaults to 'DEPRECATED'
+#
 class designate::producer (
   $package_ensure = 'present',
   $package_name   = $::designate::params::producer_package_name,
   $enabled        = true,
-  $service_ensure = running,
+  $manage_service = true,
   $workers        = $::os_workers,
   $threads        = $::os_service_default,
   $enabled_tasks  = $::os_service_default,
   # DEPRECATED PARAMETERS
-  $backend_url    = undef
+  $backend_url    = undef,
+  $service_ensure = 'DEPRECATED',
+
   ) inherits designate {
+
+  if $service_ensure != 'DEPRECATED' {
+    warning('The service_ensure parameter is deprecated. Use the manage_service parameter.')
+    $manage_service_real = $service_ensure
+  } else {
+    $manage_service_real = $manage_service
+  }
 
   designate_config {
     'service:producer/workers'       : value => $workers;
@@ -65,7 +78,7 @@ class designate::producer (
     package_ensure => $package_ensure,
     enabled        => $enabled,
     package_name   => $package_name,
-    manage_service => $service_ensure,
+    manage_service => $manage_service_real,
     service_name   => $::designate::params::producer_service_name,
   }
 }

@@ -16,9 +16,9 @@
 #  (optional) Whether to enable the service.
 #  Defaults to true
 #
-# [*service_ensure*]
-#  (optional) Whether the designate zone manager service will be running.
-#  Defaults to 'running'
+# [*manage_service*]
+#   (Optional) Whether the designate zone manager service will be managed.
+#   Defaults to true.
 #
 # [*workers*]
 #  (optional) Number of workers to spawn.
@@ -36,16 +36,31 @@
 #  (optional) Whether to allow synchronous zone exports
 #  Defaults to $::os_service_default.
 #
+# DEPRECATED PARAMETERS
+#
+# [*service_ensure*]
+#  (optional) Whether the designate zone manager service will be running.
+#  Defaults to 'DEPRECATED'
+#
 class designate::zone_manager (
   $package_ensure            = 'present',
   $package_name              = $::designate::params::zone_manager_package_name,
   $enabled                   = true,
-  $service_ensure            = running,
+  $manage_service            = true,
   $workers                   = $::os_workers,
   $threads                   = $::os_service_default,
   $enabled_tasks             = $::os_service_default,
   $export_synchronous        = $::os_service_default,
+  # DEPRECATED PARAMETERS
+  $service_ensure             = 'DEPRECATED',
   ) inherits designate {
+
+  if $service_ensure != 'DEPRECATED' {
+    warning('The service_ensure parameter is deprecated. Use the manage_service parameter.')
+    $manage_service_real = $service_ensure
+  } else {
+    $manage_service_real = $manage_service
+  }
 
   designate_config {
     'service:zone_manager/workers'            : value => $workers;
@@ -58,7 +73,7 @@ class designate::zone_manager (
     package_ensure => $package_ensure,
     enabled        => $enabled,
     package_name   => $package_name,
-    manage_service => $service_ensure,
+    manage_service => $manage_service_real,
     service_name   => $::designate::params::zone_manager_service_name,
   }
 }

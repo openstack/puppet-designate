@@ -16,9 +16,9 @@
 #   (optional) Whether to enable services.
 #   Defaults to true
 #
-# [*service_ensure*]
-#  (optional) Whether the designate central service will be running.
-#  Defaults to 'running'
+# [*manage_service*]
+#   (Optional) Whether the designate central service will be managed.
+#   Defaults to true.
 #
 # [*managed_resource_email*]
 #  (optional) Email to use for managed resources like domains created by the FloatingIP API
@@ -59,11 +59,15 @@
 #  (optional) Maximum domain name length.
 #  Defaults to undef
 #
+# [*service_ensure*]
+#  (optional) Whether the designate central service will be running.
+#  Defaults to 'DEPRECATED'
+#
 class designate::central (
   $package_ensure             = present,
   $central_package_name       = $::designate::params::central_package_name,
   $enabled                    = true,
-  $service_ensure             = 'running',
+  $manage_service             = true,
   $managed_resource_email     = 'hostmaster@example.com',
   $managed_resource_tenant_id = '123456',
   $max_zone_name_len          = $::os_service_default,
@@ -73,11 +77,20 @@ class designate::central (
   $threads                    = $::os_service_default,
   $default_pool_id            = $::os_service_default,
   # DEPRECATED PARAMETERS
-  $max_domain_name_len        = undef
+  $max_domain_name_len        = undef,
+  $service_ensure             = 'DEPRECATED',
+
 ) inherits designate {
 
   include designate::deps
   include designate::db
+
+  if $service_ensure != 'DEPRECATED' {
+    warning('The service_ensure parameter is deprecated. Use the manage_service parameter.')
+    $manage_service_real = $service_ensure
+  } else {
+    $manage_service_real = $manage_service
+  }
 
   designate_config {
     'service:central/managed_resource_email'     : value => $managed_resource_email;
@@ -98,7 +111,7 @@ class designate::central (
 
   designate::generic_service { 'central':
     enabled        => $enabled,
-    manage_service => $service_ensure,
+    manage_service => $manage_service_real,
     package_ensure => $package_ensure,
     package_name   => $central_package_name,
     service_name   => $::designate::params::central_service_name,

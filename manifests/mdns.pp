@@ -17,8 +17,8 @@
 #   Defaults to true.
 #
 # [*manage_service*]
-#   (Optional) Whether the designate mdns service will be running.
-#   Defaults to 'running'.
+#   (Optional) Whether the designate mdns service will be managed.
+#   Defaults to true.
 #
 # [*workers*]
 #   (Optional) Number of mdns worker processes to spawn.
@@ -56,7 +56,7 @@ class designate::mdns (
   $package_ensure     = present,
   $mdns_package_name  = $::designate::params::mdns_package_name,
   $enabled            = true,
-  $manage_service     = 'running',
+  $manage_service     = true,
   $workers            = $::os_workers,
   $threads            = $::os_service_default,
   $tcp_backlog        = $::os_service_default,

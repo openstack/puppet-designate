@@ -17,7 +17,7 @@
 #   Defaults to true
 #
 # [*manage_service*]
-#   (optional) Whether to manage services
+#   (Optional) Whether the designate api service will be managed.
 #   Defaults to true
 #
 # [*auth_strategy*]

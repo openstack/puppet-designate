@@ -15,6 +15,7 @@ describe 'designate::worker' do
       :package_ensure       => 'present',
       :worker_package_name  => nil,
       :enabled              => true,
+      :manage_service       => true,
       :service_ensure       => 'running',
       :workers              => 10,
       :threads              => 900,

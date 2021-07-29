@@ -20,6 +20,10 @@
 #   (optional) Whether to enable services.
 #   Defaults to true
 #
+# [*manage_service*]
+#   (Optional) Whether the designate worker service will be managed.
+#   Defaults to true.
+#
 # [*service_ensure*]
 #   (optional) Whether the designate worker service will
 #   be running.
@@ -73,6 +77,7 @@ class designate::worker(
   $package_ensure       = present,
   $worker_package_name  = undef,
   $enabled              = true,
+  $manage_service       = true,
   $service_ensure       = 'running',
   $workers              = $::os_workers,
   $threads              = $::os_service_default,
@@ -98,13 +103,15 @@ class designate::worker(
     }
   }
 
-  service { 'designate-worker':
-    ensure     => $service_ensure,
-    name       => $::designate::params::worker_service_name,
-    enable     => $enabled,
-    hasstatus  => true,
-    hasrestart => true,
-    tag        => ['openstack', 'designate-service'],
+  if $manage_service {
+    service { 'designate-worker':
+      ensure     => $service_ensure,
+      name       => $::designate::params::worker_service_name,
+      enable     => $enabled,
+      hasstatus  => true,
+      hasrestart => true,
+      tag        => ['openstack', 'designate-service'],
+    }
   }
 
   designate_config {

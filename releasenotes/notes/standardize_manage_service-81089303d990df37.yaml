@@ -1,0 +1,27 @@
+---
+features:
+  - |
+    The ``designate::worker::manage_service`` parameter has been added.
+    It controls whether the designate worker service will be managed.
+    Defaults to true.
+deprecations:
+  - |
+    The ``designate::producer::service_ensure`` parameter has been deprecated. Use
+    the ``designate::producer::manage_service`` parameter instead, which accepts
+    True or False instead.
+  - |
+    The ``designate::central::service_ensure`` parameter has been deprecated. Use
+    the ``designate::central::manage_service`` parameter instead, which accepts
+    True or False instead.
+  - |
+    The ``designate::agent::service_ensure`` parameter has been deprecated. Use
+    the ``designate::agent::manage_service`` parameter instead, which accepts
+    True or False instead.
+  - |
+    The ``designate::zone_manager::service_ensure`` parameter has been deprecated. Use
+    the ``designate::zone_manager::manage_service`` parameter instead, which accepts
+    True or False instead.
+  - |
+    The ``designate::sink::service_ensure`` parameter has been deprecated. Use
+    the ``designate::sink::manage_service`` parameter instead, which accepts
+    True or False instead.
