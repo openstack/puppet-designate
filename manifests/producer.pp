@@ -66,7 +66,7 @@ class designate::producer (
   designate_config {
     'service:producer/workers'       : value => $workers;
     'service:producer/threads'       : value => $threads;
-    'service:producer/enabled_tasks' : value => $enabled_tasks;
+    'service:producer/enabled_tasks' : value => join(any2array($enabled_tasks), ',');
   }
 
   if $backend_url != undef {
