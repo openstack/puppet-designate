@@ -1,0 +1,9 @@
+---
+upgrade:
+  - |
+    The following classes for powerdns 3 driver have been removed.
+
+    - ``designate::backend::powerdns``
+    - ``designate::db::powerdns::mysql``
+    - ``designate::db::powerdns::sync``
+

@@ -24,10 +24,6 @@
         {
             "name": "openstack/oslo",
             "version_requirement": ">=19.3.0 <20.0.0"
-        },
-        {
-            "name": "antonlindstrom/powerdns",
-            "version_requirement": ">=0.0.5 <1.0.0"
         }
     ],
     "description": "Installs and configures OpenStack Designate (DNS Services).",

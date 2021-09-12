@@ -21,7 +21,7 @@
 #   Defaults to true.
 #
 # [*backend_driver*]
-#  (optional) Driver used for backend communication (fake, rpc, bind9, powerdns)
+#  (optional) Driver used for backend communication (fake, rpc, bind9)
 #  Defaults to 'bind9'
 #
 # [*listen*]

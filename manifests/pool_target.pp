@@ -30,11 +30,6 @@ define designate::pool_target (
 
   include designate::deps
 
-  if target == 'powerdns' {
-    include powerdns
-    include powerdns::mysql
-  }
-
   validate_legacy(Pattern[/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/],
     'validate_re', $name, ['[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'])
   validate_legacy(Hash, 'validate_hash', $options)
@@ -46,19 +41,5 @@ define designate::pool_target (
     "pool_target:${name}/options": value => $options_real;
     "pool_target:${name}/type":    value => $type;
     "pool_target:${name}/masters": value => join($masters,',');
-  }
-
-  if $type == 'powerdns' {
-    exec { "designate-powerdns-dbsync ${name}":
-      command     => "${::designate::params::designate_manage} powerdns sync ${name}",
-      path        => '/usr/bin',
-      user        => 'root',
-      refreshonly => true,
-      logoutput   => on_failure,
-    }
-
-    # Have to have a valid configuration file before running migrations
-    Designate_config<||> -> Exec["designate-powerdns-dbsync ${name}"]
-    Exec["designate-powerdns-dbsync ${name}"] ~> Service<| title == 'designate-pool-manager' |>
   }
 }
