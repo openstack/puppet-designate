@@ -26,34 +26,19 @@
 #  else in the config.
 #  Defaults to undef
 #
-# DEPRECATED PARAMETERS
-#
-# [*service_ensure*]
-#  (optional) Whether the designate sink service will be running.
-#  Defaults to 'DEPRECATED'
-#
 class designate::sink (
   $package_ensure                = present,
   $sink_package_name             = $::designate::params::sink_package_name,
   $enabled                       = true,
   $manage_service                = true,
   $enabled_notification_handlers = undef,
-  # DEPRECATED PARAMETERS
-  $service_ensure               = 'DEPRECATED',
 ) inherits designate {
 
   include designate::deps
 
-  if $service_ensure != 'DEPRECATED' {
-    warning('The service_ensure parameter is deprecated. Use the manage_service parameter.')
-    $manage_service_real = $service_ensure
-  } else {
-    $manage_service_real = $manage_service
-  }
-
   designate::generic_service { 'sink':
     enabled        => $enabled,
-    manage_service => $manage_service_real,
+    manage_service => $manage_service,
     package_ensure => $package_ensure,
     package_name   => $sink_package_name,
     service_name   => $::designate::params::sink_service_name,

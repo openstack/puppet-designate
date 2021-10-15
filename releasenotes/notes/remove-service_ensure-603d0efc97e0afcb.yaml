@@ -1,0 +1,11 @@
+---
+upgrade:
+  - |
+    The following parameters have been removed.
+
+    - ``designate::producer::service_ensure``
+    - ``designate::central::service_ensure``
+    - ``designate::agent::service_ensure``
+    - ``designate::zone_manager::service_ensure``
+    - ``designate::sink::service_ensure``
+

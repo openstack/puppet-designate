@@ -89,12 +89,6 @@
 #   HTTPProxyToWSGI middleware.
 #   Defaults to $::os_service_default.
 #
-# DEPRECATED PARAMETERS
-#
-# [*service_ensure*]
-#  (optional) Whether the designate api service will be running.
-#  Defaults to 'DEPRECATED'
-#
 class designate::api (
   $package_ensure               = present,
   $api_package_name             = $::designate::params::api_package_name,
@@ -117,18 +111,9 @@ class designate::api (
   $enabled_extensions_v2        = $::os_service_default,
   $enabled_extensions_admin     = $::os_service_default,
   $enable_proxy_headers_parsing = $::os_service_default,
-  # DEPRECATED PARAMETERS
-  $service_ensure               = 'DEPRECATED',
 ) inherits designate {
 
   include designate::deps
-
-  if $service_ensure != 'DEPRECATED' {
-    warning('The service_ensure parameter is deprecated. Use the manage_service parameter.')
-    $manage_service_real = $service_ensure
-  } else {
-    $manage_service_real = $manage_service
-  }
 
   # API Service
   designate_config {
@@ -160,7 +145,7 @@ class designate::api (
 
   designate::generic_service { 'api':
     enabled        => $enabled,
-    manage_service => $manage_service_real,
+    manage_service => $manage_service,
     package_ensure => $package_ensure,
     package_name   => $api_package_name,
     service_name   => $::designate::params::api_service_name,

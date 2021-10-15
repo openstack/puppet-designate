@@ -38,10 +38,6 @@
 #  (optional) URL to use for coordination, should be a tooz URL.
 #  Defaults to undef
 #
-# [*service_ensure*]
-#  (optional) Whether the designate producer service will be running.
-#  Defaults to 'DEPRECATED'
-#
 class designate::producer (
   $package_ensure = 'present',
   $package_name   = $::designate::params::producer_package_name,
@@ -52,16 +48,7 @@ class designate::producer (
   $enabled_tasks  = $::os_service_default,
   # DEPRECATED PARAMETERS
   $backend_url    = undef,
-  $service_ensure = 'DEPRECATED',
-
-  ) inherits designate {
-
-  if $service_ensure != 'DEPRECATED' {
-    warning('The service_ensure parameter is deprecated. Use the manage_service parameter.')
-    $manage_service_real = $service_ensure
-  } else {
-    $manage_service_real = $manage_service
-  }
+) inherits designate {
 
   designate_config {
     'service:producer/workers'       : value => $workers;
@@ -78,7 +65,7 @@ class designate::producer (
     package_ensure => $package_ensure,
     enabled        => $enabled,
     package_name   => $package_name,
-    manage_service => $manage_service_real,
+    manage_service => $manage_service,
     service_name   => $::designate::params::producer_service_name,
   }
 }
