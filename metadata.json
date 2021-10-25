@@ -2,6 +2,10 @@
     "author": "Xingchao Yu and OpenStack Contributors",
     "dependencies": [
         {
+            "name": "puppetlabs/concat",
+            "version_requirement": ">=1.0.0 <8.0.0"
+        },
+        {
             "name": "puppetlabs/inifile",
             "version_requirement": ">=2.0.0 <3.0.0"
         },
