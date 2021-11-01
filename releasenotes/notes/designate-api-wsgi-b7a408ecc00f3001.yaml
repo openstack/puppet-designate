@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Added the new ``designate::wsgi::apache`` class, you can now run
+    the ``designate-api`` service under Apache with mod_wsgi.

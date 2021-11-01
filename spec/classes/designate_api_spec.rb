@@ -116,6 +116,39 @@ describe 'designate::api' do
     end
   end
 
+  shared_examples 'designate-api wsgi' do
+    let :pre_condition do
+      "class { 'designate': }
+       include ::designate::db
+       class { '::designate::keystone::authtoken':
+         password => 'password',
+       }
+       include ::apache
+       "
+    end
+
+    let :params do
+      {
+        :service_name => 'httpd',
+      }
+    end
+
+    context 'with required params' do
+      it { should contain_package('designate-api').with(
+        :ensure => 'present',
+        :name   => platform_params[:api_package_name],
+        :tag    => ['openstack', 'designate-package'],
+      )}
+
+      it { should contain_service('designate-api').with(
+        :ensure => 'stopped',
+        :name   => platform_params[:api_service_name],
+        :enable => false,
+        :tag    => ['designate-service']
+      )}
+    end
+  end
+
   on_supported_os({
     :supported_os => OSDefaults.get_supported_os
   }).each do |os,facts|
@@ -139,6 +172,7 @@ describe 'designate::api' do
         end
       end
       it_behaves_like 'designate-api'
+      it_behaves_like 'designate-api wsgi'
     end
   end
 end
