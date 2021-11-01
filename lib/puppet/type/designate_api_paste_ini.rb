@@ -45,6 +45,11 @@ Puppet::Type.newtype(:designate_api_paste_ini) do
     defaultto('<SERVICE DEFAULT>')
   end
 
+  newparam(:key_val_separator) do
+    desc 'The separator string to use between each setting name and value.'
+    defaultto('=')
+  end
+
   autorequire(:anchor) do
     ['designate::install::end']
   end
