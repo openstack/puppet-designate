@@ -89,6 +89,13 @@
 #   HTTPProxyToWSGI middleware.
 #   Defaults to $::os_service_default.
 #
+# [*service_name*]
+#   (Optional) Name of the service that will be providing the server
+#   functionality of the designate API. If the value is 'httpd',
+#   designate will be run as web service and configuration of the
+#   web server will be required (e.g designate::wsgi::apache)
+#   Defaults to $::designate::params::api_service_name
+#
 # DEPRECATED PARAMETERS
 #
 # [*service_ensure*]
@@ -117,6 +124,7 @@ class designate::api (
   $enabled_extensions_v2        = $::os_service_default,
   $enabled_extensions_admin     = $::os_service_default,
   $enable_proxy_headers_parsing = $::os_service_default,
+  $service_name                 = $::designate::params::api_service_name,
   # DEPRECATED PARAMETERS
   $service_ensure               = 'DEPRECATED',
 ) inherits designate {
@@ -158,11 +166,29 @@ class designate::api (
     enable_proxy_headers_parsing => $enable_proxy_headers_parsing
   }
 
+  if $manage_service {
+    if $service_name == 'httpd' {
+      service { 'designate-api':
+        ensure => 'stopped',
+        name   => $::barbican::params::api_service_name,
+        enable => false,
+        tag    => ['designate-service'],
+      }
+      Service['designate-api'] -> Service[$service_name]
+      $service_name_real = false
+      Service <| title == 'httpd' |> { tag +> 'designate-service' }
+    } else {
+      $service_name_real = $service_name
+    }
+  } else {
+    $service_name_real = $service_name
+  }
+
   designate::generic_service { 'api':
     enabled        => $enabled,
     manage_service => $manage_service_real,
     package_ensure => $package_ensure,
     package_name   => $api_package_name,
-    service_name   => $::designate::params::api_service_name,
+    service_name   => $service_name_real,
   }
 }

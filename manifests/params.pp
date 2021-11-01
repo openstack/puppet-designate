@@ -21,27 +21,31 @@ class designate::params {
   case $::osfamily {
     'RedHat': {
       # package name
-      $common_package_name       = 'openstack-designate-common'
-      $api_package_name          = 'openstack-designate-api'
-      $central_package_name      = 'openstack-designate-central'
-      $agent_package_name        = 'openstack-designate-agent'
-      $sink_package_name         = 'openstack-designate-sink'
-      $mdns_package_name         = 'openstack-designate-mdns'
-      $zone_manager_package_name = 'openstack-designate-zone-manager'
-      $producer_package_name     = 'openstack-designate-producer'
-      $worker_package_name       = 'openstack-designate-worker'
+      $common_package_name          = 'openstack-designate-common'
+      $api_package_name             = 'openstack-designate-api'
+      $central_package_name         = 'openstack-designate-central'
+      $agent_package_name           = 'openstack-designate-agent'
+      $sink_package_name            = 'openstack-designate-sink'
+      $mdns_package_name            = 'openstack-designate-mdns'
+      $zone_manager_package_name    = 'openstack-designate-zone-manager'
+      $producer_package_name        = 'openstack-designate-producer'
+      $worker_package_name          = 'openstack-designate-worker'
+      $designate_wsgi_script_path   = '/var/www/cgi-bin/designate'
+      $designate_wsgi_script_source = '/usr/bin/designate-api-wsgi'
     }
     'Debian': {
       # package name
-      $common_package_name       = 'designate-common'
-      $api_package_name          = 'designate-api'
-      $central_package_name      = 'designate-central'
-      $agent_package_name        = 'designate-agent'
-      $sink_package_name         = 'designate-sink'
-      $mdns_package_name         = 'designate-mdns'
-      $zone_manager_package_name = 'designate-zone-manager'
-      $producer_package_name     = 'designate-producer'
-      $worker_package_name       = 'designate-worker'
+      $common_package_name          = 'designate-common'
+      $api_package_name             = 'designate-api'
+      $central_package_name         = 'designate-central'
+      $agent_package_name           = 'designate-agent'
+      $sink_package_name            = 'designate-sink'
+      $mdns_package_name            = 'designate-mdns'
+      $zone_manager_package_name    = 'designate-zone-manager'
+      $producer_package_name        = 'designate-producer'
+      $worker_package_name          = 'designate-worker'
+      $designate_wsgi_script_path   = '/usr/lib/cgi-bin/designate'
+      $designate_wsgi_script_source = '/usr/bin/designate-api-wsgi'
     }
     default: {
       fail("Unsupported osfamily: ${::osfamily} operatingsystem")
