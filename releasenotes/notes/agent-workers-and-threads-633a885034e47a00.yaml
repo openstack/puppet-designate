@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The ``designate::agent`` class now supports the ``worker`` parameter and
+    the ``thread`` parameter.

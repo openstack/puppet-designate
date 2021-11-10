@@ -24,6 +24,14 @@
 #  (optional) Driver used for backend communication (fake, rpc, bind9)
 #  Defaults to 'bind9'
 #
+# [*workers*]
+#  (optional) Number of agent worker process to spawn
+#  Defaults to $::os_workers
+#
+# [*threads*]
+#  (optional) Number of agent greenthreads to spawn
+#  Defaults to $::os_service_default
+#
 # [*listen*]
 #  (optional) Agent host:port pairs to listen on.
 #  Defaults to $::os_service_default
@@ -34,6 +42,8 @@ class designate::agent (
   $enabled            = true,
   $manage_service     = true,
   $backend_driver     = 'bind9',
+  $workers            = $::os_workers,
+  $threads            = $::os_service_default,
   $listen             = $::os_service_default,
 ) inherits designate {
 
@@ -41,6 +51,8 @@ class designate::agent (
 
   designate_config {
     'service:agent/backend_driver' : value => $backend_driver;
+    'service:agent/workers' :        value => $workers;
+    'service:agent/threads' :        value => $threads;
     'service:agent/listen' :         value => $listen;
   }
 

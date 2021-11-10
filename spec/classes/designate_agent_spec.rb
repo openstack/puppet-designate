@@ -26,9 +26,10 @@ describe 'designate::agent' do
         )
       end
 
-
       it 'configures designate-agent with default parameters' do
         is_expected.to contain_designate_config('service:agent/backend_driver').with_value('bind9')
+        is_expected.to contain_designate_config('service:agent/workers').with_value(8)
+        is_expected.to contain_designate_config('service:agent/threads').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:agent/listen').with_value('<SERVICE DEFAULT>')
       end
 
@@ -56,10 +57,16 @@ describe 'designate::agent' do
 
     context 'with overriding parameters' do
       before do
-        params.merge!({ :listen => '127.0.0.1:9002' })
+        params.merge!({
+          :workers => 2,
+          :threads => 1000,
+          :listen  => '127.0.0.1:9002',
+        })
       end
 
       it 'configures designate-agent with custom parameters' do
+        is_expected.to contain_designate_config('service:agent/workers').with_value( params[:workers] )
+        is_expected.to contain_designate_config('service:agent/threads').with_value( params[:threads] )
         is_expected.to contain_designate_config('service:agent/listen').with_value( params[:listen] )
       end
     end
@@ -71,7 +78,7 @@ describe 'designate::agent' do
   }).each do |os,facts|
     context "on #{os}" do
       let (:facts) do
-        facts.merge!(OSDefaults.get_facts())
+        facts.merge!(OSDefaults.get_facts({ :os_workers => 8 }))
       end
 
       let(:platform_params) do
