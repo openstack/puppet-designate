@@ -39,6 +39,7 @@ describe 'designate::central' do
         is_expected.to contain_designate_config('service:central/workers').with_value(8)
         is_expected.to contain_designate_config('service:central/threads').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:central/default_pool_id').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_designate_config('service:central/scheduler_filters').with_value('<SERVICE DEFAULT>')
       end
     end
 
@@ -47,12 +48,14 @@ describe 'designate::central' do
         params.merge!({
           :max_zone_name_len      => 100,
           :max_recordset_name_len => 200,
+          :scheduler_filters      => 'default_pool',
         })
       end
 
       it 'configures the values set' do
         is_expected.to contain_designate_config('service:central/max_zone_name_len').with_value(100)
         is_expected.to contain_designate_config('service:central/max_recordset_name_len').with_value(200)
+        is_expected.to contain_designate_config('service:central/scheduler_filters').with_value('default_pool')
       end
     end
 

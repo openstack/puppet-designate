@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Support for the ``[service:central] scheduler_filters`` parameter has been
+    added.
