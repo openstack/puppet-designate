@@ -24,6 +24,11 @@ class designate::deps {
   ~> Service<| tag == 'designate-service' |>
   ~> anchor { 'designate::service::end': }
 
+  # paste-api.ini config should occur in the config block also.
+  Anchor['designate::config::begin']
+  -> Designate_api_paste_ini<||>
+  ~> Anchor['designate::config::end']
+
   # policy config should occur in the config block also.
   Anchor['designate::config::begin']
   -> Openstacklib::Policy::Base<||>
