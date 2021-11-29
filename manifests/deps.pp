@@ -26,7 +26,7 @@ class designate::deps {
 
   # policy config should occur in the config block also.
   Anchor['designate::config::begin']
-  -> Openstacklib::Policy::Base<||>
+  -> Openstacklib::Policy<||>
   ~> Anchor['designate::config::end']
 
   # On any uwsgi config change, we must restart Designate APIs.
