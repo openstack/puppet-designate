@@ -121,11 +121,7 @@ class designate::wsgi::apache (
 
   include designate::deps
   include designate::params
-  include apache
-  include apache::mod::wsgi
-  if $ssl {
-    include apache::mod::ssl
-  }
+
   ::openstacklib::wsgi::apache { 'designate_wsgi':
     bind_host                   => $bind_host,
     bind_port                   => $port,

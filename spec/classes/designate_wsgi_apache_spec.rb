@@ -5,9 +5,6 @@ describe 'designate::wsgi::apache' do
   shared_examples_for 'apache serving designate with mod_wsgi' do
     context 'with default parameters' do
       it { is_expected.to contain_class('designate::params') }
-      it { is_expected.to contain_class('apache') }
-      it { is_expected.to contain_class('apache::mod::wsgi') }
-      it { is_expected.to_not contain_class('apache::mod::ssl') }
       it { is_expected.to contain_openstacklib__wsgi__apache('designate_wsgi').with(
         :bind_port                   => 9001,
         :group                       => 'designate',
@@ -47,9 +44,6 @@ describe 'designate::wsgi::apache' do
         }
       end
       it { is_expected.to contain_class('designate::params') }
-      it { is_expected.to contain_class('apache') }
-      it { is_expected.to contain_class('apache::mod::wsgi') }
-      it { is_expected.to contain_class('apache::mod::ssl') }
       it { is_expected.to contain_openstacklib__wsgi__apache('designate_wsgi').with(
         :bind_host                   => '10.42.51.1',
         :bind_port                   => 12345,
@@ -93,15 +87,11 @@ describe 'designate::wsgi::apache' do
         case facts[:osfamily]
         when 'Debian'
           {
-            :httpd_service_name => 'apache2',
-            :httpd_ports_file   => '/etc/apache2/ports.conf',
             :wsgi_script_path   => '/usr/lib/cgi-bin/designate',
             :wsgi_script_source => '/usr/bin/designate-api-wsgi'
           }
         when 'RedHat'
           {
-            :httpd_service_name => 'httpd',
-            :httpd_ports_file   => '/etc/httpd/conf/ports.conf',
             :wsgi_script_path   => '/var/www/cgi-bin/designate',
             :wsgi_script_source => '/usr/bin/designate-api-wsgi'
           }
