@@ -24,6 +24,10 @@ class designate::deps {
   ~> Service<| tag == 'designate-service' |>
   ~> anchor { 'designate::service::end': }
 
+  # all coordination settings should be applied and all packages should be
+  # installed before service startup
+  Oslo::Coordination<||> -> Anchor['designate::service::begin']
+
   # paste-api.ini config should occur in the config block also.
   Anchor['designate::config::begin']
   -> Designate_api_paste_ini<||>
