@@ -146,13 +146,6 @@ class designate(
 
   include designate::deps
 
-  exec { 'post-designate_config':
-    command     => '/bin/echo "designate config has changed"',
-    refreshonly => true,
-  }
-
-  Anchor['designate::config::end'] ~> Exec['post-designate_config']
-
   package { 'designate-common':
     ensure => $package_ensure,
     name   => $common_package_name,
