@@ -70,6 +70,17 @@ describe 'designate' do
       it_configures 'a designate base installation'
     end
 
+    context 'without state_path' do
+      it { is_expected.to contain_designate_config('DEFAULT/state_path').with_value('/var/lib/designate') }
+    end
+
+    context 'with state_path' do
+      let :params do
+        { :state_path => '/var/tmp/designate' }
+      end
+
+      it { is_expected.to contain_designate_config('DEFAULT/state_path').with_value('/var/tmp/designate') }
+    end
   end
 
   shared_examples_for 'a designate base installation' do
