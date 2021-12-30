@@ -43,7 +43,6 @@ define designate::generic_service(
   include designate::params
 
   $designate_title = "designate-${name}"
-  Exec['post-designate_config'] ~> Anchor['designate::service::end']
 
   if ($package_name) {
     if !defined(Package[$package_name]) {
