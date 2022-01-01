@@ -26,12 +26,27 @@ describe 'designate::sink' do
         )
         is_expected.to contain_designate_config('service:sink/enabled_notification_handlers').with_ensure('absent')
       end
+    end
 
-      context 'when using enabled_notification_handlers' do
-        before { params.merge!(:enabled_notification_handlers => ['nova_fixed','neutron_floatingip']) }
-        it 'configures designate-sink with enabled_notification_handlers' do
-          is_expected.to contain_designate_config('service:sink/enabled_notification_handlers').with_value(['nova_fixed,neutron_floatingip'])
-        end
+    context 'with enabled_notification_handlers (array)' do
+      before do
+        params.merge!(
+          :enabled_notification_handlers => ['nova_fixed', 'neutron_floatingip']
+        )
+      end
+      it 'configures designate-sink with enabled_notification_handlers' do
+        is_expected.to contain_designate_config('service:sink/enabled_notification_handlers').with_value('nova_fixed,neutron_floatingip')
+      end
+    end
+
+    context 'with enabled_notification_handlers (string)' do
+      before do
+        params.merge!(
+          :enabled_notification_handlers => 'nova_fixed,neutron_floatingip'
+        )
+      end
+      it 'configures designate-sink with enabled_notification_handlers' do
+        is_expected.to contain_designate_config('service:sink/enabled_notification_handlers').with_value('nova_fixed,neutron_floatingip')
       end
     end
 

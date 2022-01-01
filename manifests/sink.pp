@@ -46,11 +46,11 @@ class designate::sink (
 
   if $enabled_notification_handlers {
     designate_config {
-      'service:sink/enabled_notification_handlers':  value => join($enabled_notification_handlers,',')
+      'service:sink/enabled_notification_handlers': value => join(any2array($enabled_notification_handlers),',')
     }
   } else {
     designate_config {
-      'service:sink/enabled_notification_handlers':  ensure => absent
+      'service:sink/enabled_notification_handlers': ensure => absent
     }
   }
 
