@@ -1,0 +1,13 @@
+---
+features:
+  - |
+    The ``system_scope`` parameter has been added to
+    the ``designate::keystone::authtoken`` class.
+
+  - |
+    The ``designate::keystone::auth`` class now supports customizing roles
+    assigned to the designate service user.
+
+  - |
+    The ``designate::keystone::auth`` class now supports defining assignmet of
+    system-scoped roles to the designate service user.

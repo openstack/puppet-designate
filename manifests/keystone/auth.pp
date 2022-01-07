@@ -47,6 +47,18 @@
 #   (Optional) Tenant for designate user.
 #   Defaults to 'services'.
 #
+# [*roles*]
+#   (Optional) List of roles assigned to designate user.
+#   Defaults to ['admin']
+#
+# [*system_scope*]
+#   (Optional) Scope for system operations.
+#   Defaults to 'all'
+#
+# [*system_roles*]
+#   (Optional) List of system roles assigned to designate user.
+#   Defaults to []
+#
 # [*public_url*]
 #   (0ptional) The endpoint's public url.
 #   This url should *not* contain any trailing '/'.
@@ -79,6 +91,9 @@ class designate::keystone::auth (
   $service_description = 'OpenStack DNSaas Service',
   $region              = 'RegionOne',
   $tenant              = 'services',
+  $roles               = ['admin'],
+  $system_scope        = 'all',
+  $system_roles        = [],
   $configure_user      = true,
   $configure_user_role = true,
   $configure_endpoint  = true,
@@ -89,8 +104,11 @@ class designate::keystone::auth (
 
   include designate::deps
 
-  if $configure_user_role {
-    Keystone_user_role["${auth_name}@${tenant}"] ~> Anchor['designate::service::end']
+  Keystone_user_role<| name == "${auth_name}@${tenant}" |> -> Anchor['designate::service::end']
+  Keystone_user_role<| name == "${auth_name}@::::${system_scope}" |> -> Anchor['designate::service::end']
+
+  if $configure_endpoint {
+    Keystone_endpoint["${region}/${service_name}::${service_type}"] -> Anchor['designate::service::end']
   }
 
   keystone::resource::service_identity { 'designate':
@@ -105,6 +123,9 @@ class designate::keystone::auth (
     password            => $password,
     email               => $email,
     tenant              => $tenant,
+    roles               => $roles,
+    system_scope        => $system_scope,
+    system_roles        => $system_roles,
     public_url          => $public_url,
     internal_url        => $internal_url,
     admin_url           => $admin_url,
