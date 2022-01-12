@@ -122,6 +122,8 @@ class designate::wsgi::apache (
   include designate::deps
   include designate::params
 
+  Anchor['designate::install::end'] -> Class['apache']
+
   ::openstacklib::wsgi::apache { 'designate_wsgi':
     bind_host                   => $bind_host,
     bind_port                   => $port,
@@ -151,6 +153,5 @@ class designate::wsgi::apache (
     access_log_format           => $access_log_format,
     error_log_file              => $error_log_file,
     custom_wsgi_process_options => $custom_wsgi_process_options,
-    require                     => Anchor['designate::install::end'],
   }
 }
