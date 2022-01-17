@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    The new ``designate::network_api::neutron`` class has been added. This
+    class manages parmaeters in the ``[network_api:neutron]`` section.
+
+deprecations:
+  - |
+    The ``designate::neutron_endpoint_type`` parameter has been deprecated.
+    Use the ``endpoint_type`` parameter of the new
+    ``designate::network_api::neutron`` class.

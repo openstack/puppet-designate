@@ -106,9 +106,11 @@
 #   (optional) Whether to use durable queues in AMQP.
 #   Defaults to $::os_service_default.
 #
+# DEPRECATED PARAMETERS
+#
 # [*neutron_endpoint_type*]
 #   (optional) Endpoint type to use.
-#   Defaults to $::os_service_default.
+#   Defaults to undef
 #
 class designate(
   $package_ensure              = present,
@@ -132,7 +134,8 @@ class designate(
   $notification_topics         = 'notifications',
   $purge_config                = false,
   $amqp_durable_queues         = $::os_service_default,
-  $neutron_endpoint_type       = $::os_service_default,
+  # DEPRECATED PARAMETERS
+  $neutron_endpoint_type       = undef
 ) inherits designate::params {
 
   if !is_service_default($kombu_ssl_ca_certs) and !$rabbit_use_ssl {
@@ -150,6 +153,11 @@ class designate(
   }
 
   include designate::deps
+
+  if $neutron_endpoint_type != undef {
+    warning('The neutron_endpoint_type parameter is deprecated. Use the designate::network_api::neutron class.')
+  }
+  include designate::network_api::neutron
 
   package { 'designate-common':
     ensure => $package_ensure,
@@ -188,9 +196,8 @@ class designate(
 
   # default setting
   designate_config {
-    'DEFAULT/root_helper'               : value => $root_helper;
-    'DEFAULT/state_path'                : value => $state_path;
-    'network_api:neutron/endpoint_type' : value => $neutron_endpoint_type;
+    'DEFAULT/root_helper': value => $root_helper;
+    'DEFAULT/state_path' : value => $state_path;
   }
 
 }
