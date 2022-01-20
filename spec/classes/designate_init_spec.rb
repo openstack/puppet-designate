@@ -14,40 +14,6 @@ describe 'designate' do
     }
   end
 
-  let :rabbit_use_ssl do
-    {
-      :rabbit_use_ssl          => true,
-      :kombu_ssl_ca_certs      => 'ca goes here',
-      :kombu_ssl_certfile      => 'cert goes here',
-      :kombu_ssl_keyfile       => 'key goes here',
-      :kombu_ssl_version       => 'TLSv1',
-      :kombu_reconnect_delay   => '1.0',
-      :kombu_failover_strategy => 'shuffle',
-    }
-  end
-
-  let :rabbit_use_ssl_cert_no_key do
-    {
-      :rabbit_use_ssl          => true,
-      :kombu_ssl_ca_certs      => 'ca goes here',
-      :kombu_ssl_certfile      => 'cert goes here',
-      :kombu_ssl_version       => 'TLSv1',
-      :kombu_reconnect_delay   => '1.0',
-      :kombu_failover_strategy => 'shuffle',
-    }
-  end
-
-  let :rabbit_use_ssl_key_no_cert do
-    {
-      :rabbit_use_ssl          => true,
-      :kombu_ssl_ca_certs      => 'ca goes here',
-      :kombu_ssl_keyfile       => 'key goes here',
-      :kombu_ssl_version       => 'TLSv1',
-      :kombu_reconnect_delay   => '1.0',
-      :kombu_failover_strategy => 'shuffle',
-    }
-  end
-
   shared_examples_for 'designate' do
 
     context 'with transport parameter' do
@@ -108,14 +74,29 @@ describe 'designate' do
       is_expected.to contain_designate_config('network_api:neutron/endpoint_type').with_value( params[:neutron_endpoint_type] )
     end
 
-    it 'configures notification' do
-      is_expected.to contain_designate_config('oslo_messaging_notifications/driver').with_value('messaging' )
-      is_expected.to contain_designate_config('oslo_messaging_notifications/topics').with_value('notifications')
-      is_expected.to contain_designate_config('oslo_messaging_notifications/transport_url').with_value('<SERVICE DEFAULT>')
-      is_expected.to contain_designate_config('oslo_messaging_rabbit/heartbeat_in_pthread').with_value('<SERVICE DEFAULT>')
-      is_expected.to contain_designate_config('DEFAULT/transport_url').with_value('<SERVICE DEFAULT>')
-      is_expected.to contain_designate_config('DEFAULT/rpc_response_timeout').with_value('<SERVICE DEFAULT>')
-      is_expected.to contain_designate_config('DEFAULT/control_exchange').with_value('<SERVICE DEFAULT>')
+    it 'configures messaging' do
+      is_expected.to contain_oslo__messaging__default('designate_config').with(
+        :transport_url        => '<SERVICE DEFAULT>',
+        :rpc_response_timeout => '<SERVICE DEFAULT>',
+        :control_exchange     => '<SERVICE DEFAULT>'
+      )
+      is_expected.to contain_oslo__messaging__notifications('designate_config').with(
+        :driver        => 'messaging',
+        :transport_url => '<SERVICE DEFAULT>',
+        :topics        => 'notifications'
+      )
+      is_expected.to contain_oslo__messaging__rabbit('designate_config').with(
+        :kombu_ssl_version       => '<SERVICE DEFAULT>',
+        :kombu_ssl_keyfile       => '<SERVICE DEFAULT>',
+        :kombu_ssl_certfile      => '<SERVICE DEFAULT>',
+        :kombu_ssl_ca_certs      => '<SERVICE DEFAULT>',
+        :kombu_reconnect_delay   => '<SERVICE DEFAULT>',
+        :kombu_failover_strategy => '<SERVICE DEFAULT>',
+        :rabbit_use_ssl          => false,
+        :rabbit_ha_queues        => '<SERVICE DEFAULT>',
+        :heartbeat_in_pthread    => '<SERVICE DEFAULT>',
+        :amqp_durable_queues     => '<SERVICE DEFAULT>',
+      )
     end
 
   end
@@ -126,28 +107,39 @@ describe 'designate' do
         :default_transport_url       => 'rabbit://designate:secret@127.0.0.1:5672/designate',
         :rabbit_ha_queues            => true,
         :rabbit_heartbeat_in_pthread => true,
+        :kombu_reconnect_delay       => '1.0',
+        :kombu_failover_strategy     => 'shuffle',
       })
     end
 
-    it { is_expected.to contain_designate_config('DEFAULT/transport_url').with_value('rabbit://designate:secret@127.0.0.1:5672/designate') }
-    it { is_expected.to contain_designate_config('oslo_messaging_rabbit/rabbit_ha_queues').with_value(true) }
-    it { is_expected.to contain_designate_config('oslo_messaging_rabbit/heartbeat_in_pthread').with_value(true) }
-    it { is_expected.to contain_designate_config('oslo_messaging_rabbit/amqp_durable_queues').with_value('<SERVICE DEFAULT>') }
+    it { is_expected.to contain_oslo__messaging__default('designate_config').with(
+      :transport_url => 'rabbit://designate:secret@127.0.0.1:5672/designate',
+    ) }
+    it { is_expected.to contain_oslo__messaging__rabbit('designate_config').with(
+      :rabbit_ha_queues        => true,
+      :heartbeat_in_pthread    => true,
+      :kombu_reconnect_delay   => '1.0',
+      :kombu_failover_strategy => 'shuffle'
+    ) }
 
   end
 
   shared_examples_for 'rabbit with SSL support' do
-    before { params.merge!( rabbit_use_ssl ) }
+    before { params.merge!(
+      :rabbit_use_ssl     => true,
+      :kombu_ssl_ca_certs => '/path/to/ssl/ca/certs',
+      :kombu_ssl_certfile => '/path/to/ssl/cert/file',
+      :kombu_ssl_keyfile  => '/path/to/ssl/keyfile',
+      :kombu_ssl_version  => 'TLSv1',
+    ) }
 
     it 'configures rabbit with ssl' do
-      is_expected.to contain_designate_config('oslo_messaging_rabbit/kombu_reconnect_delay').with_value( params[:kombu_reconnect_delay] )
-      is_expected.to contain_designate_config('oslo_messaging_rabbit/kombu_failover_strategy').with_value( params[:kombu_failover_strategy] )
       is_expected.to contain_oslo__messaging__rabbit('designate_config').with(
-        :rabbit_use_ssl     => params[:rabbit_use_ssl],
-        :kombu_ssl_ca_certs => params[:kombu_ssl_ca_certs],
-        :kombu_ssl_certfile => params[:kombu_ssl_certfile],
-        :kombu_ssl_keyfile  => params[:kombu_ssl_keyfile],
         :kombu_ssl_version  => params[:kombu_ssl_version],
+        :kombu_ssl_keyfile  => params[:kombu_ssl_keyfile],
+        :kombu_ssl_certfile => params[:kombu_ssl_certfile],
+        :kombu_ssl_ca_certs => params[:kombu_ssl_ca_certs],
+        :rabbit_use_ssl     => params[:rabbit_use_ssl],
       )
     end
   end
