@@ -54,8 +54,6 @@ describe 'designate' do
       it_configures 'a designate base installation'
       it_configures 'rabbit transport'
       it_configures 'rabbit with SSL support'
-      it_configures 'rabbit with SSL no key'
-      it_configures 'rabbit with SSL no cert'
     end
 
     context 'with custom package name' do
@@ -151,22 +149,6 @@ describe 'designate' do
         :kombu_ssl_keyfile  => params[:kombu_ssl_keyfile],
         :kombu_ssl_version  => params[:kombu_ssl_version],
       )
-    end
-  end
-
-  shared_examples_for 'rabbit with SSL no key' do
-    before { params.merge!( rabbit_use_ssl_cert_no_key ) }
-
-    it 'should fail' do
-      is_expected.to raise_error(/The kombu_ssl_certfile and kombu_ssl_keyfile parameters must be used together/)
-    end
-  end
-
-  shared_examples_for 'rabbit with SSL no cert' do
-    before { params.merge!( rabbit_use_ssl_key_no_cert ) }
-
-    it 'should fail' do
-      is_expected.to raise_error(/The kombu_ssl_certfile and kombu_ssl_keyfile parameters must be used together/)
     end
   end
 
