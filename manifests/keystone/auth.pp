@@ -104,12 +104,7 @@ class designate::keystone::auth (
 
   include designate::deps
 
-  Keystone_user_role<| name == "${auth_name}@${tenant}" |> -> Anchor['designate::service::end']
-  Keystone_user_role<| name == "${auth_name}@::::${system_scope}" |> -> Anchor['designate::service::end']
-
-  if $configure_endpoint {
-    Keystone_endpoint["${region}/${service_name}::${service_type}"] -> Anchor['designate::service::end']
-  }
+  Keystone::Resource::Service_identity['designate'] -> Anchor['designate::service::end']
 
   keystone::resource::service_identity { 'designate':
     configure_user      => $configure_user,
