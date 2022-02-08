@@ -50,12 +50,6 @@
 #   (Optional) Run db sync on nodes after connection setting has been set.
 #   Defaults to true
 #
-# DEPRECATED PARAMETERS
-#
-# [*database_idle_timeout*]
-#   Timeout when db connections should be reaped.
-#   (Optional) Defaults to undef.
-#
 class designate::db (
   $database_db_max_retries          = $::os_service_default,
   $database_connection              = 'mysql://designate:designate@localhost/designate',
@@ -67,16 +61,9 @@ class designate::db (
   $database_pool_timeout            = $::os_service_default,
   $mysql_enable_ndb                 = $::os_service_default,
   $sync_db                          = true,
-  # DEPRECATED PARAMETERS
-  $database_idle_timeout            = undef,
 ) {
 
   include designate::deps
-
-  if $database_idle_timeout != undef {
-    warning('The database_idle_timeout parameter is deprecated, and will be \
-removed in a future release.')
-  }
 
   oslo::db { 'designate_config':
     config_group            => 'storage:sqlalchemy',
