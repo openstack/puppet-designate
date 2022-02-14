@@ -8,9 +8,6 @@
 #  (optional) The state of the package
 #  Defaults to 'present'
 #
-# [*manage_package*]
-#   Whether Puppet should manage the package. Default is true.
-#
 # [*worker_package_name*]
 #  (optional) Name of the package containing worker
 #  resources. Defaults to worker_package_name from
@@ -23,11 +20,6 @@
 # [*manage_service*]
 #   (Optional) Whether the designate worker service will be managed.
 #   Defaults to true.
-#
-# [*service_ensure*]
-#   (optional) Whether the designate worker service will
-#   be running.
-#   Defaults to 'running'
 #
 # [*workers*]
 #   (optional) Number of worker processes.
@@ -68,17 +60,23 @@
 # DEPRECATED PARAMETERS
 #
 # [*worker_notify*]
-#
 #   (optional) Whether to allow worker to send NOTIFYs.
 #   Defaults to undef
 #
+# [*manage_package*]
+#   Whether Puppet should manage the package.
+#   Default is undef.
+#
+# [*service_ensure*]
+#   (optional) Whether the designate worker service will
+#   be running.
+#   Defaults to undef
+#
 class designate::worker(
-  $manage_package       = true,
   $package_ensure       = present,
   $worker_package_name  = undef,
   $enabled              = true,
   $manage_service       = true,
-  $service_ensure       = 'running',
   $workers              = $::os_workers,
   $threads              = $::os_service_default,
   $threshold_percentage = $::os_service_default,
@@ -90,28 +88,27 @@ class designate::worker(
   $worker_topic         = $::os_service_default,
   # DEPRECATED PARAMETERS
   $worker_notify        = undef,
+  $manage_package       = undef,
+  $service_ensure       = undef,
 ) {
 
   include designate::deps
   include designate::params
 
-  if $manage_package {
-    package { 'designate-worker':
-      ensure => $package_ensure,
-      name   => pick($worker_package_name, $::designate::params::worker_package_name),
-      tag    => ['openstack', 'designate-package'],
-    }
+  if $manage_package != undef {
+    warning('manage_package is dperecated and has no effect')
   }
 
-  if $manage_service {
-    service { 'designate-worker':
-      ensure     => $service_ensure,
-      name       => $::designate::params::worker_service_name,
-      enable     => $enabled,
-      hasstatus  => true,
-      hasrestart => true,
-      tag        => ['openstack', 'designate-service'],
-    }
+  if $service_ensure != undef {
+    warning('service_ensure is dperecated and has no effect')
+  }
+
+  designate::generic_service { 'worker':
+    package_ensure => $package_ensure,
+    enabled        => $enabled,
+    package_name   => pick($worker_package_name, $::designate::params::worker_package_name),
+    manage_service => $manage_service,
+    service_name   => $::designate::params::worker_service_name,
   }
 
   designate_config {

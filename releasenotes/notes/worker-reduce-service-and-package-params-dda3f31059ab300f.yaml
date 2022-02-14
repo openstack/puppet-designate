@@ -1,0 +1,5 @@
+---
+deprecations:
+  - |
+    The ``manage_package`` parameter and the ``service_ensure`` parameter of
+    the ``designate::worker`` class have been deprecated and have no effect.
