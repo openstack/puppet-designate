@@ -65,7 +65,7 @@ class designate::mdns (
   $storage_driver     = $::os_service_default,
   $max_message_size   = $::os_service_default,
   $listen             = $::os_service_default,
-) inherits designate {
+) inherits designate::params {
 
   include designate::deps
   include designate::db

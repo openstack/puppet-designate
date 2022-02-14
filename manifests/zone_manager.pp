@@ -45,7 +45,7 @@ class designate::zone_manager (
   $threads                   = $::os_service_default,
   $enabled_tasks             = $::os_service_default,
   $export_synchronous        = $::os_service_default,
-) inherits designate {
+) inherits designate::params {
 
   designate_config {
     'service:zone_manager/workers'            : value => $workers;

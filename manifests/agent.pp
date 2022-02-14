@@ -45,7 +45,7 @@ class designate::agent (
   $workers            = $::os_workers,
   $threads            = $::os_service_default,
   $listen             = $::os_service_default,
-) inherits designate {
+) inherits designate::params {
 
   include designate::deps
 

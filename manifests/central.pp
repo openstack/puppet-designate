@@ -79,7 +79,7 @@ class designate::central (
   $scheduler_filters          = $::os_service_default,
   # DEPRECATED PARAMETERS
   $max_domain_name_len        = undef,
-) inherits designate {
+) inherits designate::params {
 
   include designate::deps
   include designate::db

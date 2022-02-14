@@ -32,7 +32,7 @@ class designate::sink (
   $enabled                       = true,
   $manage_service                = true,
   $enabled_notification_handlers = undef,
-) inherits designate {
+) inherits designate::params {
 
   include designate::deps
 

@@ -48,7 +48,7 @@ class designate::producer (
   $enabled_tasks  = $::os_service_default,
   # DEPRECATED PARAMETERS
   $backend_url    = undef,
-) inherits designate {
+) inherits designate::params {
 
   designate_config {
     'service:producer/workers'       : value => $workers;

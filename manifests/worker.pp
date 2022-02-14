@@ -9,9 +9,8 @@
 #  Defaults to 'present'
 #
 # [*worker_package_name*]
-#  (optional) Name of the package containing worker
-#  resources. Defaults to worker_package_name from
-#  designate::params
+#  (optional) Name of the package containing worker resources.
+#  Defaults to worker_package_name from designate::params
 #
 # [*enabled*]
 #   (optional) Whether to enable services.
@@ -74,7 +73,7 @@
 #
 class designate::worker(
   $package_ensure       = present,
-  $worker_package_name  = undef,
+  $worker_package_name  = $::designate::params::worker_package_name,
   $enabled              = true,
   $manage_service       = true,
   $workers              = $::os_workers,
@@ -90,10 +89,9 @@ class designate::worker(
   $worker_notify        = undef,
   $manage_package       = undef,
   $service_ensure       = undef,
-) {
+) inherits designate::params {
 
   include designate::deps
-  include designate::params
 
   if $manage_package != undef {
     warning('manage_package is dperecated and has no effect')
@@ -106,7 +104,7 @@ class designate::worker(
   designate::generic_service { 'worker':
     package_ensure => $package_ensure,
     enabled        => $enabled,
-    package_name   => pick($worker_package_name, $::designate::params::worker_package_name),
+    package_name   => $worker_package_name,
     manage_service => $manage_service,
     service_name   => $::designate::params::worker_service_name,
   }
