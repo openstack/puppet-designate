@@ -56,10 +56,6 @@
 #   Timeout when db connections should be reaped.
 #   (Optional) Defaults to undef.
 #
-# [*database_min_pool_size*]
-#   Minimum number of SQL connections to keep open in a pool.
-#   (Optional) Defaults to undef.
-#
 class designate::db (
   $database_db_max_retries          = $::os_service_default,
   $database_connection              = 'mysql://designate:designate@localhost/designate',
@@ -73,18 +69,12 @@ class designate::db (
   $sync_db                          = true,
   # DEPRECATED PARAMETERS
   $database_idle_timeout            = undef,
-  $database_min_pool_size           = undef,
 ) {
 
   include designate::deps
 
   if $database_idle_timeout != undef {
     warning('The database_idle_timeout parameter is deprecated, and will be \
-removed in a future release.')
-  }
-
-  if $database_min_pool_size != undef {
-    warning('The database_min_pool_size parameter is deprecated, and will be \
 removed in a future release.')
   }
 
