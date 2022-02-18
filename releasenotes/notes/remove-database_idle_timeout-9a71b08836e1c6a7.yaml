@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    The ``designate::db::database_idle_timeout`` parameter has been removed.
