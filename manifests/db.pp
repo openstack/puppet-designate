@@ -79,7 +79,7 @@ class designate::db (
   include designate::deps
 
   if $database_idle_timeout != undef {
-    warning('The database_min_pool_size parameter is deprecated, and will be \
+    warning('The database_idle_timeout parameter is deprecated, and will be \
 removed in a future release.')
   }
 
