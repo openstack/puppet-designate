@@ -7,53 +7,50 @@ describe 'designate::backend::bind9' do
 
   shared_examples 'designate-backend-bind9' do
     context 'with default params' do
-      it 'configures designate backend bind9 with default parameters' do
-        is_expected.to contain_designate_config('backend:bind9/rndc_host').with_value('127.0.0.1')
-        is_expected.to contain_designate_config('backend:bind9/rndc_port').with_value('953')
-        is_expected.to contain_designate_config('backend:bind9/rndc_config_file').with_value('/etc/rndc.conf')
-        is_expected.to contain_designate_config('backend:bind9/rndc_key_file').with_value('/etc/rndc.key')
+      # TODO(tkajinam): remove this once we update the default value
+      let :params do
+        { :manage_pool => true }
+      end
+      it 'configures named and pool' do
         is_expected.to contain_concat_fragment('dns allow-new-zones').with(
           :target => platform_params[:dns_optionspath],
-          :content => 'allow-new-zones yes;')
+          :content => 'allow-new-zones yes;'
+        )
+        is_expected.to contain_file('/etc/designate/pools.yaml').with(
+          :ensure => 'present',
+          :path   => '/etc/designate/pools.yaml',
+          :owner  => 'designate',
+          :group  => 'designate',
+          :mode   => '0640',
+        )
+        is_expected.to contain_exec('designate-manage pool update').with(
+          :command     => 'designate-manage pool update',
+          :path        => '/usr/bin',
+          :user        => 'designate',
+          :refreshonly => true,
+        )
       end
     end
 
-    context 'with named configuration disabled ' do
+    context 'with named configuration disabled' do
       let :params do
         { :configure_bind => false }
       end
-      it 'configures designate backend bind9 with default parameters' do
-        is_expected.to contain_designate_config('backend:bind9/rndc_host').with_value('127.0.0.1')
-        is_expected.to contain_designate_config('backend:bind9/rndc_port').with_value('953')
-        is_expected.to contain_designate_config('backend:bind9/rndc_config_file').with_value('/etc/rndc.conf')
-        is_expected.to contain_designate_config('backend:bind9/rndc_key_file').with_value('/etc/rndc.key')
+      it 'does not configure named' do
         is_expected.not_to contain_concat_fragment('dns allow-new-zones')
       end
     end
 
-    context 'when overriding rndc_config_file' do
+    context 'with pool management disabled' do
       let :params do
-        { :rndc_config_file => '/srv/designate/rndc.conf' }
+        { :manage_pool => false }
       end
-
-      it 'configures designate bind9 backend with custom rndc_config_file' do
-        is_expected.to contain_designate_config('backend:bind9/rndc_config_file').with_value(params[:rndc_config_file])
+      it 'does not configure pool' do
+        is_expected.to_not contain_file('/etc/designate/pools.yaml')
+        is_expected.to_not contain_exec('designate-manage pool update')
       end
     end
 
-    context 'when overriding rndc_host and rndc_port' do
-      let :params do
-        {
-          :rndc_host => '10.0.0.42',
-          :rndc_port => '1337'
-        }
-      end
-
-      it 'configures designate bind9 backend with custom rndc_port and rndc_host' do
-        is_expected.to contain_designate_config('backend:bind9/rndc_port').with_value(params[:rndc_port])
-        is_expected.to contain_designate_config('backend:bind9/rndc_host').with_value(params[:rndc_host])
-      end
-    end
   end
 
   on_supported_os({
@@ -70,11 +67,11 @@ describe 'designate::backend::bind9' do
         case facts[:osfamily]
         when 'Debian'
           {
-          :dns_optionspath => '/etc/bind/named.conf.options'
+            :dns_optionspath => '/etc/bind/named.conf.options'
           }
         when 'RedHat'
           {
-          :dns_optionspath => '/etc/named/options.conf'
+            :dns_optionspath => '/etc/named/options.conf'
           }
         end
       end
