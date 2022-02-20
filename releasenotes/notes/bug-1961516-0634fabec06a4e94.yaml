@@ -1,0 +1,17 @@
+---
+features:
+  - |
+    Now the ``designate::backend::bind9`` class supports setting up bind9
+    backend using ``/etc/designate/pools.yaml`` properly. This feature can be
+    enabled by the new ``manage_pool`` parameter.
+
+deprecations:
+  - |
+    The ``designate::backend::bind9::rndc_host`` parameter has been deprecated
+    and has no effect now.
+
+fixes:
+  - |
+    The ``designate::backend::bind9`` class no longer configures parameters
+    in the ``[backend:bind9]`` section, as these parameters are no longer
+    effective.
