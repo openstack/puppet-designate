@@ -5,37 +5,76 @@
 # == Parameters
 #
 # [*rndc_config_file*]
-#   (optional) Location of the rndc configuration file.
-#   Defaults to '/etc/rndc.conf'
+#  (Optional) Location of the rndc configuration file.
+#  Defaults to '/etc/rndc.conf'
 #
 # [*rndc_key_file*]
-#  (optional) Location of the rndc key file.
+#  (Optional) Location of the rndc key file.
 #  Defaults to '/etc/rndc.key'
 #
-# [*rndc_host*]
-#  (optional) Host running DNS service.
-#  Defaults to '127.0.0.1'
-#
 # [*rndc_port*]
-#  (optional) Port to use for dns service on rndc_host.
-#  Defaults to '953'
+#  (Optional) RNDC Port.
+#  Defaults to 953.
 #
 # [*rndc_controls*]
-#  (optional) Hash defining controls configuration for rndc.
+#  (Optional) Hash defining controls configuration for rndc.
 #  Defaults to undef, which uses the puppet-dns default
 #
+# [*ns_records*]
+#  (Optional) List of the NS records for zones hosted within this pool. This
+#  parameter takes hash value of <priority>:<host> mapping.
+#  Defaults to {1 => 'ns1.example.org.'}
+#
+# [*nameservers*]
+#  (Optional) List out the nameservers for this pool.
+#  Defaults to ['127.0.0,1'].
+#
+# [*bind9_hosts*]
+#  (Optional) Host running DNS service.
+#  Defaults to ['127.0.0,1'].
+#
+# [*dns_port*]
+#  (Optional) TCP port to connect to DNS service.
+#  Defaults to 53.
+#
+# [*mdns_hosts*]
+#  (Optional) Array of hosts where designate-mdns service is running.
+#  Defaults to ['127.0.0.1'].
+#
+# [*mdns_port*]
+#  (Optional) TCP Port to connect to designate-mdns service.
+#  Defaults to 5354.
+#
 # [*configure_bind*]
-#  (optional) Enables running named configuration for hosts where designate and
-#  designate bind services are collocated.
+#  (Optional) Enables running bind9/named configuration for hosts where
+#  designate and designate bind services are collocated.
 #  Defaults to true
 #
+# [*manage_pool*]
+#  (Optional) Manage pools.yaml and update pools by designate-manage command
+#  Defaults to false
+#
+# DEPRECATED PARAMETERS
+#
+# [*rndc_host*]
+#  (Optional) RNDC Host
+#  Defaults to undef
+#
 class designate::backend::bind9 (
-  $rndc_host           = '127.0.0.1',
-  $rndc_port           = '953',
-  $rndc_config_file    = '/etc/rndc.conf',
-  $rndc_key_file       = '/etc/rndc.key',
-  $rndc_controls       = undef,
-  $configure_bind      = true,
+  $rndc_config_file = '/etc/rndc.conf',
+  $rndc_key_file    = '/etc/rndc.key',
+  $rndc_controls    = undef,
+  $rndc_port        = 953,
+  $ns_records       = {1 => 'ns1.example.org.'},
+  $nameservers      = ['127.0.0.1'],
+  $bind9_hosts      = ['127.0.0.1'],
+  $dns_port         = 53,
+  $mdns_hosts       = ['127.0.0.1'],
+  $mdns_port        = 5354,
+  $configure_bind   = true,
+  $manage_pool      = false,
+  # DEPRECATED PARAMETERS
+  $rndc_host        = undef,
 ) {
 
   include designate::deps
@@ -56,7 +95,7 @@ class designate::backend::bind9 (
 
     # Recommended by Designate docs as a mitigation for potential cache
     # poisoning attacks:
-    # https://docs.openstack.org/designate/queens/admin/production-guidelines.html#bind9-mitigation
+    # https://docs.openstack.org/designate/latest/admin/production-guidelines.html#bind9-mitigation
     concat::fragment { 'dns minimal-responses':
       target  => $::dns::optionspath,
       content => 'minimal-responses yes;',
@@ -75,11 +114,38 @@ class designate::backend::bind9 (
     })
   }
 
-  designate_config {
-    'backend:bind9/rndc_host'        : value => $rndc_host;
-    'backend:bind9/rndc_port'        : value => $rndc_port;
-    'backend:bind9/rndc_config_file' : value => $rndc_config_file;
-    'backend:bind9/rndc_key_file'    : value => $rndc_key_file;
+  # TODO(tkajinam): Remove this after Yoga release.
+  if $rndc_host != undef {
+    warning('The rndc_host parameter is deprecated and has no effect.')
   }
 
+  # TODO(tkajinam): Remove this after Yoga release.
+  designate_config {
+    'backend:bind9/rndc_host'        : ensure => absent;
+    'backend:bind9/rndc_port'        : ensure => absent;
+    'backend:bind9/rndc_config_file' : ensure => absent;
+    'backend:bind9/rndc_key_file'    : ensure => absent;
+  }
+
+  if $manage_pool {
+    file { '/etc/designate/pools.yaml':
+      ensure  => present,
+      path    => '/etc/designate/pools.yaml',
+      owner   => 'designate',
+      group   => 'designate',
+      mode    => '0640',
+      content => template('designate/bind9-pools.yaml.erb'),
+      require => Anchor['designate::config::begin'],
+      before  => Anchor['designate::config::end'],
+    }
+
+    exec { 'designate-manage pool update':
+      command     => 'designate-manage pool update',
+      path        => '/usr/bin',
+      user        => 'designate',
+      refreshonly => true,
+      require     => Anchor['designate::service::end'],
+      subscribe   => File['/etc/designate/pools.yaml'],
+    }
+  }
 }

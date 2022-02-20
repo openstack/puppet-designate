@@ -1,0 +1,36 @@
+---
+- name: default
+  description: Default pool
+  attributes: {}
+
+  ns_records:
+<% @ns_records.sort.each do |priority, hostname| -%>
+    - hostname: <%= hostname %>
+      priority: <%= priority.to_s %>
+<% end -%>
+
+  nameservers:
+<% @nameservers.each do |nameserver| -%>
+    - host: <%= nameserver %>
+      port: <%= @dns_port.to_s %>
+<% end -%>
+
+  targets:
+<% @bind9_hosts.each do |bind9_host| -%>
+    - type: bind9
+      description: BIND9 Server <%= bind9_host %>
+
+      masters:
+<% @mdns_hosts.each do |mdns_host| -%>
+        - host: <%= mdns_host %>
+          port: <%= @mdns_port.to_s %>
+<% end -%>
+
+      options:
+        host: <%= bind9_host %>
+        port: <%= @dns_port.to_s %>
+        rndc_host: <%= bind9_host %>
+        rndc_port: <%= @rndc_port %>
+        rndc_config_file: <%= @rndc_config_file %>
+        rndc_key_file: <%= @rndc_key_file %>
+<% end -%>
