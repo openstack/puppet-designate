@@ -62,14 +62,14 @@ define designate::generic_service(
       } else {
         $service_ensure = 'stopped'
       }
-    }
 
-    service { $designate_title:
-      ensure    => $service_ensure,
-      name      => $service_name,
-      enable    => $enabled,
-      hasstatus => true,
-      tag       => ['openstack','designate-service'],
+      service { $designate_title:
+        ensure    => $service_ensure,
+        name      => $service_name,
+        enable    => $enabled,
+        hasstatus => true,
+        tag       => ['openstack','designate-service'],
+      }
     }
   }
 }
