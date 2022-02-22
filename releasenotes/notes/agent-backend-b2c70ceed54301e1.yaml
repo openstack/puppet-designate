@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Now puppet-designate supports setting up agent backend and bind9 agent
+    backend.

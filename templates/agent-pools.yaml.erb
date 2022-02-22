@@ -1,0 +1,24 @@
+---
+- name: default
+  description: Default pool
+  attributes: {}
+
+  targets:
+<% @agent_hosts.each do |agent_host| -%>
+    - type: agent
+      description: Agent Server <%= agent_host %>
+
+      masters:
+<% @mdns_hosts.each do |mdns_host| -%>
+        - host: <%= mdns_host %>
+          port: <%= @mdns_port.to_s %>
+<% end -%>
+
+      options:
+        host: <%= agent_host %>
+        port: <%= @dns_port.to_s %>
+        rndc_host: <%= agent_host %>
+        rndc_port: <%= @rndc_port %>
+        rndc_config_file: <%= @rndc_config_file %>
+        rndc_key_file: <%= @rndc_key_file %>
+<% end -%>
