@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The default value of ``designate::central::managed_resource_tenant_id`` is
+    changed from invalid ``12345`` to the default in designate.conf.
