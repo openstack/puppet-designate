@@ -26,7 +26,7 @@
 #
 # [*managed_resource_tenant_id*]
 #  (optional) Tenant ID to own all managed resources - like auto-created records etc.
-#  Defaults to '123456'
+#  Defaults to $::os_service_default
 #
 # [*max_zone_name_len*]
 #  (optional) Maximum zone name length.
@@ -69,7 +69,7 @@ class designate::central (
   $enabled                    = true,
   $manage_service             = true,
   $managed_resource_email     = 'hostmaster@example.com',
-  $managed_resource_tenant_id = '123456',
+  $managed_resource_tenant_id = $::os_service_default,
   $max_zone_name_len          = $::os_service_default,
   $max_recordset_name_len     = $::os_service_default,
   $min_ttl                    = $::os_service_default,
