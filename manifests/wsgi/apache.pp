@@ -127,7 +127,7 @@ class designate::wsgi::apache (
   ::openstacklib::wsgi::apache { 'designate_wsgi':
     bind_host                   => $bind_host,
     bind_port                   => $port,
-    group                       => 'designate',
+    group                       => $::designate::params::group,
     path                        => $path,
     priority                    => $priority,
     servername                  => $servername,
@@ -140,7 +140,7 @@ class designate::wsgi::apache (
     ssl_crl_path                => $ssl_crl_path,
     ssl_key                     => $ssl_key,
     threads                     => $threads,
-    user                        => 'designate',
+    user                        => $::designate::params::user,
     vhost_custom_fragment       => $vhost_custom_fragment,
     workers                     => $workers,
     wsgi_daemon_process         => 'designate',
