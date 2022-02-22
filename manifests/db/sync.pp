@@ -20,11 +20,12 @@ class designate::db::sync(
 ) {
 
   include designate::deps
+  include designate::params
 
   exec { 'designate-dbsync':
     command     => "designate-manage ${extra_params} database sync",
     path        => '/usr/bin',
-    user        => 'root',
+    user        => $::designate::params::user,
     refreshonly => true,
     try_sleep   => 5,
     tries       => 10,

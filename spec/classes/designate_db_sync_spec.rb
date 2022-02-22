@@ -14,7 +14,7 @@ describe 'designate::db::sync' do
         is_expected.to contain_exec('designate-dbsync').with(
           :command     => 'designate-manage  database sync',
           :path        => '/usr/bin',
-          :user        => 'root',
+          :user        => 'designate',
           :refreshonly => 'true',
           :try_sleep   => 5,
           :tries       => 10,
@@ -40,7 +40,7 @@ describe 'designate::db::sync' do
         is_expected.to contain_exec('designate-dbsync').with(
           :command     => 'designate-manage --config-file /etc/designate/designate.conf database sync',
           :path        => '/usr/bin',
-          :user        => 'root',
+          :user        => 'designate',
           :refreshonly => 'true',
           :try_sleep   => 5,
           :tries       => 10,
