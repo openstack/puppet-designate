@@ -32,7 +32,7 @@
 #  (optional) List of notification handlers to enable, configuration of
 #  these needs to correspond to a [handler:my_driver] section below or
 #  else in the config.
-#  Defaults to undef
+#  Defaults to $::os_service_default
 #
 class designate::sink (
   $package_ensure                = present,
@@ -41,7 +41,7 @@ class designate::sink (
   $manage_service                = true,
   $workers                       = $::os_service_default,
   $threads                       = $::os_service_default,
-  $enabled_notification_handlers = undef,
+  $enabled_notification_handlers = $::os_service_default,
 ) inherits designate::params {
 
   include designate::deps
@@ -59,14 +59,15 @@ class designate::sink (
     'service:sink/threads': value => $threads;
   }
 
-  if $enabled_notification_handlers {
-    designate_config {
-      'service:sink/enabled_notification_handlers': value => join(any2array($enabled_notification_handlers),',')
-    }
+  if ! $enabled_notification_handlers {
+    warning('Usage of false value for enabled_notification_handlers is deprecated. \
+Use $::os_service_default instead')
+    $enabled_notification_handlers_real = $::os_service_default
   } else {
-    designate_config {
-      'service:sink/enabled_notification_handlers': ensure => absent
-    }
+    $enabled_notification_handlers_real = $enabled_notification_handlers
   }
 
+  designate_config {
+    'service:sink/enabled_notification_handlers': value => join(any2array($enabled_notification_handlers_real), ',')
+  }
 }
