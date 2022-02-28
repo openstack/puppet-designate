@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The ``workers`` parameter and ``threads`` parameter have been added to
+    the ``designate::sink`` class.
