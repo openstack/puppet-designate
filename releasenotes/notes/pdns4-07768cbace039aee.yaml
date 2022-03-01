@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The new ``designate::backend::pdns4`` class has been added. This class
+    supports setting up PowerDNS 4 backend.

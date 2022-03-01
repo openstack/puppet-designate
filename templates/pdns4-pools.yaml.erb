@@ -1,0 +1,25 @@
+---
+- name: default
+  description: Default pool
+  attributes: {}
+
+  targets:
+<% @pdns4_hosts.each do |pdns4_host| -%>
+    - type: pdns4
+      description: PowerDNS4 DNS Server <%= pdns4_host %>
+
+      masters:
+<% @mdns_hosts.each do |mdns_host| -%>
+        - host: <%= mdns_host %>
+          port: <%= @mdns_port.to_s %>
+<% end -%>
+
+      options:
+        host: <%= pdns4_host %>
+        port: <%= @dns_port.to_s %>
+        api_endpoint: <%= @api_endpoint %>
+        api_token: <%= @api_token %>
+  <%- if @tsigkey_name -%>
+        tsigkey_name: <%= @tsigkey_name %>
+  <%- end -%>
+<% end -%>
