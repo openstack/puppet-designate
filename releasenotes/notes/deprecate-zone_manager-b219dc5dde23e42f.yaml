@@ -1,0 +1,4 @@
+---
+deprecations:
+  - |
+    The ``designate::zone_manager`` class has been deprecated.

@@ -1,5 +1,5 @@
 # == Class designate::zone_manager
-#
+# DEPRECATED !!
 # Configure designate zone manager service
 #
 # == Parameters
@@ -46,6 +46,8 @@ class designate::zone_manager (
   $enabled_tasks             = $::os_service_default,
   $export_synchronous        = $::os_service_default,
 ) inherits designate::params {
+
+  warning('The designate::zone_manager class has been deprecated.')
 
   designate_config {
     'service:zone_manager/workers'            : value => $workers;
