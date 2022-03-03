@@ -78,7 +78,8 @@ class designate::backend::bind9 (
 ) {
 
   include designate::deps
-  include designate
+  include designate::params
+
   if $configure_bind {
     if $rndc_controls {
       class { 'dns':
