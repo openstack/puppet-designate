@@ -29,7 +29,7 @@ describe 'designate::sink' do
       it 'configures designate.conf' do
         is_expected.to contain_designate_config('service:sink/workers').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:sink/threads').with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_designate_config('service:sink/enabled_notification_handlers').with_ensure('absent')
+        is_expected.to contain_designate_config('service:sink/enabled_notification_handlers').with_value('<SERVICE DEFAULT>')
       end
     end
 

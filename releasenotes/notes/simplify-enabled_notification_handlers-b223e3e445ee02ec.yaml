@@ -1,0 +1,7 @@
+---
+deprecations:
+  - |
+    Support for false value for
+    the ``designate::sink::enabled_notification_handlers`` parameter has been
+    deprecated and will be removed in a future release.
+    Use ``$::os_service_default`` instead.
