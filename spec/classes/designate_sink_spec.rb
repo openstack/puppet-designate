@@ -24,7 +24,26 @@ describe 'designate::sink' do
           :ensure    => 'present',
           :tag       => ['openstack', 'designate-package'],
         )
+      end
+
+      it 'configures designate.conf' do
+        is_expected.to contain_designate_config('service:sink/workers').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_designate_config('service:sink/threads').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:sink/enabled_notification_handlers').with_ensure('absent')
+      end
+    end
+
+    context 'with parameters set' do
+      before do
+        params.merge!(
+          :workers => 4,
+          :threads => 1000,
+        )
+      end
+
+      it 'configures designate.conf' do
+        is_expected.to contain_designate_config('service:sink/workers').with_value(4)
+        is_expected.to contain_designate_config('service:sink/threads').with_value(1000)
       end
     end
 
