@@ -68,7 +68,7 @@ class designate::backend::bind9 (
   $ns_records       = {1 => 'ns1.example.org.'},
   $nameservers      = ['127.0.0.1'],
   $bind9_hosts      = ['127.0.0.1'],
-  $dns_port         = 5322,
+  $dns_port         = 53,
   $mdns_hosts       = ['127.0.0.1'],
   $mdns_port        = 5354,
   $configure_bind   = true,
