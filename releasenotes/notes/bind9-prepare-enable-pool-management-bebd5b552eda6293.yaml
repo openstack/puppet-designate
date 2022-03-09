@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    Default value of the ``designate::backend::bind9::manage_pool`` parameter
+    will be changed from ``false`` to ``true`` in a future release. Make sure
+    the parameter is set to disabled management of pools.
