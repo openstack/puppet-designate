@@ -84,6 +84,11 @@
 #  (optional) Admin API extensions.
 #  Defaults to $::os_service_default
 #
+# [*quotas_verify_project_id*]
+#   (Optional) Verify that the requested Project ID for quota target is
+#   a valid project in Keystone.
+#   Defaults to $::os_service_default.
+#
 # [*enable_proxy_headers_parsing*]
 #   (Optional) Enable paste middleware to handle SSL requests through
 #   HTTPProxyToWSGI middleware.
@@ -117,6 +122,7 @@ class designate::api (
   $pecan_debug                  = $::os_service_default,
   $enabled_extensions_v2        = $::os_service_default,
   $enabled_extensions_admin     = $::os_service_default,
+  $quotas_verify_project_id     = $::os_service_default,
   $enable_proxy_headers_parsing = $::os_service_default,
   $service_name                 = $::designate::params::api_service_name,
 ) inherits designate {
@@ -141,6 +147,7 @@ class designate::api (
     'service:api/pecan_debug'               : value => $pecan_debug;
     'service:api/enabled_extensions_v2'     : value => join(any2array($enabled_extensions_v2), ',');
     'service:api/enabled_extensions_admin'  : value => join(any2array($enabled_extensions_admin), ',');
+    'service:api/quotas_verify_project_id'  : value => $quotas_verify_project_id;
   }
 
   if $auth_strategy == 'keystone' {
