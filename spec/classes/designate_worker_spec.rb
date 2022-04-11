@@ -23,7 +23,7 @@ describe 'designate::worker' do
       :poll_delay           => 1,
       :worker_notify        => true,
       :export_synchronous   => true,
-      :worker_topic         => 'topic',
+      :topic                => 'topic',
     }
   end
 
@@ -87,7 +87,7 @@ describe 'designate::worker' do
         is_expected.to contain_designate_config('service:worker/poll_delay').with_value( params[:poll_delay] )
         is_expected.to contain_designate_config('service:worker/notify').with_value( params[:worker_notify] )
         is_expected.to contain_designate_config('service:worker/export_synchronous').with_value( params[:export_synchronous] )
-        is_expected.to contain_designate_config('service:worker/topic').with_value( params[:worker_topic] )
+        is_expected.to contain_designate_config('service:worker/topic').with_value( params[:topic] )
       end
     end
 

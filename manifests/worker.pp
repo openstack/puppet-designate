@@ -52,7 +52,7 @@
 #   (optional) Whether to allow synchronous zone exports.
 #   Defaults to $::os_service_default
 #
-# [*worker_topic*]
+# [*topic*]
 #   (optional) RPC topic for worker component.
 #   Defaults to $::os_service_default
 #
@@ -71,6 +71,10 @@
 #   be running.
 #   Defaults to undef
 #
+# [*worker_topic*]
+#   (optional) RPC topic for worker component.
+#   Defaults to undef
+#
 class designate::worker(
   $package_ensure       = present,
   $worker_package_name  = $::designate::params::worker_package_name,
@@ -84,11 +88,12 @@ class designate::worker(
   $poll_max_retries     = $::os_service_default,
   $poll_delay           = $::os_service_default,
   $export_synchronous   = $::os_service_default,
-  $worker_topic         = $::os_service_default,
+  $topic                = $::os_service_default,
   # DEPRECATED PARAMETERS
   $worker_notify        = undef,
   $manage_package       = undef,
   $service_ensure       = undef,
+  $worker_topic         = undef,
 ) inherits designate::params {
 
   include designate::deps
@@ -99,6 +104,10 @@ class designate::worker(
 
   if $service_ensure != undef {
     warning('service_ensure is dperecated and has no effect')
+  }
+
+  if $worker_topic != undef {
+    warning('The worker_topic parameter is deprecated. Use the topic parameter instead.')
   }
 
   designate::generic_service { 'worker':
@@ -118,7 +127,7 @@ class designate::worker(
     'service:worker/poll_max_retries':     value => $poll_max_retries;
     'service:worker/poll_delay':           value => $poll_delay;
     'service:worker/export_synchronous':   value => $export_synchronous;
-    'service:worker/topic':                value => $worker_topic;
+    'service:worker/topic':                value => pick($worker_topic, $topic);
   }
 
   # TODO(tkajinam): Remove this after Zed release
