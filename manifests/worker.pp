@@ -118,7 +118,12 @@ class designate::worker(
     'service:worker/poll_max_retries':     value => $poll_max_retries;
     'service:worker/poll_delay':           value => $poll_delay;
     'service:worker/export_synchronous':   value => $export_synchronous;
-    'service:worker/worker_topic':         value => $worker_topic;
+    'service:worker/topic':                value => $worker_topic;
+  }
+
+  # TODO(tkajinam): Remove this after Zed release
+  designate_config {
+    'service:worker/worker_topic': ensure => absent;
   }
 
   if $worker_notify != undef {

@@ -54,7 +54,7 @@ describe 'designate::worker' do
         is_expected.to contain_designate_config('service:worker/poll_max_retries').with_value( '<SERVICE DEFAULT>' )
         is_expected.to contain_designate_config('service:worker/poll_delay').with_value( '<SERVICE DEFAULT>' )
         is_expected.to contain_designate_config('service:worker/export_synchronous').with_value( '<SERVICE DEFAULT>' )
-        is_expected.to contain_designate_config('service:worker/worker_topic').with_value( '<SERVICE DEFAULT>' )
+        is_expected.to contain_designate_config('service:worker/topic').with_value( '<SERVICE DEFAULT>' )
       end
     end
 
@@ -87,7 +87,7 @@ describe 'designate::worker' do
         is_expected.to contain_designate_config('service:worker/poll_delay').with_value( params[:poll_delay] )
         is_expected.to contain_designate_config('service:worker/notify').with_value( params[:worker_notify] )
         is_expected.to contain_designate_config('service:worker/export_synchronous').with_value( params[:export_synchronous] )
-        is_expected.to contain_designate_config('service:worker/worker_topic').with_value( params[:worker_topic] )
+        is_expected.to contain_designate_config('service:worker/topic').with_value( params[:worker_topic] )
       end
     end
 
