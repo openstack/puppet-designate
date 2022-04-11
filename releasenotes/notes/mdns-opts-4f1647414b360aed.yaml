@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    The ``designate::mdns`` class now supports the following new parameters.
+
+    - ``all_tcp``
+    - ``topic``
+    - ``xfer_timeout``
