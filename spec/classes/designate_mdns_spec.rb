@@ -43,16 +43,27 @@ describe 'designate::mdns' do
       end
 
       context 'when using custom options' do
-        before { params.merge!(:workers => '2',
-                               :query_enforce_tsig => 'true',
-                               :tcp_backlog => '200',
-                               :max_message_size => '1000'
-                              )}
+        before do
+          params.merge!({
+            :workers            => 2,
+            :threads            => 4,
+            :tcp_backlog        => 100,
+            :tcp_recv_timeout   => 0.5,
+            :query_enforce_tsig => true,
+            :storage_driver     => 'sqlalchemy',
+            :max_message_size   => 65535,
+            :listen             => ['192.0.2.10:5354', '192.0.2.20:5354'],
+          })
+        end
         it 'configures designate-mdns with custom options ' do
-          is_expected.to contain_designate_config('service:mdns/workers').with_value('2')
+          is_expected.to contain_designate_config('service:mdns/workers').with_value(2)
+          is_expected.to contain_designate_config('service:mdns/threads').with_value(4)
+          is_expected.to contain_designate_config('service:mdns/tcp_backlog').with_value(100)
+          is_expected.to contain_designate_config('service:mdns/tcp_recv_timeout').with_value(0.5)
           is_expected.to contain_designate_config('service:mdns/query_enforce_tsig').with_value(true)
-          is_expected.to contain_designate_config('service:mdns/tcp_backlog').with_value('200')
-          is_expected.to contain_designate_config('service:mdns/max_message_size').with_value('1000')
+          is_expected.to contain_designate_config('service:mdns/storage_driver').with_value('sqlalchemy')
+          is_expected.to contain_designate_config('service:mdns/max_message_size').with_value(65535)
+          is_expected.to contain_designate_config('service:mdns/listen').with_value('192.0.2.10:5354,192.0.2.20:5354')
         end
       end
     end
