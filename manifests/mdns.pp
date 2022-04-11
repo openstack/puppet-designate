@@ -36,6 +36,10 @@
 #   (Optional) mDNS TCP Receive Timeout.
 #   Defaults to $::os_service_default.
 #
+# [*all_tcp*]
+#   (Optional) Send all traffic over TCP.
+#   Defaults to $::os_service_default.
+#
 # [*query_enforce_tsig*]
 #   (Optional) Enforce all incoming queries (including AXFR) are TSIG signed.
 #   Defaults to $::os_service_default.
@@ -52,6 +56,14 @@
 #   (Optional) mDNS host:port pairs to listen on.
 #   Defaults to $::os_service_default.
 #
+# [*topic*]
+#   (Optional) RPC topic name for mdns.
+#   Defaults to $::os_service_default.
+#
+# [*xfr_timeout*]
+#   (Optional) Timeout in seconds for XFR's.
+#   Defaults to $::os_service_default.
+#
 class designate::mdns (
   $package_ensure     = present,
   $mdns_package_name  = $::designate::params::mdns_package_name,
@@ -61,10 +73,13 @@ class designate::mdns (
   $threads            = $::os_service_default,
   $tcp_backlog        = $::os_service_default,
   $tcp_recv_timeout   = $::os_service_default,
+  $all_tcp            = $::os_service_default,
   $query_enforce_tsig = $::os_service_default,
   $storage_driver     = $::os_service_default,
   $max_message_size   = $::os_service_default,
   $listen             = $::os_service_default,
+  $topic              = $::os_service_default,
+  $xfr_timeout        = $::os_service_default,
 ) inherits designate::params {
 
   include designate::deps
@@ -75,10 +90,13 @@ class designate::mdns (
     'service:mdns/threads'            : value => $threads;
     'service:mdns/tcp_backlog'        : value => $tcp_backlog;
     'service:mdns/tcp_recv_timeout'   : value => $tcp_recv_timeout;
+    'service:mdns/all_tcp'            : value => $all_tcp;
     'service:mdns/query_enforce_tsig' : value => $query_enforce_tsig;
     'service:mdns/storage_driver'     : value => $storage_driver;
     'service:mdns/max_message_size'   : value => $max_message_size;
     'service:mdns/listen'             : value => join(any2array($listen), ',');
+    'service:mdns/topic'              : value => $topic;
+    'service:mdns/xfr_timeout'        : value => $xfr_timeout;
   }
 
   designate::generic_service { 'mdns':
