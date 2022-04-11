@@ -78,7 +78,7 @@ class designate::mdns (
     'service:mdns/query_enforce_tsig' : value => $query_enforce_tsig;
     'service:mdns/storage_driver'     : value => $storage_driver;
     'service:mdns/max_message_size'   : value => $max_message_size;
-    'service:mdns/listen'             : value => $listen;
+    'service:mdns/listen'             : value => join(any2array($listen), ',');
   }
 
   designate::generic_service { 'mdns':
