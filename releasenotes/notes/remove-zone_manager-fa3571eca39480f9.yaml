@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    The ``designate::zone_manager`` class has been removed.
