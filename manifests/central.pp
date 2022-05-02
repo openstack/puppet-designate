@@ -57,12 +57,6 @@
 #  (optional) Enabled pool scheduling filters.
 #  Defaults to $::os_service_default
 #
-# DEPRECATED PARAMETERS
-#
-# [*max_domain_name_len*]
-#  (optional) Maximum domain name length.
-#  Defaults to undef
-#
 class designate::central (
   $package_ensure             = present,
   $central_package_name       = $::designate::params::central_package_name,
@@ -77,8 +71,6 @@ class designate::central (
   $threads                    = $::os_service_default,
   $default_pool_id            = $::os_service_default,
   $scheduler_filters          = $::os_service_default,
-  # DEPRECATED PARAMETERS
-  $max_domain_name_len        = undef,
 ) inherits designate::params {
 
   include designate::deps
@@ -94,12 +86,6 @@ class designate::central (
     'service:central/threads'                    : value => $threads;
     'service:central/default_pool_id'            : value => $default_pool_id;
     'service:central/scheduler_filters'          : value => join(any2array($scheduler_filters), ',');
-  }
-
-  # TODO(tkajinam): Remove this when the max_domain_name_len parameter
-  #                 is removed
-  designate_config {
-    'service:central/max_domain_name_len' : ensure => absent;
   }
 
   designate::generic_service { 'central':

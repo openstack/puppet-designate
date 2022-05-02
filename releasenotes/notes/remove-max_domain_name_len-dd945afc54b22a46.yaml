@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    The ``designate::central::max_domain_name_len`` parameter has been removed.
