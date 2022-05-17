@@ -139,7 +139,7 @@ class designate::api (
     'service:api/workers'                   : value => $workers;
     'service:api/threads'                   : value => $threads;
     'service:api/enable_host_header'        : value => $enable_host_header;
-    'service:api/max_header_line'           : value => $max_header_line;
+    'DEFAULT/max_header_line'               : value => $max_header_line;
     'service:api/default_limit_admin'       : value => $default_limit_admin;
     'service:api/max_limit_admin'           : value => $max_limit_admin;
     'service:api/default_limit_v2'          : value => $default_limit_v2;
@@ -148,6 +148,11 @@ class designate::api (
     'service:api/enabled_extensions_v2'     : value => join(any2array($enabled_extensions_v2), ',');
     'service:api/enabled_extensions_admin'  : value => join(any2array($enabled_extensions_admin), ',');
     'service:api/quotas_verify_project_id'  : value => $quotas_verify_project_id;
+  }
+
+  # TODO(tkajinam): Remove this after Zed release
+  designate_config {
+    'service:api/max_header_line': ensure => absent;
   }
 
   if $auth_strategy == 'keystone' {
