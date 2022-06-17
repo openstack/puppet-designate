@@ -9,12 +9,12 @@
 #   Defaults to $::os_service_default
 #
 # [*heartbeat_interval*]
-#   (Optional) Number of seconds between hearbeats for distributed
-#   coordintation.
+#   (Optional) Number of seconds between heartbeats for distributed
+#   coordination.
 #   Defaults to $::os_service_default
 #
 # [*run_watchers_interval*]
-#   (Optional) Numeber of seconds between checks to see if group membership
+#   (Optional) Number of seconds between checks to see if group membership
 #   has changed.
 #   Defaults to $::os_service_default
 #

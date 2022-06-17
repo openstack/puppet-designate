@@ -8,7 +8,7 @@ describe 'designate::producer_task::delayed_notify' do
 
   shared_examples 'designate::producer_task::delayed_notify' do
     context 'with default parameters' do
-      it 'configures the defaut values' do
+      it 'configures the default values' do
         is_expected.to contain_designate_config('producer_task:delayed_notify/interval').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('producer_task:delayed_notify/per_page').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('producer_task:delayed_notify/batch_size').with_value('<SERVICE DEFAULT>')

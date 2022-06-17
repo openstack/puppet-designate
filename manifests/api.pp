@@ -10,7 +10,7 @@
 #
 # [*api_package_name*]
 #  (optional) Name of the package containing api resources
-#  Defaults to $::designate::paramas::api_package_name
+#  Defaults to $::designate::params::api_package_name
 #
 # [*enabled*]
 #   (optional) Whether to enable services.

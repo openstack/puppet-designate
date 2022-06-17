@@ -28,7 +28,7 @@
 #   Defaults to true.
 #
 # [*package_ensure*]
-#   (optional) Control the ensure parameter for the package ressource.
+#   (optional) Control the ensure parameter for the package resource.
 #   Defaults to 'present'.
 #
 define designate::generic_service(

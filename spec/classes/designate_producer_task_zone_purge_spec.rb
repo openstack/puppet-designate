@@ -8,7 +8,7 @@ describe 'designate::producer_task::zone_purge' do
 
   shared_examples 'designate::producer_task::zone_purge' do
     context 'with default parameters' do
-      it 'configures the defaut values' do
+      it 'configures the default values' do
         is_expected.to contain_designate_config('producer_task:zone_purge/interval').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('producer_task:zone_purge/per_page').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('producer_task:zone_purge/time_threshold').with_value('<SERVICE DEFAULT>')

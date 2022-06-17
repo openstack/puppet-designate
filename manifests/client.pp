@@ -5,7 +5,7 @@
 # == Parameters
 #
 # [*package_ensure*]
-#   (optional) Ensure state for pachage.
+#   (optional) Ensure state for package.
 #   Defaults to 'present'
 #
 # [*client_package_name*]

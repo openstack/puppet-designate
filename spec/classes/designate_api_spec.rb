@@ -104,7 +104,7 @@ describe 'designate::api' do
       end
     end
 
-    context 'with enabled_extentions in list' do
+    context 'with enabled_extensions in list' do
       before do
         params.merge!({
           :enabled_extensions_v2    => ['ext1', 'ext2'],

@@ -36,7 +36,7 @@ describe 'designate::db::sync' do
           :db_sync_timeout => 750,
         }
       end
-      it 'runs designate manage with diffent config' do
+      it 'runs designate manage with different config' do
         is_expected.to contain_exec('designate-dbsync').with(
           :command     => 'designate-manage --config-file /etc/designate/designate.conf database sync',
           :path        => '/usr/bin',

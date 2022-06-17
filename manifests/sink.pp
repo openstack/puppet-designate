@@ -25,7 +25,7 @@
 #  Defaults to $::os_service_default
 #
 # [*threads*]
-#  (optional) Number of sink greenthreads to spwan.
+#  (optional) Number of sink greenthreads to spawn.
 #  Defaults to $::os_service_default
 #
 # [*enabled_notification_handlers*]

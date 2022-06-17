@@ -99,11 +99,11 @@ class designate::worker(
   include designate::deps
 
   if $manage_package != undef {
-    warning('manage_package is dperecated and has no effect')
+    warning('manage_package is deprecated and has no effect')
   }
 
   if $service_ensure != undef {
-    warning('service_ensure is dperecated and has no effect')
+    warning('service_ensure is deprecated and has no effect')
   }
 
   if $worker_topic != undef {

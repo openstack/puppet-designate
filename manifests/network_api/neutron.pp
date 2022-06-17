@@ -9,11 +9,11 @@
 #  Defaults to $::os_service_default.
 #
 # [*endpoint_type*]
-#  (Optional) Endpoiint type to use
+#  (Optional) Endpoint type to use
 #  Defaults to $::os_service_default.
 #
 # [*timeout*]
-#  (Optional) Timeout value for connecting to neutorn in seconds.
+#  (Optional) Timeout value for connecting to neutron in seconds.
 #  Defaults to $::os_service_default.
 #
 class designate::network_api::neutron (

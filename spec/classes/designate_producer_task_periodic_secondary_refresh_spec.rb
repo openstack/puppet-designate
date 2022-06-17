@@ -8,7 +8,7 @@ describe 'designate::producer_task::periodic_secondary_refresh' do
 
   shared_examples 'designate::producer_task::periodic_secondary_refresh' do
     context 'with default parameters' do
-      it 'configures the defaut values' do
+      it 'configures the default values' do
         is_expected.to contain_designate_config('producer_task:periodic_secondary_refresh/interval').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('producer_task:periodic_secondary_refresh/per_page').with_value('<SERVICE DEFAULT>')
       end
