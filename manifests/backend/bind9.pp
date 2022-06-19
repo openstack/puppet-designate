@@ -54,12 +54,6 @@
 #  (Optional) Manage pools.yaml and update pools by designate-manage command
 #  Defaults to true
 #
-# DEPRECATED PARAMETERS
-#
-# [*rndc_host*]
-#  (Optional) RNDC Host
-#  Defaults to undef
-#
 class designate::backend::bind9 (
   $rndc_config_file = '/etc/rndc.conf',
   $rndc_key_file    = '/etc/rndc.key',
@@ -73,8 +67,6 @@ class designate::backend::bind9 (
   $mdns_port        = 5354,
   $configure_bind   = true,
   $manage_pool      = true,
-  # DEPRECATED PARAMETERS
-  $rndc_host        = undef,
 ) {
 
   include designate::deps
@@ -113,19 +105,6 @@ class designate::backend::bind9 (
       mode    => 'g+w',
       require => Package[$::dns::params::dns_server_package]
     })
-  }
-
-  # TODO(tkajinam): Remove this after Yoga release.
-  if $rndc_host != undef {
-    warning('The rndc_host parameter is deprecated and has no effect.')
-  }
-
-  # TODO(tkajinam): Remove this after Yoga release.
-  designate_config {
-    'backend:bind9/rndc_host'        : ensure => absent;
-    'backend:bind9/rndc_port'        : ensure => absent;
-    'backend:bind9/rndc_config_file' : ensure => absent;
-    'backend:bind9/rndc_key_file'    : ensure => absent;
   }
 
   if $manage_pool {
