@@ -52,7 +52,7 @@
 #
 # [*manage_pool*]
 #  (Optional) Manage pools.yaml and update pools by designate-manage command
-#  Defaults to false
+#  Defaults to true
 #
 # DEPRECATED PARAMETERS
 #
@@ -72,7 +72,7 @@ class designate::backend::bind9 (
   $mdns_hosts       = ['127.0.0.1'],
   $mdns_port        = 5354,
   $configure_bind   = true,
-  $manage_pool      = undef,
+  $manage_pool      = true,
   # DEPRECATED PARAMETERS
   $rndc_host        = undef,
 ) {
@@ -128,13 +128,7 @@ class designate::backend::bind9 (
     'backend:bind9/rndc_key_file'    : ensure => absent;
   }
 
-  # TODO(tkajinam): Update default after Yoga release.
-  if $manage_pool == undef {
-    warning('Pool management will be enabled by default in a future release, \
-Make sure manage_pool is set to disable the feature')
-  }
-
-  if pick($manage_pool, false) {
+  if $manage_pool {
     file { '/etc/designate/pools.yaml':
       ensure  => present,
       path    => '/etc/designate/pools.yaml',

@@ -7,9 +7,8 @@ describe 'designate::backend::bind9' do
 
   shared_examples 'designate-backend-bind9' do
     context 'with default params' do
-      # TODO(tkajinam): remove this once we update the default value
       let :params do
-        { :manage_pool => true }
+        {}
       end
       it 'configures named and pool' do
         is_expected.to contain_concat_fragment('dns allow-new-zones').with(
