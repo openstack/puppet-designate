@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    Defualt value of the ``designate::backend::bind9::manage_pool`` parameter
+    has been updated from ``false`` to ``true`` and the class now configures
+    the pool by default.
