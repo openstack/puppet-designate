@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    The ``designate::backend::bind9::rndc_host`` parameter has been removed.
