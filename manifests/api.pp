@@ -135,6 +135,7 @@ class designate::api (
 ) inherits designate {
 
   include designate::deps
+  include designate::policy
 
   if $enabled_extensions_v1 != undef {
     warning('The enabled_extensions_v1 parameter has been deprecated and has \
