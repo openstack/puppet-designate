@@ -128,6 +128,7 @@ class designate::api (
 ) inherits designate {
 
   include designate::deps
+  include designate::policy
 
   # API Service
   designate_config {
