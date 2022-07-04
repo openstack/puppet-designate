@@ -130,6 +130,7 @@ class designate::api (
 ) inherits designate {
 
   include designate::deps
+  include designate::policy
 
   if $service_ensure != 'DEPRECATED' {
     warning('The service_ensure parameter is deprecated. Use the manage_service parameter.')

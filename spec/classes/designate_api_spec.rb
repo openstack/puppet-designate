@@ -17,6 +17,11 @@ describe 'designate::api' do
 
   shared_examples 'designate-api' do
     context 'with default parameters' do
+      it 'includes the dependent classes' do
+        is_expected.to contain_class('designate::deps')
+        is_expected.to contain_class('designate::policy')
+      end
+
       it 'installs designate-api package and service' do
         is_expected.to contain_service('designate-api').with(
           :name      => platform_params[:api_service_name],
