@@ -33,7 +33,7 @@ describe 'Puppet::Type.type(:designate_config)' do
     expect(@designate_config[:value]).to eq(['bar'])
   end
 
-  it 'should not accept a value with whitespace' do
+  it 'should accept a value with whitespace' do
     @designate_config[:value] = 'b ar'
     expect(@designate_config[:value]).to eq(['b ar'])
   end
