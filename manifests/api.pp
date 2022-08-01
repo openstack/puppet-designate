@@ -167,7 +167,7 @@ class designate::api (
     if $service_name == 'httpd' {
       service { 'designate-api':
         ensure => 'stopped',
-        name   => $::barbican::params::api_service_name,
+        name   => $::designate::params::api_service_name,
         enable => false,
         tag    => ['designate-service'],
       }
