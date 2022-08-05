@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    The ``designate::producer::backend_url`` parameter has been removed.

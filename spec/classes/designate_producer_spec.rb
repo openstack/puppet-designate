@@ -11,10 +11,9 @@ describe 'designate::producer' do
   end
   let :designate_producer_params do
     {
-      :workers            => '3',
-      :threads            => '3000',
-      :enabled_tasks      => ['domain_purge','periodic_secondary_refresh'],
-      :backend_url        => 'redis://10.0.0.1:1234'
+      :workers       => '3',
+      :threads       => '3000',
+      :enabled_tasks => ['domain_purge','periodic_secondary_refresh'],
     }
   end
 
@@ -47,7 +46,6 @@ describe 'designate::producer' do
         is_expected.to contain_designate_config("service:producer/workers").with_value('3')
         is_expected.to contain_designate_config("service:producer/threads").with_value('3000')
         is_expected.to contain_designate_config("service:producer/enabled_tasks").with_value('domain_purge,periodic_secondary_refresh')
-        is_expected.to contain_designate_config("coordination/backend_url").with_value('redis://10.0.0.1:1234')
       end
     end
   end

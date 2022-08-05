@@ -26,10 +26,8 @@ class designate::coordination (
 
   include designate::deps
 
-  $backend_url_real = pick($::designate::producer::backend_url, $backend_url)
-
   oslo::coordination{ 'designate_config':
-    backend_url => $backend_url_real
+    backend_url => $backend_url
   }
 
   designate_config {

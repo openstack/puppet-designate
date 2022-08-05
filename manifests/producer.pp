@@ -32,12 +32,6 @@
 #  (optional) List of tasks to enable, the default enables all tasks.
 #  Defaults to $::os_service_default.
 #
-# DEPRECATED PARAMETERS
-#
-# [*backend_url*]
-#  (optional) URL to use for coordination, should be a tooz URL.
-#  Defaults to undef
-#
 class designate::producer (
   $package_ensure = 'present',
   $package_name   = $::designate::params::producer_package_name,
@@ -46,19 +40,12 @@ class designate::producer (
   $workers        = $::os_workers,
   $threads        = $::os_service_default,
   $enabled_tasks  = $::os_service_default,
-  # DEPRECATED PARAMETERS
-  $backend_url    = undef,
 ) inherits designate::params {
 
   designate_config {
     'service:producer/workers'       : value => $workers;
     'service:producer/threads'       : value => $threads;
     'service:producer/enabled_tasks' : value => join(any2array($enabled_tasks), ',');
-  }
-
-  if $backend_url != undef {
-    warning('designate::producer::backend_url is deprecated. Use designate::coordination instead')
-    include designate::coordination
   }
 
   designate::generic_service { 'producer':
