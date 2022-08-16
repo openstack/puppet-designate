@@ -58,10 +58,6 @@
 #
 # DEPRECATED PARAMETERS
 #
-# [*worker_notify*]
-#   (optional) Whether to allow worker to send NOTIFYs.
-#   Defaults to undef
-#
 # [*manage_package*]
 #   Whether Puppet should manage the package.
 #   Default is undef.
@@ -90,7 +86,6 @@ class designate::worker(
   $export_synchronous   = $::os_service_default,
   $topic                = $::os_service_default,
   # DEPRECATED PARAMETERS
-  $worker_notify        = undef,
   $manage_package       = undef,
   $service_ensure       = undef,
   $worker_topic         = undef,
@@ -133,12 +128,5 @@ class designate::worker(
   # TODO(tkajinam): Remove this after Zed release
   designate_config {
     'service:worker/worker_topic': ensure => absent;
-  }
-
-  if $worker_notify != undef {
-    warning('worker_notify is deprecated and will be removed in a future release')
-    designate_config {
-      'service:worker/notify': value => $worker_notify;
-    }
   }
 }

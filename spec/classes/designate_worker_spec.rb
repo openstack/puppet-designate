@@ -21,7 +21,6 @@ describe 'designate::worker' do
       :poll_retry_interval  => 10,
       :poll_max_retries     => 5,
       :poll_delay           => 1,
-      :worker_notify        => true,
       :export_synchronous   => true,
       :topic                => 'topic',
     }
@@ -85,7 +84,6 @@ describe 'designate::worker' do
         is_expected.to contain_designate_config('service:worker/poll_retry_interval').with_value( params[:poll_retry_interval] )
         is_expected.to contain_designate_config('service:worker/poll_max_retries').with_value( params[:poll_max_retries] )
         is_expected.to contain_designate_config('service:worker/poll_delay').with_value( params[:poll_delay] )
-        is_expected.to contain_designate_config('service:worker/notify').with_value( params[:worker_notify] )
         is_expected.to contain_designate_config('service:worker/export_synchronous').with_value( params[:export_synchronous] )
         is_expected.to contain_designate_config('service:worker/topic').with_value( params[:topic] )
       end
