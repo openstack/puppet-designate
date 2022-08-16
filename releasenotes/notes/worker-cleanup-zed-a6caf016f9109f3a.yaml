@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    The following parameters have been removed from the ``designate::worker``
+    class.
+
+    - ``manage_package``
+    - ``service_ensure``

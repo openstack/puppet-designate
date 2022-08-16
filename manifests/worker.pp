@@ -58,15 +58,6 @@
 #
 # DEPRECATED PARAMETERS
 #
-# [*manage_package*]
-#   Whether Puppet should manage the package.
-#   Default is undef.
-#
-# [*service_ensure*]
-#   (optional) Whether the designate worker service will
-#   be running.
-#   Defaults to undef
-#
 # [*worker_topic*]
 #   (optional) RPC topic for worker component.
 #   Defaults to undef
@@ -86,20 +77,10 @@ class designate::worker(
   $export_synchronous   = $::os_service_default,
   $topic                = $::os_service_default,
   # DEPRECATED PARAMETERS
-  $manage_package       = undef,
-  $service_ensure       = undef,
   $worker_topic         = undef,
 ) inherits designate::params {
 
   include designate::deps
-
-  if $manage_package != undef {
-    warning('manage_package is deprecated and has no effect')
-  }
-
-  if $service_ensure != undef {
-    warning('service_ensure is deprecated and has no effect')
-  }
 
   if $worker_topic != undef {
     warning('The worker_topic parameter is deprecated. Use the topic parameter instead.')
