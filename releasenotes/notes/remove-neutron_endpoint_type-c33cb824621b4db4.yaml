@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    The ``designate::neutron_endpoint_type`` parameter has been removed.

@@ -106,12 +106,6 @@
 #   (optional) Whether to use durable queues in AMQP.
 #   Defaults to $::os_service_default.
 #
-# DEPRECATED PARAMETERS
-#
-# [*neutron_endpoint_type*]
-#   (optional) Endpoint type to use.
-#   Defaults to undef
-#
 class designate(
   $package_ensure              = present,
   $common_package_name         = $::designate::params::common_package_name,
@@ -134,16 +128,9 @@ class designate(
   $notification_topics         = 'notifications',
   $purge_config                = false,
   $amqp_durable_queues         = $::os_service_default,
-  # DEPRECATED PARAMETERS
-  $neutron_endpoint_type       = undef
 ) inherits designate::params {
 
   include designate::deps
-
-  if $neutron_endpoint_type != undef {
-    warning('The neutron_endpoint_type parameter is deprecated. Use the designate::network_api::neutron class.')
-  }
-  include designate::network_api::neutron
 
   package { 'designate-common':
     ensure => $package_ensure,

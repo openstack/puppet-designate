@@ -7,10 +7,9 @@ describe 'designate' do
 
   let :params do
     {
-      :package_ensure        => 'installed',
-      :purge_config          => false,
-      :neutron_endpoint_type => 'internalURL',
-      :root_helper           => 'sudo designate-rootwrap /etc/designate/rootwrap.conf'
+      :package_ensure => 'installed',
+      :purge_config   => false,
+      :root_helper    => 'sudo designate-rootwrap /etc/designate/rootwrap.conf'
     }
   end
 
@@ -68,10 +67,6 @@ describe 'designate' do
 
     it 'configures root_helper' do
       is_expected.to contain_designate_config('DEFAULT/root_helper').with_value( params[:root_helper] )
-    end
-
-    it 'configures network endpoint type to use' do
-      is_expected.to contain_designate_config('network_api:neutron/endpoint_type').with_value( params[:neutron_endpoint_type] )
     end
 
     it 'configures messaging' do

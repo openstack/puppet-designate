@@ -24,11 +24,9 @@ class designate::network_api::neutron (
   include designate::deps
   include designate::params
 
-  $endpoint_type_real = pick($::designate::neutron_endpoint_type, $endpoint_type)
-
   designate_config {
     'network_api:neutron/endpoints':     value => join(any2array($endpoints), ',');
-    'network_api:neutron/endpoint_type': value => $endpoint_type_real;
+    'network_api:neutron/endpoint_type': value => $endpoint_type;
     'network_api:neutron/timeout':       value => $timeout;
   }
 
