@@ -17,7 +17,7 @@
 #
 # Install Designate API under apache with mod_wsgi.
 #
-# == Parameters:
+# == Parameters
 #
 # [*servername*]
 #   (Optional) The servername for the virtualhost.
@@ -36,7 +36,7 @@
 #   Defaults to '/'
 #
 # [*ssl*]
-#   (Optional) Use ssl.
+#   (Optional) Use ssl ? (boolean)
 #   Defaults to false
 #
 # [*workers*]
@@ -63,36 +63,37 @@
 # [*ssl_crl*]
 # [*ssl_certs_dir*]
 #   (Optional) apache::vhost ssl parameters.
-#   Default to apache::vhost 'ssl_*' defaults
+#   Default to apache::vhost 'ssl_*' defaults.
 #
 # [*access_log_file*]
 #   (Optional) The log file name for the virtualhost.
-#   Defaults to undef
+#   Defaults to undef.
 #
 # [*access_log_pipe*]
 #   (Optional) Specifies a pipe where Apache sends access logs for
 #   the virtualhost.
-#   Defaults to undef
+#   Defaults to undef.
 #
 # [*access_log_syslog*]
 #   (Optional) Sends the virtualhost access log messages to syslog.
-#   Defaults to undef
+#   Defaults to undef.
 #
 # [*access_log_format*]
 #   (Optional) The log format for the virtualhost.
-#   Defaults to undef
+#   Defaults to undef.
 #
 # [*error_log_file*]
 #   (Optional) The error log file name for the virtualhost.
-#   Defaults to undef
+#   Defaults to undef.
 #
 # [*error_log_pipe*]
-#   (Optional) Specifies a pipe where Apache sends error logs for the virtualhost.
-#   Defaults to undef
+#   (Optional) Specifies a pipe where Apache sends error logs for
+#   the virtualhost.
+#   Defaults to undef.
 #
 # [*error_log_syslog*]
 #   (Optional) Sends the virtualhost error log messages to syslog.
-#   Defaults to undef
+#   Defaults to undef.
 #
 # [*custom_wsgi_process_options*]
 #   (Optional) gives you the opportunity to add custom process options or to
@@ -111,11 +112,11 @@
 #   Defaults to undef
 #
 # [*vhost_custom_fragment*]
-#   (optional) Passes a string of custom configuration
+#   (Optional) Passes a string of custom configuration
 #   directives to be placed at the end of the vhost configuration.
 #   Defaults to undef.
 #
-# == Example:
+# == Examples
 #
 #   include apache
 #   class { 'designate::wsgi::apache': }
