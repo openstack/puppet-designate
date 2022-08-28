@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    The ``designate::sink::enabled_notification_handlers`` parameter no longer
+    treats a false value to unset the parameter. Use ``$::os_service_default``
+    instead of the service default should be used.
