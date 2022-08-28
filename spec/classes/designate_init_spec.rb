@@ -38,15 +38,17 @@ describe 'designate' do
         is_expected.to contain_designate_config('DEFAULT/host').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('DEFAULT/state_path').with_value('/var/lib/designate')
         is_expected.to contain_designate_config('DEFAULT/default_ttl').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_designate_config('DEFAULT/supported_record_type').with_value('<SERVICE DEFAULT>')
       end
     end
 
     context 'with parameters' do
       let :params do
         {
-          :host        => 'current_hostname',
-          :state_path  => '/var/tmp/designate',
-          :default_ttl => 3600
+          :host                  => 'current_hostname',
+          :state_path            => '/var/tmp/designate',
+          :default_ttl           => 3600,
+          :supported_record_type => 'A,AAAA'
         }
       end
 
@@ -54,9 +56,19 @@ describe 'designate' do
         is_expected.to contain_designate_config('DEFAULT/host').with_value('current_hostname')
         is_expected.to contain_designate_config('DEFAULT/state_path').with_value('/var/tmp/designate')
         is_expected.to contain_designate_config('DEFAULT/default_ttl').with_value(3600)
+        is_expected.to contain_designate_config('DEFAULT/supported_record_type').with_value('A,AAAA')
       end
     end
 
+    context 'with supported_record_type (array)' do
+      let :params do
+        { :supported_record_type => ['A', 'AAAA'] }
+      end
+
+      it 'configures the given values' do
+        is_expected.to contain_designate_config('DEFAULT/supported_record_type').with_value('A,AAAA')
+      end
+    end
   end
 
   shared_examples_for 'a designate base installation' do
