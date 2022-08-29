@@ -114,6 +114,10 @@
 #   (Optional) TTL Value.
 #   Defaults to $::os_service_default.
 #
+# [*supported_record_type*]
+#   (Optional) Supported record types.
+#   Defaults to $::os_service_default.
+#
 class designate(
   $package_ensure              = present,
   $common_package_name         = $::designate::params::common_package_name,
@@ -138,6 +142,7 @@ class designate(
   $purge_config                = false,
   $amqp_durable_queues         = $::os_service_default,
   $default_ttl                 = $::os_service_default,
+  $supported_record_type       = $::os_service_default,
 ) inherits designate::params {
 
   include designate::deps
@@ -179,10 +184,11 @@ class designate(
 
   # default setting
   designate_config {
-    'DEFAULT/host':        value => $host;
-    'DEFAULT/root_helper': value => $root_helper;
-    'DEFAULT/state_path' : value => $state_path;
-    'DEFAULT/default_ttl': value => $default_ttl;
+    'DEFAULT/host':                  value => $host;
+    'DEFAULT/root_helper':           value => $root_helper;
+    'DEFAULT/state_path' :           value => $state_path;
+    'DEFAULT/default_ttl':           value => $default_ttl;
+    'DEFAULT/supported_record_type': value => join(any2array($supported_record_type), ',');
   }
 
 }
