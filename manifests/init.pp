@@ -12,6 +12,10 @@
 #  (optional) Name of the package containing shared resources
 #  Defaults to $::designate::params::common_package_name
 #
+# [*host*]
+#   (Optional) Name of this node.
+#   Defaults to $::os_service_default
+#
 # [*root_helper*]
 #   (optional) Command for designate rootwrap helper.
 #   Defaults to 'sudo designate-rootwrap /etc/designate/rootwrap.conf'.
@@ -109,6 +113,7 @@
 class designate(
   $package_ensure              = present,
   $common_package_name         = $::designate::params::common_package_name,
+  $host                        = $::os_service_default,
   $root_helper                 = 'sudo designate-rootwrap /etc/designate/rootwrap.conf',
   $state_path                  = $::designate::params::state_path,
   $notification_transport_url  = $::os_service_default,
@@ -169,6 +174,7 @@ class designate(
 
   # default setting
   designate_config {
+    'DEFAULT/host':        value => $host;
     'DEFAULT/root_helper': value => $root_helper;
     'DEFAULT/state_path' : value => $state_path;
   }

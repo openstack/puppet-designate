@@ -33,17 +33,27 @@ describe 'designate' do
       it_configures 'a designate base installation'
     end
 
-    context 'without state_path' do
-      it { is_expected.to contain_designate_config('DEFAULT/state_path').with_value('/var/lib/designate') }
+    context 'without parameters' do
+      it 'configures the default values' do
+        is_expected.to contain_designate_config('DEFAULT/host').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_designate_config('DEFAULT/state_path').with_value('/var/lib/designate')
+      end
     end
 
-    context 'with state_path' do
+    context 'with parameters' do
       let :params do
-        { :state_path => '/var/tmp/designate' }
+        {
+          :host       => 'current_hostname',
+          :state_path => '/var/tmp/designate'
+        }
       end
 
-      it { is_expected.to contain_designate_config('DEFAULT/state_path').with_value('/var/tmp/designate') }
+      it 'configures the given values' do
+        is_expected.to contain_designate_config('DEFAULT/host').with_value('current_hostname')
+        is_expected.to contain_designate_config('DEFAULT/state_path').with_value('/var/tmp/designate')
+      end
     end
+
   end
 
   shared_examples_for 'a designate base installation' do
