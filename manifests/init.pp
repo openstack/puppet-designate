@@ -47,7 +47,7 @@
 #
 # [*rabbit_use_ssl*]
 #   (optional) Connect over SSL for RabbitMQ
-#   Defaults to false
+#   Defaults to $::os_service_default
 #
 # [*rabbit_ha_queues*]
 #   (optional) Use HA queues in RabbitMQ (x-ha-policy: all). If you change this
@@ -99,7 +99,7 @@
 #
 # [*notification_topics*]
 #   (optional) Notification Topics
-#   Defaults to 'notifications'
+#   Defaults to $::os_service_default
 #
 # [*purge_config*]
 #   (optional) Whether to set only the specified config options
@@ -125,7 +125,7 @@ class designate(
   $root_helper                 = 'sudo designate-rootwrap /etc/designate/rootwrap.conf',
   $state_path                  = $::designate::params::state_path,
   $notification_transport_url  = $::os_service_default,
-  $rabbit_use_ssl              = false,
+  $rabbit_use_ssl              = $::os_service_default,
   $rabbit_ha_queues            = $::os_service_default,
   $rabbit_heartbeat_in_pthread = $::os_service_default,
   $kombu_ssl_ca_certs          = $::os_service_default,
@@ -138,7 +138,7 @@ class designate(
   $default_transport_url       = $::os_service_default,
   $rpc_response_timeout        = $::os_service_default,
   $control_exchange            = $::os_service_default,
-  $notification_topics         = 'notifications',
+  $notification_topics         = $::os_service_default,
   $purge_config                = false,
   $amqp_durable_queues         = $::os_service_default,
   $default_ttl                 = $::os_service_default,
