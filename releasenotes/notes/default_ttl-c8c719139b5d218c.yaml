@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    The ``designate::default_ttl`` parameter has been added.

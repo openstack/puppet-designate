@@ -37,20 +37,23 @@ describe 'designate' do
       it 'configures the default values' do
         is_expected.to contain_designate_config('DEFAULT/host').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('DEFAULT/state_path').with_value('/var/lib/designate')
+        is_expected.to contain_designate_config('DEFAULT/default_ttl').with_value('<SERVICE DEFAULT>')
       end
     end
 
     context 'with parameters' do
       let :params do
         {
-          :host       => 'current_hostname',
-          :state_path => '/var/tmp/designate'
+          :host        => 'current_hostname',
+          :state_path  => '/var/tmp/designate',
+          :default_ttl => 3600
         }
       end
 
       it 'configures the given values' do
         is_expected.to contain_designate_config('DEFAULT/host').with_value('current_hostname')
         is_expected.to contain_designate_config('DEFAULT/state_path').with_value('/var/tmp/designate')
+        is_expected.to contain_designate_config('DEFAULT/default_ttl').with_value(3600)
       end
     end
 
