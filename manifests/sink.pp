@@ -59,15 +59,7 @@ class designate::sink (
     'service:sink/threads': value => $threads;
   }
 
-  if ! $enabled_notification_handlers {
-    warning('Usage of false value for enabled_notification_handlers is deprecated. \
-Use $::os_service_default instead')
-    $enabled_notification_handlers_real = $::os_service_default
-  } else {
-    $enabled_notification_handlers_real = $enabled_notification_handlers
-  }
-
   designate_config {
-    'service:sink/enabled_notification_handlers': value => join(any2array($enabled_notification_handlers_real), ',')
+    'service:sink/enabled_notification_handlers': value => join(any2array($enabled_notification_handlers), ',')
   }
 }
