@@ -56,12 +56,6 @@
 #   (optional) RPC topic for worker component.
 #   Defaults to $::os_service_default
 #
-# DEPRECATED PARAMETERS
-#
-# [*worker_topic*]
-#   (optional) RPC topic for worker component.
-#   Defaults to undef
-#
 class designate::worker(
   $package_ensure       = present,
   $worker_package_name  = $::designate::params::worker_package_name,
@@ -76,15 +70,9 @@ class designate::worker(
   $poll_delay           = $::os_service_default,
   $export_synchronous   = $::os_service_default,
   $topic                = $::os_service_default,
-  # DEPRECATED PARAMETERS
-  $worker_topic         = undef,
 ) inherits designate::params {
 
   include designate::deps
-
-  if $worker_topic != undef {
-    warning('The worker_topic parameter is deprecated. Use the topic parameter instead.')
-  }
 
   designate::generic_service { 'worker':
     package_ensure => $package_ensure,
@@ -103,11 +91,6 @@ class designate::worker(
     'service:worker/poll_max_retries':     value => $poll_max_retries;
     'service:worker/poll_delay':           value => $poll_delay;
     'service:worker/export_synchronous':   value => $export_synchronous;
-    'service:worker/topic':                value => pick($worker_topic, $topic);
-  }
-
-  # TODO(tkajinam): Remove this after Zed release
-  designate_config {
-    'service:worker/worker_topic': ensure => absent;
+    'service:worker/topic':                value => $topic;
   }
 }

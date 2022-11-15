@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    The ``designate::worker::worker_topic`` parameter has been removed.
