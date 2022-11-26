@@ -151,11 +151,6 @@ class designate::api (
     'service:api/quotas_verify_project_id'  : value => $quotas_verify_project_id;
   }
 
-  # TODO(tkajinam): Remove this after Zed release
-  designate_config {
-    'service:api/max_header_line': ensure => absent;
-  }
-
   if $auth_strategy == 'keystone' {
     include designate::keystone::authtoken
   }
