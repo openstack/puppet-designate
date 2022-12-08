@@ -72,6 +72,11 @@ class designate::backend::bind9 (
   include designate::deps
   include designate::params
 
+  validate_legacy(Hash, 'validate_hash', $ns_records)
+  validate_legacy(Array, 'validate_array', $nameservers)
+  validate_legacy(Array, 'validate_array', $bind9_hosts)
+  validate_legacy(Array, 'validate_array', $mdns_hosts)
+
   if $configure_bind {
     if $rndc_controls {
       class { 'dns':
