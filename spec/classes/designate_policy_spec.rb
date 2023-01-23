@@ -9,6 +9,7 @@ describe 'designate::policy' do
           :enforce_scope        => false,
           :enforce_new_defaults => false,
           :policy_path          => '/etc/designate/policy.yaml',
+          :policy_default_rule  => 'default',
           :policy_dirs          => '/etc/designate/policy.d',
           :policies             => {
             'context_is_admin' => {
@@ -37,6 +38,7 @@ describe 'designate::policy' do
           :enforce_scope        => false,
           :enforce_new_defaults => false,
           :policy_file          => '/etc/designate/policy.yaml',
+          :policy_default_rule  => 'default',
           :policy_dirs          => '/etc/designate/policy.d',
         )
       end
