@@ -1,0 +1,5 @@
+---
+deprecations:
+  - |
+    Support for the ``designate-agent`` service and the ``agent`` backend has
+    been deprecated, because the framework has been deprecated in Designate.

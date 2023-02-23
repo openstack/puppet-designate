@@ -1,5 +1,6 @@
 # == Class designate::agent::bind9
 #
+# DEPRECATED !!
 # Configure bind9 as agent backend
 #
 # == Parameters
@@ -43,6 +44,8 @@ class designate::agent::bind9 (
 ) {
 
   include designate::deps
+
+  warning('The agent framework has been deprecated.')
 
   designate_config {
     'backend:agent:bind9/rndc_host'         : value => $rndc_host;

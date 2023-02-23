@@ -1,5 +1,6 @@
 # == Class designate::backend::agent
 #
+# DEPRECATED !!
 # Configure agent as backend
 #
 # == Parameters
@@ -34,6 +35,8 @@ class designate::backend::agent (
 
   include designate::deps
   include designate::params
+
+  warning('The agent framework has been deprecated.')
 
   if $manage_pool {
     file { '/etc/designate/pools.yaml':

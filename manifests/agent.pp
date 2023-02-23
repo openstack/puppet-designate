@@ -1,5 +1,6 @@
 # == Class designate::agent
 #
+# DEPRECATED !!
 # Configure designate agent service
 #
 # == Parameters
@@ -48,6 +49,8 @@ class designate::agent (
 ) inherits designate::params {
 
   include designate::deps
+
+  warning('The agent framework has been deprecated.')
 
   designate_config {
     'service:agent/backend_driver' : value => $backend_driver;
