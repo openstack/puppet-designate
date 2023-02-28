@@ -74,6 +74,9 @@ class designate::worker(
 
   include designate::deps
 
+  validate_legacy(Boolean, 'validate_bool', $manage_service)
+  validate_legacy(Boolean, 'validate_bool', $enabled)
+
   designate::generic_service { 'worker':
     package_ensure => $package_ensure,
     enabled        => $enabled,

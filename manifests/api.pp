@@ -130,6 +130,9 @@ class designate::api (
   include designate::deps
   include designate::policy
 
+  validate_legacy(Boolean, 'validate_bool', $manage_service)
+  validate_legacy(Boolean, 'validate_bool', $enabled)
+
   # API Service
   designate_config {
     'service:api/listen'                    : value => $listen;

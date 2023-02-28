@@ -85,6 +85,9 @@ class designate::mdns (
   include designate::deps
   include designate::db
 
+  validate_legacy(Boolean, 'validate_bool', $manage_service)
+  validate_legacy(Boolean, 'validate_bool', $enabled)
+
   designate_config {
     'service:mdns/workers'            : value => $workers;
     'service:mdns/threads'            : value => $threads;

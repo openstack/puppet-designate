@@ -50,6 +50,9 @@ class designate::agent (
 
   include designate::deps
 
+  validate_legacy(Boolean, 'validate_bool', $manage_service)
+  validate_legacy(Boolean, 'validate_bool', $enabled)
+
   warning('The agent framework has been deprecated.')
 
   designate_config {

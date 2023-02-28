@@ -42,6 +42,11 @@ class designate::producer (
   $enabled_tasks  = $facts['os_service_default'],
 ) inherits designate::params {
 
+  include designate::deps
+
+  validate_legacy(Boolean, 'validate_bool', $manage_service)
+  validate_legacy(Boolean, 'validate_bool', $enabled)
+
   designate_config {
     'service:producer/workers'       : value => $workers;
     'service:producer/threads'       : value => $threads;

@@ -76,6 +76,9 @@ class designate::central (
   include designate::deps
   include designate::db
 
+  validate_legacy(Boolean, 'validate_bool', $manage_service)
+  validate_legacy(Boolean, 'validate_bool', $enabled)
+
   designate_config {
     'service:central/managed_resource_email'     : value => $managed_resource_email;
     'service:central/managed_resource_tenant_id' : value => $managed_resource_tenant_id;

@@ -42,6 +42,9 @@ define designate::generic_service(
   include designate::deps
   include designate::params
 
+  validate_legacy(Boolean, 'validate_bool', $manage_service)
+  validate_legacy(Boolean, 'validate_bool', $enabled)
+
   $designate_title = "designate-${name}"
 
   if ($package_name) {

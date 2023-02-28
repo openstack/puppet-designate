@@ -46,6 +46,9 @@ class designate::sink (
 
   include designate::deps
 
+  validate_legacy(Boolean, 'validate_bool', $manage_service)
+  validate_legacy(Boolean, 'validate_bool', $enabled)
+
   designate::generic_service { 'sink':
     enabled        => $enabled,
     manage_service => $manage_service,
