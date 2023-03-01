@@ -93,7 +93,7 @@ describe 'designate::sink' do
       end
 
       let(:platform_params) do
-        case facts[:osfamily]
+        case facts[:os]['family']
         when 'Debian'
           {
             :sink_package_name => 'designate-sink',

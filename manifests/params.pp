@@ -18,7 +18,7 @@ class designate::params {
   $group                     = 'designate'
   $user                      = 'designate'
 
-  case $::osfamily {
+  case $facts['os']['family'] {
     'RedHat': {
       # package name
       $common_package_name          = 'openstack-designate-common'
@@ -46,7 +46,7 @@ class designate::params {
       $designate_wsgi_script_source = '/usr/bin/designate-api-wsgi'
     }
     default: {
-      fail("Unsupported osfamily: ${::osfamily} operatingsystem")
+      fail("Unsupported osfamily: ${facts['os']['family']}")
     }
   }
 }

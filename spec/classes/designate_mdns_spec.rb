@@ -86,7 +86,7 @@ describe 'designate::mdns' do
         facts.merge!(OSDefaults.get_facts({ :os_workers => 8 }))
       end
       let(:platform_params) do
-        case facts[:osfamily]
+        case facts[:os]['family']
         when 'Debian'
           {
             :mdns_package_name => 'designate-mdns',

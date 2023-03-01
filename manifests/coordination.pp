@@ -6,22 +6,22 @@
 #
 # [*backend_url*]
 #   (Optional) Coordination backend URL.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*heartbeat_interval*]
 #   (Optional) Number of seconds between heartbeats for distributed
 #   coordination.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*run_watchers_interval*]
 #   (Optional) Number of seconds between checks to see if group membership
 #   has changed.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 class designate::coordination (
-  $backend_url           = $::os_service_default,
-  $heartbeat_interval    = $::os_service_default,
-  $run_watchers_interval = $::os_service_default,
+  $backend_url           = $facts['os_service_default'],
+  $heartbeat_interval    = $facts['os_service_default'],
+  $run_watchers_interval = $facts['os_service_default'],
 ) {
 
   include designate::deps

@@ -6,20 +6,20 @@
 #
 # [*endpoints*]
 #  (Optional) URL to use. Format: <retion>|<url>
-#  Defaults to $::os_service_default.
+#  Defaults to $facts['os_service_default'].
 #
 # [*endpoint_type*]
 #  (Optional) Endpoint type to use
-#  Defaults to $::os_service_default.
+#  Defaults to $facts['os_service_default'].
 #
 # [*timeout*]
 #  (Optional) Timeout value for connecting to neutron in seconds.
-#  Defaults to $::os_service_default.
+#  Defaults to $facts['os_service_default'].
 #
 class designate::network_api::neutron (
-  $endpoints     = $::os_service_default,
-  $endpoint_type = $::os_service_default,
-  $timeout       = $::os_service_default,
+  $endpoints     = $facts['os_service_default'],
+  $endpoint_type = $facts['os_service_default'],
+  $timeout       = $facts['os_service_default'],
 ) {
   include designate::deps
   include designate::params

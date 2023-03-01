@@ -26,36 +26,36 @@
 #
 # [*managed_resource_tenant_id*]
 #  (optional) Tenant ID to own all managed resources - like auto-created records etc.
-#  Defaults to $::os_service_default
+#  Defaults to $facts['os_service_default']
 #
 # [*max_zone_name_len*]
 #  (optional) Maximum zone name length.
-#  Defaults to $::os_service_default
+#  Defaults to $facts['os_service_default']
 #
 # [*max_recordset_name_len*]
 #  (optional) Maximum record name length.
 #  warning('The max_record_name_len parameter is deprecated, use max_recordset_name_len instead.')
-#  Defaults to $::os_service_default
+#  Defaults to $facts['os_service_default']
 #
 # [*min_ttl*]
 #  (optional) Minimum TTL.
-#  Defaults to $::os_service_default
+#  Defaults to $facts['os_service_default']
 #
 # [*workers*]
 #  (optional) Number of central worker processes to spawn.
-#  Defaults to $::os_workers
+#  Defaults to $facts['os_workers']
 #
 # [*threads*]
 #  (optional) Number of central greenthreads to spawn.
-#  Defaults to $::os_service_default
+#  Defaults to $facts['os_service_default']
 #
 # [*default_pool_id*]
 #  (optional) The name of the default pool.
-#  Defaults to $::os_service_default
+#  Defaults to $facts['os_service_default']
 #
 # [*scheduler_filters*]
 #  (optional) Enabled pool scheduling filters.
-#  Defaults to $::os_service_default
+#  Defaults to $facts['os_service_default']
 #
 class designate::central (
   $package_ensure             = present,
@@ -63,14 +63,14 @@ class designate::central (
   $enabled                    = true,
   $manage_service             = true,
   $managed_resource_email     = 'hostmaster@example.com',
-  $managed_resource_tenant_id = $::os_service_default,
-  $max_zone_name_len          = $::os_service_default,
-  $max_recordset_name_len     = $::os_service_default,
-  $min_ttl                    = $::os_service_default,
-  $workers                    = $::os_workers,
-  $threads                    = $::os_service_default,
-  $default_pool_id            = $::os_service_default,
-  $scheduler_filters          = $::os_service_default,
+  $managed_resource_tenant_id = $facts['os_service_default'],
+  $max_zone_name_len          = $facts['os_service_default'],
+  $max_recordset_name_len     = $facts['os_service_default'],
+  $min_ttl                    = $facts['os_service_default'],
+  $workers                    = $facts['os_workers'],
+  $threads                    = $facts['os_service_default'],
+  $default_pool_id            = $facts['os_service_default'],
+  $scheduler_filters          = $facts['os_service_default'],
 ) inherits designate::params {
 
   include designate::deps

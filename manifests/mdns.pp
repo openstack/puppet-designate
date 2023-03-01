@@ -22,64 +22,64 @@
 #
 # [*workers*]
 #   (Optional) Number of mdns worker processes to spawn.
-#   Defaults to $::os_workers.
+#   Defaults to $facts['os_workers'].
 #
 # [*threads*]
 #   (Optional) Number of mdns greenthreads to spawn.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*tcp_backlog*]
 #   (Optional) mDNS TCP Backlog.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*tcp_recv_timeout*]
 #   (Optional) mDNS TCP Receive Timeout.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*all_tcp*]
 #   (Optional) Send all traffic over TCP.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*query_enforce_tsig*]
 #   (Optional) Enforce all incoming queries (including AXFR) are TSIG signed.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*storage_driver*]
 #   (Optional) The storage driver to use.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*max_message_size*]
 #   (Optional) Maximum message size to emit.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*listen*]
 #   (Optional) mDNS host:port pairs to listen on.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*topic*]
 #   (Optional) RPC topic name for mdns.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*xfr_timeout*]
 #   (Optional) Timeout in seconds for XFR's.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 class designate::mdns (
   $package_ensure     = present,
   $mdns_package_name  = $::designate::params::mdns_package_name,
   $enabled            = true,
   $manage_service     = true,
-  $workers            = $::os_workers,
-  $threads            = $::os_service_default,
-  $tcp_backlog        = $::os_service_default,
-  $tcp_recv_timeout   = $::os_service_default,
-  $all_tcp            = $::os_service_default,
-  $query_enforce_tsig = $::os_service_default,
-  $storage_driver     = $::os_service_default,
-  $max_message_size   = $::os_service_default,
-  $listen             = $::os_service_default,
-  $topic              = $::os_service_default,
-  $xfr_timeout        = $::os_service_default,
+  $workers            = $facts['os_workers'],
+  $threads            = $facts['os_service_default'],
+  $tcp_backlog        = $facts['os_service_default'],
+  $tcp_recv_timeout   = $facts['os_service_default'],
+  $all_tcp            = $facts['os_service_default'],
+  $query_enforce_tsig = $facts['os_service_default'],
+  $storage_driver     = $facts['os_service_default'],
+  $max_message_size   = $facts['os_service_default'],
+  $listen             = $facts['os_service_default'],
+  $topic              = $facts['os_service_default'],
+  $xfr_timeout        = $facts['os_service_default'],
 ) inherits designate::params {
 
   include designate::deps

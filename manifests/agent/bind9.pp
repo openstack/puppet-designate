@@ -7,7 +7,7 @@
 #
 # [*rndc_host*]
 #  (Optional) RNDC Host
-#  Defaults to $::os_service_default.
+#  Defaults to $facts['os_service_default'].
 #
 # [*rndc_port*]
 #  (Optional) RNDC Port.
@@ -23,24 +23,24 @@
 #
 # [*rndc_timeout*]
 #  (Optional) RNDC command timeout.
-#  Defaults to $::os_service_default.
+#  Defaults to $facts['os_service_default'].
 #
 # [*zone_file_path*]
 #  (Optional) Path where zone files are stored.
-#  Defaults to $::os_service_default.
+#  Defaults to $facts['os_service_default'].
 #
 # [*query_destination*]
 #  (Optional) Host to query when finding zones.
-#  Defaults to $::os_service_default.
+#  Defaults to $facts['os_service_default'].
 #
 class designate::agent::bind9 (
-  $rndc_host         = $::os_service_default,
-  $rndc_port         = $::os_service_default,
+  $rndc_host         = $facts['os_service_default'],
+  $rndc_port         = $facts['os_service_default'],
   $rndc_config_file  = '/etc/rndc.conf',
   $rndc_key_file     = '/etc/rndc.key',
-  $rndc_timeout      = $::os_service_default,
-  $zone_file_path    = $::os_service_default,
-  $query_destination = $::os_service_default,
+  $rndc_timeout      = $facts['os_service_default'],
+  $zone_file_path    = $facts['os_service_default'],
+  $query_destination = $facts['os_service_default'],
 ) {
 
   include designate::deps

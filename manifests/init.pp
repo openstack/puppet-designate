@@ -14,7 +14,7 @@
 #
 # [*host*]
 #   (Optional) Name of this node.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*root_helper*]
 #   (optional) Command for designate rootwrap helper.
@@ -28,31 +28,31 @@
 #   (optional) A URL representing the messaging driver to use and its full
 #   configuration. Transport URLs take the form:
 #     transport://user:pass@host1:port[,hostN:portN]/virtual_host
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*rpc_response_timeout*]
 #  (Optional) Seconds to wait for a response from a call.
-#  Defaults to $::os_service_default
+#  Defaults to $facts['os_service_default']
 #
 # [*control_exchange*]
 #   (Optional) The default exchange under which topics are scoped. May be
 #   overridden by an exchange name specified in the transport_url
 #   option.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*notification_transport_url*]
 #   (optional) Connection url for oslo messaging notification backend. An
 #   example rabbit url would be, rabbit://user:pass@host:port/virtual_host
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*rabbit_use_ssl*]
 #   (optional) Connect over SSL for RabbitMQ
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*rabbit_ha_queues*]
 #   (optional) Use HA queues in RabbitMQ (x-ha-policy: all). If you change this
 #   option, you must wipe the RabbitMQ database. (boolean value).
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*rabbit_heartbeat_in_pthread*]
 #   (Optional) EXPERIMENTAL: Run the health check heartbeat thread
@@ -62,36 +62,36 @@
 #   example if the parent process have monkey patched the
 #   stdlib by using eventlet/greenlet then the heartbeat
 #   will be run through a green thread.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*kombu_ssl_ca_certs*]
 #   (optional) SSL certification authority file (valid only if SSL enabled).
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*kombu_ssl_certfile*]
 #   (optional) SSL cert file (valid only if SSL enabled).
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*kombu_ssl_keyfile*]
 #   (optional) SSL key file (valid only if SSL enabled).
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*kombu_ssl_version*]
 #   (optional) SSL version to use (valid only if SSL enabled).
 #   Valid values are TLSv1, SSLv23 and SSLv3. SSLv2 may be
 #   available on some distributions.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*kombu_reconnect_delay*]
 #   (optional) How long to wait before reconnecting in response to an AMQP
 #   consumer cancel notification.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*kombu_failover_strategy*]
 #   (Optional) Determines how the next RabbitMQ node is chosen in case the one
 #   we are currently connected to becomes unavailable. Takes effect only if
 #   more than one RabbitMQ node is provided in config. (string value)
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*notification_driver*]
 #   (optional) Driver used for issuing notifications
@@ -99,7 +99,7 @@
 #
 # [*notification_topics*]
 #   (optional) Notification Topics
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*purge_config*]
 #   (optional) Whether to set only the specified config options
@@ -108,41 +108,41 @@
 #
 # [*amqp_durable_queues*]
 #   (optional) Whether to use durable queues in AMQP.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*default_ttl*]
 #   (Optional) TTL Value.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*supported_record_type*]
 #   (Optional) Supported record types.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 class designate(
   $package_ensure              = present,
   $common_package_name         = $::designate::params::common_package_name,
-  $host                        = $::os_service_default,
+  $host                        = $facts['os_service_default'],
   $root_helper                 = 'sudo designate-rootwrap /etc/designate/rootwrap.conf',
   $state_path                  = $::designate::params::state_path,
-  $notification_transport_url  = $::os_service_default,
-  $rabbit_use_ssl              = $::os_service_default,
-  $rabbit_ha_queues            = $::os_service_default,
-  $rabbit_heartbeat_in_pthread = $::os_service_default,
-  $kombu_ssl_ca_certs          = $::os_service_default,
-  $kombu_ssl_certfile          = $::os_service_default,
-  $kombu_ssl_keyfile           = $::os_service_default,
-  $kombu_ssl_version           = $::os_service_default,
-  $kombu_reconnect_delay       = $::os_service_default,
-  $kombu_failover_strategy     = $::os_service_default,
+  $notification_transport_url  = $facts['os_service_default'],
+  $rabbit_use_ssl              = $facts['os_service_default'],
+  $rabbit_ha_queues            = $facts['os_service_default'],
+  $rabbit_heartbeat_in_pthread = $facts['os_service_default'],
+  $kombu_ssl_ca_certs          = $facts['os_service_default'],
+  $kombu_ssl_certfile          = $facts['os_service_default'],
+  $kombu_ssl_keyfile           = $facts['os_service_default'],
+  $kombu_ssl_version           = $facts['os_service_default'],
+  $kombu_reconnect_delay       = $facts['os_service_default'],
+  $kombu_failover_strategy     = $facts['os_service_default'],
   $notification_driver         = 'messaging',
-  $default_transport_url       = $::os_service_default,
-  $rpc_response_timeout        = $::os_service_default,
-  $control_exchange            = $::os_service_default,
-  $notification_topics         = $::os_service_default,
+  $default_transport_url       = $facts['os_service_default'],
+  $rpc_response_timeout        = $facts['os_service_default'],
+  $control_exchange            = $facts['os_service_default'],
+  $notification_topics         = $facts['os_service_default'],
   $purge_config                = false,
-  $amqp_durable_queues         = $::os_service_default,
-  $default_ttl                 = $::os_service_default,
-  $supported_record_type       = $::os_service_default,
+  $amqp_durable_queues         = $facts['os_service_default'],
+  $default_ttl                 = $facts['os_service_default'],
+  $supported_record_type       = $facts['os_service_default'],
 ) inherits designate::params {
 
   include designate::deps

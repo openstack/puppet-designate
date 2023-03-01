@@ -6,55 +6,55 @@
 #
 # [*timeout*]
 #   (Optional) Timeout value for connecting to keystone in seconds.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*service_type*]
 #   (Optional) The default service_type for endpoint URL discovery.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*valid_interfaces*]
 #   (Optional) List of interfaces, in order of preference for endpoint URL.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*endpoint_override*]
 #   (Optional) Always use this endpoint URL for requests for this client.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*region_name*]
 #   (Optional) Region name for connecting to keystone in admin context
 #   through the OpenStack Identity service.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*connect_retries*]
 #   (Optional) The maximum number o retries that should be attempted for
 #   connection errors.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*connect_retry_delay*]
 #   (Optional) Delay (in seconds) between two retries that should be attempted
 #   for connection errors.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*status_code_retries*]
 #   (Optional) The maximum number of retries that should be attempted for
 #   retriable HTTP status codes.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*status_code_retry_delay*]
 #   (Optional) Delay (in seconds) between two retries for retriable status
 #   codes.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 class designate::keystone (
-  $timeout                 = $::os_service_default,
-  $service_type            = $::os_service_default,
-  $valid_interfaces        = $::os_service_default,
-  $endpoint_override       = $::os_service_default,
-  $region_name             = $::os_service_default,
-  $connect_retries         = $::os_service_default,
-  $connect_retry_delay     = $::os_service_default,
-  $status_code_retries     = $::os_service_default,
-  $status_code_retry_delay = $::os_service_default,
+  $timeout                 = $facts['os_service_default'],
+  $service_type            = $facts['os_service_default'],
+  $valid_interfaces        = $facts['os_service_default'],
+  $endpoint_override       = $facts['os_service_default'],
+  $region_name             = $facts['os_service_default'],
+  $connect_retries         = $facts['os_service_default'],
+  $connect_retry_delay     = $facts['os_service_default'],
+  $status_code_retries     = $facts['os_service_default'],
+  $status_code_retry_delay = $facts['os_service_default'],
 ) {
 
   include designate::deps

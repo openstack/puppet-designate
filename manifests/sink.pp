@@ -22,26 +22,26 @@
 #
 # [*workers*]
 #  (optional) Number of sink worker processes to spawn.
-#  Defaults to $::os_service_default
+#  Defaults to $facts['os_service_default']
 #
 # [*threads*]
 #  (optional) Number of sink greenthreads to spawn.
-#  Defaults to $::os_service_default
+#  Defaults to $facts['os_service_default']
 #
 # [*enabled_notification_handlers*]
 #  (optional) List of notification handlers to enable, configuration of
 #  these needs to correspond to a [handler:my_driver] section below or
 #  else in the config.
-#  Defaults to $::os_service_default
+#  Defaults to $facts['os_service_default']
 #
 class designate::sink (
   $package_ensure                = present,
   $sink_package_name             = $::designate::params::sink_package_name,
   $enabled                       = true,
   $manage_service                = true,
-  $workers                       = $::os_service_default,
-  $threads                       = $::os_service_default,
-  $enabled_notification_handlers = $::os_service_default,
+  $workers                       = $facts['os_service_default'],
+  $threads                       = $facts['os_service_default'],
+  $enabled_notification_handlers = $facts['os_service_default'],
 ) inherits designate::params {
 
   include designate::deps

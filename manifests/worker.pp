@@ -22,54 +22,54 @@
 #
 # [*workers*]
 #   (optional) Number of worker processes.
-#   Defaults to $::os_workers
+#   Defaults to $facts['os_workers']
 #
 # [*threads*]
 #   (optional) Number of Pool Manager greenthreads to spawn
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*threshold_percentage*]
 #   (optional) Threshold percentage.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*poll_timeout*]
 #   (optional) Poll timeout.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*poll_retry_interval*]
 #   (optional) Poll retry interval.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*poll_max_retries*]
 #   (optional) Poll max retries.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*poll_delay*]
 #   (optional) Poll delay.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*export_synchronous*]
 #   (optional) Whether to allow synchronous zone exports.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*topic*]
 #   (optional) RPC topic for worker component.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 class designate::worker(
   $package_ensure       = present,
   $worker_package_name  = $::designate::params::worker_package_name,
   $enabled              = true,
   $manage_service       = true,
-  $workers              = $::os_workers,
-  $threads              = $::os_service_default,
-  $threshold_percentage = $::os_service_default,
-  $poll_timeout         = $::os_service_default,
-  $poll_retry_interval  = $::os_service_default,
-  $poll_max_retries     = $::os_service_default,
-  $poll_delay           = $::os_service_default,
-  $export_synchronous   = $::os_service_default,
-  $topic                = $::os_service_default,
+  $workers              = $facts['os_workers'],
+  $threads              = $facts['os_service_default'],
+  $threshold_percentage = $facts['os_service_default'],
+  $poll_timeout         = $facts['os_service_default'],
+  $poll_retry_interval  = $facts['os_service_default'],
+  $poll_max_retries     = $facts['os_service_default'],
+  $poll_delay           = $facts['os_service_default'],
+  $export_synchronous   = $facts['os_service_default'],
+  $topic                = $facts['os_service_default'],
 ) inherits designate::params {
 
   include designate::deps

@@ -6,35 +6,35 @@
 #
 # [*quota_api_export_size*]
 #   (optional) size of api export
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*quota_zone_records*]
 #   (optional) records per zone
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*quota_zone_recordsets*]
 #   (optional) recordsets per zone
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*quota_zones*]
 #   (optional) zones per project
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*quota_driver*]
 #   (optional) storage driver to use
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*quota_recordset_records*]
 #   (optional) recordsets per record
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 class designate::quota (
-  $quota_api_export_size   = $::os_service_default,
-  $quota_zone_records      = $::os_service_default,
-  $quota_zone_recordsets   = $::os_service_default,
-  $quota_zones             = $::os_service_default,
-  $quota_driver            = $::os_service_default,
-  $quota_recordset_records = $::os_service_default,
+  $quota_api_export_size   = $facts['os_service_default'],
+  $quota_zone_records      = $facts['os_service_default'],
+  $quota_zone_recordsets   = $facts['os_service_default'],
+  $quota_zones             = $facts['os_service_default'],
+  $quota_driver            = $facts['os_service_default'],
+  $quota_recordset_records = $facts['os_service_default'],
 ) {
 
   include designate::deps

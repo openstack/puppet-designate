@@ -173,7 +173,7 @@ describe 'designate' do
       end
 
       let(:platform_params) do
-        case facts[:osfamily]
+        case facts[:os]['family']
         when 'Debian'
           { :common_package_name => 'designate-common' }
         when 'RedHat'

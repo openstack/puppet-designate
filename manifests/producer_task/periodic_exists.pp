@@ -6,15 +6,15 @@
 #
 # [*interval*]
 #  (optional) Run interval in seconds.
-#  Defaults to $::os_service_default
+#  Defaults to $facts['os_service_default']
 #
 # [*per_page*]
 #  (optional) Default amount of results returned per page.
-#  Defaults to $::os_service_default
+#  Defaults to $facts['os_service_default']
 #
 class designate::producer_task::periodic_exists (
-  $interval = $::os_service_default,
-  $per_page = $::os_service_default,
+  $interval = $facts['os_service_default'],
+  $per_page = $facts['os_service_default'],
 ) {
 
   include designate::deps

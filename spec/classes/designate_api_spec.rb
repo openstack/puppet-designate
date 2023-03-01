@@ -180,7 +180,7 @@ describe 'designate::api' do
       end
 
       let(:platform_params) do
-        case facts[:osfamily]
+        case facts[:os]['family']
         when 'Debian'
           {
             :api_package_name => 'designate-api',

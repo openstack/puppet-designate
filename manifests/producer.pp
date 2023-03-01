@@ -22,24 +22,24 @@
 #
 # [*workers*]
 #  (optional) Number of workers to spawn.
-#  Defaults to $::os_workers.
+#  Defaults to $facts['os_workers'].
 #
 # [*threads*]
 #  (optional) Number of greenthreads to spawn
-#  Defaults to $::os_service_default.
+#  Defaults to $facts['os_service_default'].
 #
 # [*enabled_tasks*]
 #  (optional) List of tasks to enable, the default enables all tasks.
-#  Defaults to $::os_service_default.
+#  Defaults to $facts['os_service_default'].
 #
 class designate::producer (
   $package_ensure = 'present',
   $package_name   = $::designate::params::producer_package_name,
   $enabled        = true,
   $manage_service = true,
-  $workers        = $::os_workers,
-  $threads        = $::os_service_default,
-  $enabled_tasks  = $::os_service_default,
+  $workers        = $facts['os_workers'],
+  $threads        = $facts['os_service_default'],
+  $enabled_tasks  = $facts['os_service_default'],
 ) inherits designate::params {
 
   designate_config {

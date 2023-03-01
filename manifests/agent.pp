@@ -27,15 +27,15 @@
 #
 # [*workers*]
 #  (optional) Number of agent worker process to spawn
-#  Defaults to $::os_workers
+#  Defaults to $facts['os_workers']
 #
 # [*threads*]
 #  (optional) Number of agent greenthreads to spawn
-#  Defaults to $::os_service_default
+#  Defaults to $facts['os_service_default']
 #
 # [*listen*]
 #  (optional) Agent host:port pairs to listen on.
-#  Defaults to $::os_service_default
+#  Defaults to $facts['os_service_default']
 #
 class designate::agent (
   $package_ensure     = present,
@@ -43,9 +43,9 @@ class designate::agent (
   $enabled            = true,
   $manage_service     = true,
   $backend_driver     = 'bind9',
-  $workers            = $::os_workers,
-  $threads            = $::os_service_default,
-  $listen             = $::os_service_default,
+  $workers            = $facts['os_workers'],
+  $threads            = $facts['os_service_default'],
+  $listen             = $facts['os_service_default'],
 ) inherits designate::params {
 
   include designate::deps

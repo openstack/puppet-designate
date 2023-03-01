@@ -82,7 +82,7 @@ describe 'designate::agent' do
       end
 
       let(:platform_params) do
-        case facts[:osfamily]
+        case facts[:os]['family']
         when 'Debian'
           {
             :agent_package_name => 'designate-agent',
