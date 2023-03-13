@@ -96,9 +96,10 @@ describe 'designate' do
 
     it 'configures messaging' do
       is_expected.to contain_oslo__messaging__default('designate_config').with(
-        :transport_url        => '<SERVICE DEFAULT>',
-        :rpc_response_timeout => '<SERVICE DEFAULT>',
-        :control_exchange     => '<SERVICE DEFAULT>'
+        :executor_thread_pool_size => '<SERVICE DEFAULT>',
+        :transport_url             => '<SERVICE DEFAULT>',
+        :rpc_response_timeout      => '<SERVICE DEFAULT>',
+        :control_exchange          => '<SERVICE DEFAULT>'
       )
       is_expected.to contain_oslo__messaging__notifications('designate_config').with(
         :driver        => 'messaging',
