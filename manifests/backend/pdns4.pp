@@ -50,6 +50,8 @@ class designate::backend::pdns4 (
   include designate::deps
   include designate::params
 
+  validate_legacy(Boolean, 'validate_bool', $manage_pool)
+
   if $manage_pool {
     file { '/etc/designate/pools.yaml':
       ensure  => present,

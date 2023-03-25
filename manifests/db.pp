@@ -64,6 +64,7 @@ class designate::db (
 ) {
 
   include designate::deps
+  validate_legacy(Boolean, 'validate_bool', $sync_db)
 
   oslo::db { 'designate_config':
     config_group            => 'storage:sqlalchemy',

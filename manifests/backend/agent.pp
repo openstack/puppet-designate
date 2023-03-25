@@ -38,6 +38,8 @@ class designate::backend::agent (
 
   warning('The agent framework has been deprecated.')
 
+  validate_legacy(Boolean, 'validate_bool', $manage_pool)
+
   if $manage_pool {
     file { '/etc/designate/pools.yaml':
       ensure  => present,
