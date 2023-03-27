@@ -76,6 +76,8 @@ class designate::backend::bind9 (
   validate_legacy(Array, 'validate_array', $nameservers)
   validate_legacy(Array, 'validate_array', $bind9_hosts)
   validate_legacy(Array, 'validate_array', $mdns_hosts)
+  validate_legacy(Boolean, 'validate_bool', $configure_bind)
+  validate_legacy(Boolean, 'validate_bool', $manage_pool)
 
   if $configure_bind {
     if $rndc_controls {
