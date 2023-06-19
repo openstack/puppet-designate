@@ -38,20 +38,17 @@
 #  Defaults to $facts['os_service_default']
 #
 class designate::agent (
-  $package_ensure     = present,
-  $agent_package_name = $::designate::params::agent_package_name,
-  $enabled            = true,
-  $manage_service     = true,
-  $backend_driver     = 'bind9',
-  $workers            = $facts['os_workers'],
-  $threads            = $facts['os_service_default'],
-  $listen             = $facts['os_service_default'],
+  $package_ensure         = present,
+  $agent_package_name     = $::designate::params::agent_package_name,
+  Boolean $enabled        = true,
+  Boolean $manage_service = true,
+  $backend_driver         = 'bind9',
+  $workers                = $facts['os_workers'],
+  $threads                = $facts['os_service_default'],
+  $listen                 = $facts['os_service_default'],
 ) inherits designate::params {
 
   include designate::deps
-
-  validate_legacy(Boolean, 'validate_bool', $manage_service)
-  validate_legacy(Boolean, 'validate_bool', $enabled)
 
   warning('The agent framework has been deprecated.')
 

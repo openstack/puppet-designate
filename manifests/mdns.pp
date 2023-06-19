@@ -65,28 +65,25 @@
 #   Defaults to $facts['os_service_default'].
 #
 class designate::mdns (
-  $package_ensure     = present,
-  $mdns_package_name  = $::designate::params::mdns_package_name,
-  $enabled            = true,
-  $manage_service     = true,
-  $workers            = $facts['os_workers'],
-  $threads            = $facts['os_service_default'],
-  $tcp_backlog        = $facts['os_service_default'],
-  $tcp_recv_timeout   = $facts['os_service_default'],
-  $all_tcp            = $facts['os_service_default'],
-  $query_enforce_tsig = $facts['os_service_default'],
-  $storage_driver     = $facts['os_service_default'],
-  $max_message_size   = $facts['os_service_default'],
-  $listen             = $facts['os_service_default'],
-  $topic              = $facts['os_service_default'],
-  $xfr_timeout        = $facts['os_service_default'],
+  $package_ensure         = present,
+  $mdns_package_name      = $::designate::params::mdns_package_name,
+  Boolean $enabled        = true,
+  Boolean $manage_service = true,
+  $workers                = $facts['os_workers'],
+  $threads                = $facts['os_service_default'],
+  $tcp_backlog            = $facts['os_service_default'],
+  $tcp_recv_timeout       = $facts['os_service_default'],
+  $all_tcp                = $facts['os_service_default'],
+  $query_enforce_tsig     = $facts['os_service_default'],
+  $storage_driver         = $facts['os_service_default'],
+  $max_message_size       = $facts['os_service_default'],
+  $listen                 = $facts['os_service_default'],
+  $topic                  = $facts['os_service_default'],
+  $xfr_timeout            = $facts['os_service_default'],
 ) inherits designate::params {
 
   include designate::deps
   include designate::db
-
-  validate_legacy(Boolean, 'validate_bool', $manage_service)
-  validate_legacy(Boolean, 'validate_bool', $enabled)
 
   designate_config {
     'service:mdns/workers'            : value => $workers;

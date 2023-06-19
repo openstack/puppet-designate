@@ -3,10 +3,12 @@
 # === Parameters
 #
 # [*port*]
-#  Port number of the DNS server.
+#  (optional) Port number of the DNS server.
+#  Defaults to 53.
 #
 # [*host*]
-#  IP address or hostname of the DNS server.
+#  (optional) IP address or hostname of the DNS server.
+#  Defaults to '127.0.0.1'
 #
 define designate::pool_nameserver(
   $port = 53,
@@ -16,10 +18,6 @@ define designate::pool_nameserver(
   warning('Support for pool-manager was deprecated.')
 
   include designate::deps
-
-  validate_legacy(Pattern[/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/],
-    'validate_re', $name, ['[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}',
-    'Name should be a UUID.'])
 
   designate_config {
     "pool_nameserver:${name}/port": value => $port;

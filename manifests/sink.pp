@@ -37,17 +37,14 @@
 class designate::sink (
   $package_ensure                = present,
   $sink_package_name             = $::designate::params::sink_package_name,
-  $enabled                       = true,
-  $manage_service                = true,
+  Boolean $enabled               = true,
+  Boolean $manage_service        = true,
   $workers                       = $facts['os_service_default'],
   $threads                       = $facts['os_service_default'],
   $enabled_notification_handlers = $facts['os_service_default'],
 ) inherits designate::params {
 
   include designate::deps
-
-  validate_legacy(Boolean, 'validate_bool', $manage_service)
-  validate_legacy(Boolean, 'validate_bool', $enabled)
 
   designate::generic_service { 'sink':
     enabled        => $enabled,

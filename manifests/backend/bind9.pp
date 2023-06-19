@@ -55,29 +55,22 @@
 #  Defaults to true
 #
 class designate::backend::bind9 (
-  $rndc_config_file = '/etc/rndc.conf',
-  $rndc_key_file    = '/etc/rndc.key',
-  $rndc_controls    = undef,
-  $rndc_port        = 953,
-  $ns_records       = {1 => 'ns1.example.org.'},
-  $nameservers      = ['127.0.0.1'],
-  $bind9_hosts      = ['127.0.0.1'],
-  $dns_port         = 53,
-  $mdns_hosts       = ['127.0.0.1'],
-  $mdns_port        = 5354,
-  $configure_bind   = true,
-  $manage_pool      = true,
+  $rndc_config_file                 = '/etc/rndc.conf',
+  $rndc_key_file                    = '/etc/rndc.key',
+  $rndc_controls                    = undef,
+  $rndc_port                        = 953,
+  Hash[Integer, String] $ns_records = {1 => 'ns1.example.org.'},
+  Array[String[1]] $nameservers     = ['127.0.0.1'],
+  Array[String[1]] $bind9_hosts     = ['127.0.0.1'],
+  $dns_port                         = 53,
+  Array[String[1]] $mdns_hosts      = ['127.0.0.1'],
+  $mdns_port                        = 5354,
+  Boolean $configure_bind           = true,
+  Boolean $manage_pool              = true,
 ) {
 
   include designate::deps
   include designate::params
-
-  validate_legacy(Hash, 'validate_hash', $ns_records)
-  validate_legacy(Array, 'validate_array', $nameservers)
-  validate_legacy(Array, 'validate_array', $bind9_hosts)
-  validate_legacy(Array, 'validate_array', $mdns_hosts)
-  validate_legacy(Boolean, 'validate_bool', $configure_bind)
-  validate_legacy(Boolean, 'validate_bool', $manage_pool)
 
   if $configure_bind {
     if $rndc_controls {

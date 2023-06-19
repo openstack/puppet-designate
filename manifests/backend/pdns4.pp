@@ -38,19 +38,17 @@
 #
 class designate::backend::pdns4 (
   $api_token,
-  $pdns4_hosts  = ['127.0.0.1'],
-  $pdns4_port   = 53,
-  $mdns_hosts   = ['127.0.0.1'],
-  $mdns_port    = 5354,
-  $api_endpoint = 'http://127.0.0.1:8081',
-  $tsigkey_name = undef,
-  $manage_pool  = true,
+  $pdns4_hosts          = ['127.0.0.1'],
+  $pdns4_port           = 53,
+  $mdns_hosts           = ['127.0.0.1'],
+  $mdns_port            = 5354,
+  $api_endpoint         = 'http://127.0.0.1:8081',
+  $tsigkey_name         = undef,
+  Boolean $manage_pool  = true,
 ) {
 
   include designate::deps
   include designate::params
-
-  validate_legacy(Boolean, 'validate_bool', $manage_pool)
 
   if $manage_pool {
     file { '/etc/designate/pools.yaml':

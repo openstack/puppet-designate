@@ -26,19 +26,17 @@
 #  Defaults to true
 #
 class designate::backend::agent (
-  $agent_hosts = ['127.0.0.1'],
-  $agent_port  = 5358,
-  $mdns_hosts  = ['127.0.0.1'],
-  $mdns_port   = 5354,
-  $manage_pool = true,
+  $agent_hosts         = ['127.0.0.1'],
+  $agent_port          = 5358,
+  $mdns_hosts          = ['127.0.0.1'],
+  $mdns_port           = 5354,
+  Boolean $manage_pool = true,
 ) {
 
   include designate::deps
   include designate::params
 
   warning('The agent framework has been deprecated.')
-
-  validate_legacy(Boolean, 'validate_bool', $manage_pool)
 
   if $manage_pool {
     file { '/etc/designate/pools.yaml':

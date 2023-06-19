@@ -57,25 +57,22 @@
 #   Defaults to $facts['os_service_default']
 #
 class designate::worker(
-  $package_ensure       = present,
-  $worker_package_name  = $::designate::params::worker_package_name,
-  $enabled              = true,
-  $manage_service       = true,
-  $workers              = $facts['os_workers'],
-  $threads              = $facts['os_service_default'],
-  $threshold_percentage = $facts['os_service_default'],
-  $poll_timeout         = $facts['os_service_default'],
-  $poll_retry_interval  = $facts['os_service_default'],
-  $poll_max_retries     = $facts['os_service_default'],
-  $poll_delay           = $facts['os_service_default'],
-  $export_synchronous   = $facts['os_service_default'],
-  $topic                = $facts['os_service_default'],
+  $package_ensure         = present,
+  $worker_package_name    = $::designate::params::worker_package_name,
+  Boolean $enabled        = true,
+  Boolean $manage_service = true,
+  $workers                = $facts['os_workers'],
+  $threads                = $facts['os_service_default'],
+  $threshold_percentage   = $facts['os_service_default'],
+  $poll_timeout           = $facts['os_service_default'],
+  $poll_retry_interval    = $facts['os_service_default'],
+  $poll_max_retries       = $facts['os_service_default'],
+  $poll_delay             = $facts['os_service_default'],
+  $export_synchronous     = $facts['os_service_default'],
+  $topic                  = $facts['os_service_default'],
 ) inherits designate::params {
 
   include designate::deps
-
-  validate_legacy(Boolean, 'validate_bool', $manage_service)
-  validate_legacy(Boolean, 'validate_bool', $enabled)
 
   designate::generic_service { 'worker':
     package_ensure => $package_ensure,

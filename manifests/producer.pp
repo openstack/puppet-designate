@@ -33,19 +33,16 @@
 #  Defaults to $facts['os_service_default'].
 #
 class designate::producer (
-  $package_ensure = 'present',
-  $package_name   = $::designate::params::producer_package_name,
-  $enabled        = true,
-  $manage_service = true,
-  $workers        = $facts['os_workers'],
-  $threads        = $facts['os_service_default'],
-  $enabled_tasks  = $facts['os_service_default'],
+  $package_ensure         = 'present',
+  $package_name           = $::designate::params::producer_package_name,
+  Boolean $enabled        = true,
+  Boolean $manage_service = true,
+  $workers                = $facts['os_workers'],
+  $threads                = $facts['os_service_default'],
+  $enabled_tasks          = $facts['os_service_default'],
 ) inherits designate::params {
 
   include designate::deps
-
-  validate_legacy(Boolean, 'validate_bool', $manage_service)
-  validate_legacy(Boolean, 'validate_bool', $enabled)
 
   designate_config {
     'service:producer/workers'       : value => $workers;

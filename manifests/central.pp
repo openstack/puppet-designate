@@ -60,8 +60,8 @@
 class designate::central (
   $package_ensure             = present,
   $central_package_name       = $::designate::params::central_package_name,
-  $enabled                    = true,
-  $manage_service             = true,
+  Boolean $enabled            = true,
+  Boolean $manage_service     = true,
   $managed_resource_email     = 'hostmaster@example.com',
   $managed_resource_tenant_id = $facts['os_service_default'],
   $max_zone_name_len          = $facts['os_service_default'],
@@ -75,9 +75,6 @@ class designate::central (
 
   include designate::deps
   include designate::db
-
-  validate_legacy(Boolean, 'validate_bool', $manage_service)
-  validate_legacy(Boolean, 'validate_bool', $enabled)
 
   designate_config {
     'service:central/managed_resource_email'     : value => $managed_resource_email;

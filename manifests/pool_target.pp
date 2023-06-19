@@ -5,8 +5,8 @@
 # == Parameters
 #
 # [*options*]
-#   Options to be passed to the backend DNS server. This should include host and
-#   port. For instance for a bind9 target this could be:
+#   (required) Options to be passed to the backend DNS server. This should
+#   include host and port. For instance for a bind9 target this could be:
 #     {'rndc_host'        => '192.168.27.100',
 #      'rndc_port'        => 953,
 #      'rndc_config_file' => '/etc/bind/rndc.conf',
@@ -15,7 +15,7 @@
 #      'host'             => '192.168.27.100'}
 #
 # [*type*]
-#   Port number of the target DNS server.
+#   (required) Port number of the target DNS server.
 #
 # [*masters*]
 #   (optional) IP addresses and ports of the master DNS server. This should point
@@ -23,19 +23,14 @@
 #   Defaults to ['127.0.0.1:5354']
 #
 define designate::pool_target (
-  $options,
+  Hash $options,
   $type,
-  $masters = ['127.0.0.1:5354'],
+  Array[String[1]] $masters = ['127.0.0.1:5354'],
 ) {
 
   warning('Support for pool-manager was deprecated.')
 
   include designate::deps
-
-  validate_legacy(Pattern[/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/],
-    'validate_re', $name, ['[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'])
-  validate_legacy(Hash, 'validate_hash', $options)
-  validate_legacy(Array, 'validate_array', $masters)
 
   $options_real = join(join_keys_to_values($options,':'),',')
 

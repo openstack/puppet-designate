@@ -60,11 +60,10 @@ class designate::db (
   $database_max_overflow            = $facts['os_service_default'],
   $database_pool_timeout            = $facts['os_service_default'],
   $mysql_enable_ndb                 = $facts['os_service_default'],
-  $sync_db                          = true,
+  Boolean $sync_db                  = true,
 ) {
 
   include designate::deps
-  validate_legacy(Boolean, 'validate_bool', $sync_db)
 
   oslo::db { 'designate_config':
     config_group            => 'storage:sqlalchemy',

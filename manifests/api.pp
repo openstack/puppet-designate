@@ -104,8 +104,8 @@
 class designate::api (
   $package_ensure               = present,
   $api_package_name             = $::designate::params::api_package_name,
-  $enabled                      = true,
-  $manage_service               = true,
+  Boolean $enabled              = true,
+  Boolean $manage_service       = true,
   $auth_strategy                = $facts['os_service_default'],
   $enable_api_v2                = $facts['os_service_default'],
   $enable_api_admin             = $facts['os_service_default'],
@@ -129,9 +129,6 @@ class designate::api (
 
   include designate::deps
   include designate::policy
-
-  validate_legacy(Boolean, 'validate_bool', $manage_service)
-  validate_legacy(Boolean, 'validate_bool', $enabled)
 
   # API Service
   designate_config {

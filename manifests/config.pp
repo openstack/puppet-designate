@@ -31,16 +31,12 @@
 #   (optional) Allow configuration of /etc/designate/rootwrap.conf.
 #
 class designate::config (
-  $designate_config     = {},
-  $api_paste_ini_config = {},
-  $rootwrap_config      = {},
+  Hash $designate_config     = {},
+  Hash $api_paste_ini_config = {},
+  Hash $rootwrap_config      = {},
 ) {
 
   include designate::deps
-
-  validate_legacy(Hash, 'validate_hash', $designate_config)
-  validate_legacy(Hash, 'validate_hash', $api_paste_ini_config)
-  validate_legacy(Hash, 'validate_hash', $rootwrap_config)
 
   create_resources('designate_config', $designate_config)
   create_resources('designate_api_paste_ini', $api_paste_ini_config)
