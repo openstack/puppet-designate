@@ -1,0 +1,9 @@
+---
+deprecations:
+  - |
+    The following defined types for pool-manager have been deprecated, because
+    pool-manager was already removed from Designate.
+
+    - ``designate::pool``
+    - ``designate::pool_nameserver``
+    - ``designate::pool_target``

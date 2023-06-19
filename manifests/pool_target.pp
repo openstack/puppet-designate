@@ -28,6 +28,8 @@ define designate::pool_target (
   $masters = ['127.0.0.1:5354'],
 ) {
 
+  warning('Support for pool-manager was deprecated.')
+
   include designate::deps
 
   validate_legacy(Pattern[/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/],

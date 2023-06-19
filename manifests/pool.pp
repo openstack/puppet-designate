@@ -19,6 +19,8 @@ define designate::pool(
   $also_notifies = [],
 ){
 
+  warning('Support for pool-manager was deprecated.')
+
   include designate::deps
 
   validate_legacy(Pattern[/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/],
