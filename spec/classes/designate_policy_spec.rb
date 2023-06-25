@@ -32,6 +32,7 @@ describe 'designate::policy' do
           :file_group   => 'designate',
           :file_format  => 'yaml',
           :purge_config => false,
+          :tag          => 'designate',
         )
         is_expected.to contain_oslo__policy('designate_config').with(
           :enforce_scope        => false,
@@ -61,6 +62,7 @@ describe 'designate::policy' do
           :file_group   => 'designate',
           :file_format  => 'yaml',
           :purge_config => true,
+          :tag          => 'designate',
         )
         is_expected.to contain_oslo__policy('designate_config').with(
           :enforce_scope        => false,
