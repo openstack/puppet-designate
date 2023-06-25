@@ -62,6 +62,7 @@ class designate::policy (
     file_group   => $::designate::params::group,
     file_format  => 'yaml',
     purge_config => $purge_config,
+    tag          => 'designate',
   }
 
   create_resources('openstacklib::policy', { $policy_path => $policy_parameters })
