@@ -4,13 +4,12 @@
 #
 # === Parameters
 #
+# [*password*]
+#   (Required) Password to create for the service user
+#
 # [*username*]
 #   (Optional) The name of the service user
 #   Defaults to 'designate'
-#
-# [*password*]
-#   (Optional) Password to create for the service user
-#   Defaults to $facts['os_service_default']
 #
 # [*auth_url*]
 #   (Optional) The URL to use for authentication.
@@ -201,8 +200,8 @@
 #  authtoken class. Values set here override the individual parameters above.
 #
 class designate::keystone::authtoken(
+  String[1] $password,
   $username                       = 'designate',
-  $password                       = $facts['os_service_default'],
   $auth_url                       = 'http://localhost:5000',
   $project_name                   = 'services',
   $user_domain_name               = 'Default',
@@ -242,10 +241,6 @@ class designate::keystone::authtoken(
 ) {
 
   include designate::deps
-
-  if is_service_default($password) {
-    fail('Please set password for designate service user')
-  }
 
   keystone::resource::authtoken {
     'designate_config':
