@@ -144,7 +144,7 @@ class designate(
   $control_exchange            = $facts['os_service_default'],
   $executor_thread_pool_size   = $facts['os_service_default'],
   $notification_topics         = $facts['os_service_default'],
-  $purge_config                = false,
+  Boolean $purge_config        = false,
   $amqp_durable_queues         = $facts['os_service_default'],
   $default_ttl                 = $facts['os_service_default'],
   $supported_record_type       = $facts['os_service_default'],
