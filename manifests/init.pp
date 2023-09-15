@@ -68,6 +68,24 @@
 #   will be run through a green thread.
 #   Defaults to $facts['os_service_default']
 #
+# [*rabbit_quorum_queue*]
+#   (Optional) Use quorum queues in RabbitMQ.
+#   Defaults to $facts['os_service_default']
+#
+# [*rabbit_quorum_delivery_limit*]
+#   (Optional) Each time a message is rdelivered to a consumer, a counter is
+#   incremented. Once the redelivery count exceeds the delivery limit
+#   the message gets dropped or dead-lettered.
+#   Defaults to $facts['os_service_default']
+#
+# [*rabbit_quorum_max_memory_length*]
+#   (Optional) Limit the number of messages in the quorum queue.
+#   Defaults to $facts['os_service_default']
+#
+# [*rabbit_quorum_max_memory_bytes*]
+#   (Optional) Limit the number of memory bytes used by the quorum queue.
+#   Defaults to $facts['os_service_default']
+#
 # [*kombu_ssl_ca_certs*]
 #   (optional) SSL certification authority file (valid only if SSL enabled).
 #   Defaults to $facts['os_service_default']
@@ -123,31 +141,35 @@
 #   Defaults to $facts['os_service_default'].
 #
 class designate(
-  $package_ensure              = present,
-  $common_package_name         = $::designate::params::common_package_name,
-  $host                        = $facts['os_service_default'],
-  $root_helper                 = 'sudo designate-rootwrap /etc/designate/rootwrap.conf',
-  $state_path                  = $::designate::params::state_path,
-  $notification_transport_url  = $facts['os_service_default'],
-  $rabbit_use_ssl              = $facts['os_service_default'],
-  $rabbit_ha_queues            = $facts['os_service_default'],
-  $rabbit_heartbeat_in_pthread = $facts['os_service_default'],
-  $kombu_ssl_ca_certs          = $facts['os_service_default'],
-  $kombu_ssl_certfile          = $facts['os_service_default'],
-  $kombu_ssl_keyfile           = $facts['os_service_default'],
-  $kombu_ssl_version           = $facts['os_service_default'],
-  $kombu_reconnect_delay       = $facts['os_service_default'],
-  $kombu_failover_strategy     = $facts['os_service_default'],
-  $notification_driver         = 'messaging',
-  $default_transport_url       = $facts['os_service_default'],
-  $rpc_response_timeout        = $facts['os_service_default'],
-  $control_exchange            = $facts['os_service_default'],
-  $executor_thread_pool_size   = $facts['os_service_default'],
-  $notification_topics         = $facts['os_service_default'],
-  Boolean $purge_config        = false,
-  $amqp_durable_queues         = $facts['os_service_default'],
-  $default_ttl                 = $facts['os_service_default'],
-  $supported_record_type       = $facts['os_service_default'],
+  $package_ensure                  = present,
+  $common_package_name             = $::designate::params::common_package_name,
+  $host                            = $facts['os_service_default'],
+  $root_helper                     = 'sudo designate-rootwrap /etc/designate/rootwrap.conf',
+  $state_path                      = $::designate::params::state_path,
+  $notification_transport_url      = $facts['os_service_default'],
+  $rabbit_use_ssl                  = $facts['os_service_default'],
+  $rabbit_ha_queues                = $facts['os_service_default'],
+  $rabbit_heartbeat_in_pthread     = $facts['os_service_default'],
+  $rabbit_quorum_queue             = $facts['os_service_default'],
+  $rabbit_quorum_delivery_limit    = $facts['os_service_default'],
+  $rabbit_quorum_max_memory_length = $facts['os_service_default'],
+  $rabbit_quorum_max_memory_bytes  = $facts['os_service_default'],
+  $kombu_ssl_ca_certs              = $facts['os_service_default'],
+  $kombu_ssl_certfile              = $facts['os_service_default'],
+  $kombu_ssl_keyfile               = $facts['os_service_default'],
+  $kombu_ssl_version               = $facts['os_service_default'],
+  $kombu_reconnect_delay           = $facts['os_service_default'],
+  $kombu_failover_strategy         = $facts['os_service_default'],
+  $notification_driver             = 'messaging',
+  $default_transport_url           = $facts['os_service_default'],
+  $rpc_response_timeout            = $facts['os_service_default'],
+  $control_exchange                = $facts['os_service_default'],
+  $executor_thread_pool_size       = $facts['os_service_default'],
+  $notification_topics             = $facts['os_service_default'],
+  Boolean $purge_config            = false,
+  $amqp_durable_queues             = $facts['os_service_default'],
+  $default_ttl                     = $facts['os_service_default'],
+  $supported_record_type           = $facts['os_service_default'],
 ) inherits designate::params {
 
   include designate::deps
@@ -163,16 +185,20 @@ class designate(
   }
 
   oslo::messaging::rabbit { 'designate_config':
-    kombu_ssl_version       => $kombu_ssl_version,
-    kombu_ssl_keyfile       => $kombu_ssl_keyfile,
-    kombu_ssl_certfile      => $kombu_ssl_certfile,
-    kombu_ssl_ca_certs      => $kombu_ssl_ca_certs,
-    kombu_reconnect_delay   => $kombu_reconnect_delay,
-    kombu_failover_strategy => $kombu_failover_strategy,
-    rabbit_use_ssl          => $rabbit_use_ssl,
-    rabbit_ha_queues        => $rabbit_ha_queues,
-    heartbeat_in_pthread    => $rabbit_heartbeat_in_pthread,
-    amqp_durable_queues     => $amqp_durable_queues,
+    kombu_ssl_version               => $kombu_ssl_version,
+    kombu_ssl_keyfile               => $kombu_ssl_keyfile,
+    kombu_ssl_certfile              => $kombu_ssl_certfile,
+    kombu_ssl_ca_certs              => $kombu_ssl_ca_certs,
+    kombu_reconnect_delay           => $kombu_reconnect_delay,
+    kombu_failover_strategy         => $kombu_failover_strategy,
+    rabbit_use_ssl                  => $rabbit_use_ssl,
+    rabbit_ha_queues                => $rabbit_ha_queues,
+    heartbeat_in_pthread            => $rabbit_heartbeat_in_pthread,
+    amqp_durable_queues             => $amqp_durable_queues,
+    rabbit_quorum_queue             => $rabbit_quorum_queue,
+    rabbit_quorum_delivery_limit    => $rabbit_quorum_delivery_limit,
+    rabbit_quorum_max_memory_length => $rabbit_quorum_max_memory_length,
+    rabbit_quorum_max_memory_bytes  => $rabbit_quorum_max_memory_bytes,
   }
 
   oslo::messaging::default { 'designate_config':
