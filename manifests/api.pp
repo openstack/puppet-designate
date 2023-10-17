@@ -94,6 +94,10 @@
 #   HTTPProxyToWSGI middleware.
 #   Defaults to $facts['os_service_default'].
 #
+# [*max_request_body_size*]
+#   (Optional) Set max request body size
+#   Defaults to $facts['os_service_default'].
+#
 # [*service_name*]
 #   (Optional) Name of the service that will be providing the server
 #   functionality of the designate API. If the value is 'httpd',
@@ -124,6 +128,7 @@ class designate::api (
   $enabled_extensions_admin     = $facts['os_service_default'],
   $quotas_verify_project_id     = $facts['os_service_default'],
   $enable_proxy_headers_parsing = $facts['os_service_default'],
+  $max_request_body_size        = $facts['os_service_default'],
   $service_name                 = $::designate::params::api_service_name,
 ) inherits designate {
 
@@ -156,7 +161,8 @@ class designate::api (
   }
 
   oslo::middleware { 'designate_config':
-    enable_proxy_headers_parsing => $enable_proxy_headers_parsing
+    enable_proxy_headers_parsing => $enable_proxy_headers_parsing,
+    max_request_body_size        => $max_request_body_size,
   }
 
   if $manage_service {

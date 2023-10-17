@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    The new ``designate::api::max_request_body_size`` parameter has been added.
