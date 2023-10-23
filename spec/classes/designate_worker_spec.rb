@@ -24,6 +24,9 @@ describe 'designate::worker' do
       :export_synchronous   => true,
       :topic                => 'topic',
       :xfr_timeout          => 10,
+      :serial_max_retries   => 3,
+      :serial_retry_delay   => 1,
+      :serial_timeout       => 1,
       :all_tcp              => true,
     }
   end
@@ -57,6 +60,9 @@ describe 'designate::worker' do
         is_expected.to contain_designate_config('service:worker/export_synchronous').with_value( '<SERVICE DEFAULT>' )
         is_expected.to contain_designate_config('service:worker/topic').with_value( '<SERVICE DEFAULT>' )
         is_expected.to contain_designate_config('service:worker/xfr_timeout').with_value( '<SERVICE DEFAULT>' )
+        is_expected.to contain_designate_config('service:worker/serial_max_retries').with_value( '<SERVICE DEFAULT>' )
+        is_expected.to contain_designate_config('service:worker/serial_retry_delay').with_value( '<SERVICE DEFAULT>' )
+        is_expected.to contain_designate_config('service:worker/serial_timeout').with_value( '<SERVICE DEFAULT>' )
         is_expected.to contain_designate_config('service:worker/all_tcp').with_value( '<SERVICE DEFAULT>' )
       end
     end
@@ -91,6 +97,9 @@ describe 'designate::worker' do
         is_expected.to contain_designate_config('service:worker/export_synchronous').with_value( params[:export_synchronous] )
         is_expected.to contain_designate_config('service:worker/topic').with_value( params[:topic] )
         is_expected.to contain_designate_config('service:worker/xfr_timeout').with_value( params[:xfr_timeout] )
+        is_expected.to contain_designate_config('service:worker/serial_max_retries').with_value( params[:serial_max_retries] )
+        is_expected.to contain_designate_config('service:worker/serial_retry_delay').with_value( params[:serial_retry_delay] )
+        is_expected.to contain_designate_config('service:worker/serial_timeout').with_value( params[:serial_timeout] )
         is_expected.to contain_designate_config('service:worker/all_tcp').with_value( params[:all_tcp] )
       end
     end

@@ -60,6 +60,18 @@
 #   (Optional) Timeout in seconds for XFR's.
 #   Defaults to $facts['os_service_default']
 #
+# [*serial_max_retries*]
+#   (Optional) The maximum number of times to retry fetching a zones serial.
+#   Defaults to $facts['os_service_default']
+#
+# [*serial_retry_delay*]
+#   (Optional) The time to wait before retry a zone serial request.
+#   Defaults to $facts['os_service_default']
+#
+# [*serial_timeout*]
+#   (Optional) Timeout in seconds before giving up on fetching a zones serial.
+#   Defaults to $facts['os_service_default']
+#
 # [*all_tcp*]
 #   (Optional) Send all traffic over TCP.
 #   Defaults to $facts['os_service_default']
@@ -79,6 +91,9 @@ class designate::worker(
   $export_synchronous     = $facts['os_service_default'],
   $topic                  = $facts['os_service_default'],
   $xfr_timeout            = $facts['os_service_default'],
+  $serial_max_retries     = $facts['os_service_default'],
+  $serial_retry_delay     = $facts['os_service_default'],
+  $serial_timeout         = $facts['os_service_default'],
   $all_tcp                = $facts['os_service_default'],
 ) inherits designate::params {
 
@@ -103,6 +118,9 @@ class designate::worker(
     'service:worker/export_synchronous':   value => $export_synchronous;
     'service:worker/topic':                value => $topic;
     'service:worker/xfr_timeout':          value => $xfr_timeout;
+    'service:worker/serial_max_retries':   value => $serial_max_retries;
+    'service:worker/serial_retry_delay':   value => $serial_retry_delay;
+    'service:worker/serial_timeout':       value => $serial_timeout;
     'service:worker/all_tcp':              value => $all_tcp;
   }
 }

@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    The following three parameters have been added to the ``designate::worker``
+    class.
+
+    - ``serial_max_retries``
+    - ``serial_retry_delay``
+    - ``serial_timeout``
