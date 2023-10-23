@@ -1,0 +1,8 @@
+---
+deprecations:
+  - |
+    The following parameters of the ``designate::mdns`` class have been
+    deprecated. Use the same prameters of the ``designate::worker`` class.
+
+    - ``all_tcp``
+    - ``xfer_timeout``

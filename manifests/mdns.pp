@@ -36,10 +36,6 @@
 #   (Optional) mDNS TCP Receive Timeout.
 #   Defaults to $facts['os_service_default'].
 #
-# [*all_tcp*]
-#   (Optional) Send all traffic over TCP.
-#   Defaults to $facts['os_service_default'].
-#
 # [*query_enforce_tsig*]
 #   (Optional) Enforce all incoming queries (including AXFR) are TSIG signed.
 #   Defaults to $facts['os_service_default'].
@@ -60,9 +56,15 @@
 #   (Optional) RPC topic name for mdns.
 #   Defaults to $facts['os_service_default'].
 #
+# DEPRECATED PARAMETERS
+#
+# [*all_tcp*]
+#   (Optional) Send all traffic over TCP.
+#   Defaults to undef.
+#
 # [*xfr_timeout*]
 #   (Optional) Timeout in seconds for XFR's.
-#   Defaults to $facts['os_service_default'].
+#   Defaults to undef.
 #
 class designate::mdns (
   $package_ensure         = present,
@@ -73,30 +75,38 @@ class designate::mdns (
   $threads                = $facts['os_service_default'],
   $tcp_backlog            = $facts['os_service_default'],
   $tcp_recv_timeout       = $facts['os_service_default'],
-  $all_tcp                = $facts['os_service_default'],
   $query_enforce_tsig     = $facts['os_service_default'],
   $storage_driver         = $facts['os_service_default'],
   $max_message_size       = $facts['os_service_default'],
   $listen                 = $facts['os_service_default'],
   $topic                  = $facts['os_service_default'],
-  $xfr_timeout            = $facts['os_service_default'],
+  # DEPRECATED PARAMETERS
+  $all_tcp                = undef,
+  $xfr_timeout            = undef,
 ) inherits designate::params {
 
   include designate::deps
   include designate::db
+
+  ['all_tcp', 'xfr_timeout'].each |$opt| {
+    if getvar($opt) != undef {
+      warning("The designate::mdns::${opt} parameter is deprecated. \
+Use the designate::worker::${opt} parameter instead.")
+    }
+  }
 
   designate_config {
     'service:mdns/workers'            : value => $workers;
     'service:mdns/threads'            : value => $threads;
     'service:mdns/tcp_backlog'        : value => $tcp_backlog;
     'service:mdns/tcp_recv_timeout'   : value => $tcp_recv_timeout;
-    'service:mdns/all_tcp'            : value => $all_tcp;
+    'service:mdns/all_tcp'            : value => pick($all_tcp, $facts['os_service_default']);
     'service:mdns/query_enforce_tsig' : value => $query_enforce_tsig;
     'service:mdns/storage_driver'     : value => $storage_driver;
     'service:mdns/max_message_size'   : value => $max_message_size;
     'service:mdns/listen'             : value => join(any2array($listen), ',');
     'service:mdns/topic'              : value => $topic;
-    'service:mdns/xfr_timeout'        : value => $xfr_timeout;
+    'service:mdns/xfr_timeout'        : value => pick($xfr_timeout, $facts['os_service_default']);
   }
 
   designate::generic_service { 'mdns':

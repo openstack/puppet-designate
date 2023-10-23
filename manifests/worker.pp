@@ -56,6 +56,14 @@
 #   (optional) RPC topic for worker component.
 #   Defaults to $facts['os_service_default']
 #
+# [*xfr_timeout*]
+#   (Optional) Timeout in seconds for XFR's.
+#   Defaults to $facts['os_service_default']
+#
+# [*all_tcp*]
+#   (Optional) Send all traffic over TCP.
+#   Defaults to $facts['os_service_default']
+#
 class designate::worker(
   $package_ensure         = present,
   $worker_package_name    = $::designate::params::worker_package_name,
@@ -70,6 +78,8 @@ class designate::worker(
   $poll_delay             = $facts['os_service_default'],
   $export_synchronous     = $facts['os_service_default'],
   $topic                  = $facts['os_service_default'],
+  $xfr_timeout            = $facts['os_service_default'],
+  $all_tcp                = $facts['os_service_default'],
 ) inherits designate::params {
 
   include designate::deps
@@ -92,5 +102,7 @@ class designate::worker(
     'service:worker/poll_delay':           value => $poll_delay;
     'service:worker/export_synchronous':   value => $export_synchronous;
     'service:worker/topic':                value => $topic;
+    'service:worker/xfr_timeout':          value => $xfr_timeout;
+    'service:worker/all_tcp':              value => $all_tcp;
   }
 }
