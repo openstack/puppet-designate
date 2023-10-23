@@ -23,6 +23,8 @@ describe 'designate::worker' do
       :poll_delay           => 1,
       :export_synchronous   => true,
       :topic                => 'topic',
+      :xfr_timeout          => 10,
+      :all_tcp              => true,
     }
   end
 
@@ -54,6 +56,8 @@ describe 'designate::worker' do
         is_expected.to contain_designate_config('service:worker/poll_delay').with_value( '<SERVICE DEFAULT>' )
         is_expected.to contain_designate_config('service:worker/export_synchronous').with_value( '<SERVICE DEFAULT>' )
         is_expected.to contain_designate_config('service:worker/topic').with_value( '<SERVICE DEFAULT>' )
+        is_expected.to contain_designate_config('service:worker/xfr_timeout').with_value( '<SERVICE DEFAULT>' )
+        is_expected.to contain_designate_config('service:worker/all_tcp').with_value( '<SERVICE DEFAULT>' )
       end
     end
 
@@ -86,6 +90,8 @@ describe 'designate::worker' do
         is_expected.to contain_designate_config('service:worker/poll_delay').with_value( params[:poll_delay] )
         is_expected.to contain_designate_config('service:worker/export_synchronous').with_value( params[:export_synchronous] )
         is_expected.to contain_designate_config('service:worker/topic').with_value( params[:topic] )
+        is_expected.to contain_designate_config('service:worker/xfr_timeout').with_value( params[:xfr_timeout] )
+        is_expected.to contain_designate_config('service:worker/all_tcp').with_value( params[:all_tcp] )
       end
     end
 
