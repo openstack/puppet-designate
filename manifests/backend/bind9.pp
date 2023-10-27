@@ -73,26 +73,23 @@ class designate::backend::bind9 (
   include designate::params
 
   if $configure_bind {
-    if $rndc_controls {
-      class { 'dns':
-        controls => $rndc_controls,
-      }
-    } else {
-      include dns
-    }
-    concat::fragment { 'dns allow-new-zones':
-      target  => $::dns::optionspath,
-      content => 'allow-new-zones yes;',
-      order   => '20',
+    $dns_additional_options = {
+      'allow-new-zones'   => 'yes',
+      # Recommended by Designate docs as a mitigation for potential cache
+      # poisoning attacks:
+      # https://docs.openstack.org/designate/latest/admin/production-guidelines.html#bind9-mitigation
+      'minimal-responses' => 'yes',
     }
 
-    # Recommended by Designate docs as a mitigation for potential cache
-    # poisoning attacks:
-    # https://docs.openstack.org/designate/latest/admin/production-guidelines.html#bind9-mitigation
-    concat::fragment { 'dns minimal-responses':
-      target  => $::dns::optionspath,
-      content => 'minimal-responses yes;',
-      order   => '21',
+    if $rndc_controls {
+      class { 'dns':
+        controls           => $rndc_controls,
+        additional_options => $dns_additional_options,
+      }
+    } else {
+      class { 'dns':
+        additional_options => $dns_additional_options,
+      }
     }
 
     # /var/named is root:named on RedHat and /var/cache/bind is root:bind on

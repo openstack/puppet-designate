@@ -11,9 +11,11 @@ describe 'designate::backend::bind9' do
         {}
       end
       it 'configures named and pool' do
-        is_expected.to contain_concat_fragment('dns allow-new-zones').with(
-          :target => platform_params[:dns_optionspath],
-          :content => 'allow-new-zones yes;'
+        is_expected.to contain_class('dns').with(
+          :additional_options => {
+            'allow-new-zones'   => 'yes',
+            'minimal-responses' => 'yes'
+          },
         )
         is_expected.to contain_file('/etc/designate/pools.yaml').with(
           :ensure => 'present',
@@ -36,7 +38,7 @@ describe 'designate::backend::bind9' do
         { :configure_bind => false }
       end
       it 'does not configure named' do
-        is_expected.not_to contain_concat_fragment('dns allow-new-zones')
+        is_expected.to_not contain_class('dns')
       end
     end
 
