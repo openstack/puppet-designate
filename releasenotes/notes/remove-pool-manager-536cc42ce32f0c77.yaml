@@ -1,0 +1,9 @@
+---
+upgrade:
+  - |
+    The following defined resource types have been removed.
+
+    - ``designate::pool``
+    - ``designate::pool_nameserver``
+    - ``designate::pool_target``
+
