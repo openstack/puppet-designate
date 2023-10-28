@@ -52,14 +52,15 @@ class designate::backend::pdns4 (
 
   if $manage_pool {
     file { '/etc/designate/pools.yaml':
-      ensure  => present,
-      path    => '/etc/designate/pools.yaml',
-      owner   => $designate::params::user,
-      group   => $designate::params::group,
-      mode    => '0640',
-      content => template('designate/pdns4-pools.yaml.erb'),
-      require => Anchor['designate::config::begin'],
-      before  => Anchor['designate::config::end'],
+      ensure    => present,
+      path      => '/etc/designate/pools.yaml',
+      owner     => $designate::params::user,
+      group     => $designate::params::group,
+      mode      => '0640',
+      content   => template('designate/pdns4-pools.yaml.erb'),
+      show_diff => false,
+      require   => Anchor['designate::config::begin'],
+      before    => Anchor['designate::config::end'],
     }
 
     exec { 'designate-manage pool update':
