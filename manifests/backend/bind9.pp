@@ -45,6 +45,11 @@
 #  (Optional) TCP Port to connect to designate-mdns service.
 #  Defaults to 5354.
 #
+# [*also_notifies*]
+#  (Optional) Array of hosts for which designate-mdns will send DNS notify
+#  packets to.
+#  Defaults to [].
+#
 # [*configure_bind*]
 #  (Optional) Enables running bind9/named configuration for hosts where
 #  designate and designate bind services are collocated.
@@ -65,6 +70,7 @@ class designate::backend::bind9 (
   $dns_port                         = 53,
   Array[String[1]] $mdns_hosts      = ['127.0.0.1'],
   $mdns_port                        = 5354,
+  Array[String[1]] $also_notifies   = [],
   Boolean $configure_bind           = true,
   Boolean $manage_pool              = true,
 ) {

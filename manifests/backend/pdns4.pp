@@ -32,6 +32,11 @@
 #  (Optional) Name of TSIGKey.
 #  Defaults to undef.
 #
+# [*also_notifies*]
+#  (Optional) Array of hosts for which designate-mdns will send DNS notify
+#  packets to.
+#  Defaults to [].
+#
 # [*manage_pool*]
 #  (Optional) Manage pools.yaml and update pools by designate-manage command
 #  Defaults to true
@@ -44,6 +49,7 @@ class designate::backend::pdns4 (
   $mdns_port                        = 5354,
   String[1] $api_endpoint           = 'http://127.0.0.1:8081',
   Optional[String[1]] $tsigkey_name = undef,
+  Array[String[1]] $also_notifies   = [],
   Boolean $manage_pool              = true,
 ) {
 

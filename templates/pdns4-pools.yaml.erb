@@ -23,3 +23,10 @@
         tsigkey_name: <%= @tsigkey_name %>
   <%- end -%>
 <% end -%>
+<% if !(@also_notifies.empty?) -%>
+  also_notifies:
+<% @also_notifies.each do |also_notify| -%>
+  - host: <%= also_notify %>
+    port: <%= @dns_port.to_s %>
+<% end -%>
+<% end -%>

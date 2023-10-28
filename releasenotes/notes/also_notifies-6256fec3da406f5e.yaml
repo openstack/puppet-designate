@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    The ``designate::backend::bind9`` class and
+    the ``designate::backend::pdns4`` class now supports the ``also_notifies``
+    parameter.
