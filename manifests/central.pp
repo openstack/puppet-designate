@@ -34,7 +34,6 @@
 #
 # [*max_recordset_name_len*]
 #  (optional) Maximum record name length.
-#  warning('The max_record_name_len parameter is deprecated, use max_recordset_name_len instead.')
 #  Defaults to $facts['os_service_default']
 #
 # [*min_ttl*]
