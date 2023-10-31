@@ -52,11 +52,11 @@
 #   (Optional) mDNS host:port pairs to listen on.
 #   Defaults to $facts['os_service_default'].
 #
+# DEPRECATED PARAMETERS
+#
 # [*topic*]
 #   (Optional) RPC topic name for mdns.
-#   Defaults to $facts['os_service_default'].
-#
-# DEPRECATED PARAMETERS
+#   Defaults to undef.
 #
 # [*all_tcp*]
 #   (Optional) Send all traffic over TCP.
@@ -79,8 +79,8 @@ class designate::mdns (
   $storage_driver         = $facts['os_service_default'],
   $max_message_size       = $facts['os_service_default'],
   $listen                 = $facts['os_service_default'],
-  $topic                  = $facts['os_service_default'],
   # DEPRECATED PARAMETERS
+  $topic                  = undef,
   $all_tcp                = undef,
   $xfr_timeout            = undef,
 ) inherits designate::params {
@@ -88,9 +88,13 @@ class designate::mdns (
   include designate::deps
   include designate::db
 
+  if $topic != undef {
+    warning('The topic parameter is deprecated and has no effect')
+  }
+
   ['all_tcp', 'xfr_timeout'].each |$opt| {
     if getvar($opt) != undef {
-      warning("The designate::mdns::${opt} parameter is deprecated. \
+      warning("The designate::mdns::${opt} parameter is deprecated and has no effect. \
 Use the designate::worker::${opt} parameter instead.")
     }
   }
@@ -100,13 +104,17 @@ Use the designate::worker::${opt} parameter instead.")
     'service:mdns/threads'            : value => $threads;
     'service:mdns/tcp_backlog'        : value => $tcp_backlog;
     'service:mdns/tcp_recv_timeout'   : value => $tcp_recv_timeout;
-    'service:mdns/all_tcp'            : value => pick($all_tcp, $facts['os_service_default']);
     'service:mdns/query_enforce_tsig' : value => $query_enforce_tsig;
     'service:mdns/storage_driver'     : value => $storage_driver;
     'service:mdns/max_message_size'   : value => $max_message_size;
     'service:mdns/listen'             : value => join(any2array($listen), ',');
-    'service:mdns/topic'              : value => $topic;
-    'service:mdns/xfr_timeout'        : value => pick($xfr_timeout, $facts['os_service_default']);
+  }
+
+  # TODO(tkajinam): Remove this after 2024.1 release.
+  designate_config {
+    'service:mdns/all_tcp'     : ensure => absent;
+    'service:mdns/topic'       : ensure => absent;
+    'service:mdns/xfr_timeout' : ensure => absent;
   }
 
   designate::generic_service { 'mdns':
