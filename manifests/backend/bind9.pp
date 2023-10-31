@@ -97,17 +97,6 @@ class designate::backend::bind9 (
         additional_options => $dns_additional_options,
       }
     }
-
-    # /var/named is root:named on RedHat and /var/cache/bind is root:bind on
-    # Debian. Both groups only have read access but require write permission in
-    # order to be able to use rndc addzone/delzone commands that Designate uses.
-    # NOTE(bnemec): ensure_resource is to avoid a chicken and egg problem with
-    # removing this from puppet-openstack-integration.  Once that has been done
-    # the ensure_resource wrapper could be removed.
-    ensure_resource('file', $::dns::params::vardir, {
-      mode    => 'g+w',
-      require => Package[$::dns::params::dns_server_package]
-    })
   }
 
   if $manage_pool {
