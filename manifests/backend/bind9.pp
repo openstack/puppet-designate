@@ -55,6 +55,8 @@
 #  designate and designate bind services are collocated.
 #  Defaults to true
 #
+# DEPRECATED PARAMETERS
+#
 # [*manage_pool*]
 #  (Optional) Manage pools.yaml and update pools by designate-manage command
 #  Defaults to true
@@ -72,6 +74,7 @@ class designate::backend::bind9 (
   $mdns_port                        = 5354,
   Array[String[1]] $also_notifies   = [],
   Boolean $configure_bind           = true,
+  # DEPRECATED PARAMETERS
   Boolean $manage_pool              = true,
 ) {
 
@@ -119,5 +122,7 @@ class designate::backend::bind9 (
       require     => Anchor['designate::service::end'],
       subscribe   => File['/etc/designate/pools.yaml'],
     }
+  } else {
+    warning('The manage_pool parameter is deprecated and will be removed in a future release')
   }
 }

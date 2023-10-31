@@ -37,6 +37,8 @@
 #  packets to.
 #  Defaults to [].
 #
+# DEPRECATED PARAMETERS
+#
 # [*manage_pool*]
 #  (Optional) Manage pools.yaml and update pools by designate-manage command
 #  Defaults to true
@@ -50,6 +52,7 @@ class designate::backend::pdns4 (
   String[1] $api_endpoint           = 'http://127.0.0.1:8081',
   Optional[String[1]] $tsigkey_name = undef,
   Array[String[1]] $also_notifies   = [],
+  # DEPRECATED PARAMETERS
   Boolean $manage_pool              = true,
 ) {
 
@@ -77,5 +80,7 @@ class designate::backend::pdns4 (
       require     => Anchor['designate::service::end'],
       subscribe   => File['/etc/designate/pools.yaml'],
     }
+  } else {
+    warning('The manage_pool parameter is deprecated and will be removed in a future release')
   }
 }

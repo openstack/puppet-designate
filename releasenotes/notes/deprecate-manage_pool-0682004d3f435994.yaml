@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    The ``manage_pool`` parameter has been deprecated.
