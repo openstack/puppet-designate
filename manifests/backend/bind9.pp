@@ -50,12 +50,12 @@
 #  packets to.
 #  Defaults to [].
 #
+# DEPRECATED PARAMETERS
+#
 # [*configure_bind*]
 #  (Optional) Enables running bind9/named configuration for hosts where
 #  designate and designate bind services are collocated.
 #  Defaults to true
-#
-# DEPRECATED PARAMETERS
 #
 # [*manage_pool*]
 #  (Optional) Manage pools.yaml and update pools by designate-manage command
@@ -73,8 +73,8 @@ class designate::backend::bind9 (
   Array[String[1], 1] $mdns_hosts   = ['127.0.0.1'],
   $mdns_port                        = 5354,
   Array[String[1]] $also_notifies   = [],
-  Boolean $configure_bind           = true,
   # DEPRECATED PARAMETERS
+  Boolean $configure_bind           = true,
   Boolean $manage_pool              = true,
 ) {
 
@@ -82,6 +82,9 @@ class designate::backend::bind9 (
   include designate::params
 
   if $configure_bind {
+    warning("Configuragion of BIND 9 by designate::backend::bind9 is deprecated \
+and will be removed in a future release.")
+
     $dns_additional_options = {
       'allow-new-zones'   => 'yes',
       # Recommended by Designate docs as a mitigation for potential cache

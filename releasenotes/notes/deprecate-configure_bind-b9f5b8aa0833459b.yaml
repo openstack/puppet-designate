@@ -1,0 +1,5 @@
+---
+deprecations:
+  - |
+    Configuration of BIND 9 service using the ``designate::backend::bind9``
+    class has been deprecated and will be removed.
