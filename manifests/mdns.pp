@@ -40,10 +40,6 @@
 #   (Optional) Enforce all incoming queries (including AXFR) are TSIG signed.
 #   Defaults to $facts['os_service_default'].
 #
-# [*storage_driver*]
-#   (Optional) The storage driver to use.
-#   Defaults to $facts['os_service_default'].
-#
 # [*max_message_size*]
 #   (Optional) Maximum message size to emit.
 #   Defaults to $facts['os_service_default'].
@@ -66,6 +62,10 @@
 #   (Optional) Timeout in seconds for XFR's.
 #   Defaults to undef.
 #
+# [*storage_driver*]
+#   (Optional) The storage driver to use.
+#   Defaults to undef.
+#
 class designate::mdns (
   $package_ensure         = present,
   $mdns_package_name      = $::designate::params::mdns_package_name,
@@ -76,13 +76,13 @@ class designate::mdns (
   $tcp_backlog            = $facts['os_service_default'],
   $tcp_recv_timeout       = $facts['os_service_default'],
   $query_enforce_tsig     = $facts['os_service_default'],
-  $storage_driver         = $facts['os_service_default'],
   $max_message_size       = $facts['os_service_default'],
   $listen                 = $facts['os_service_default'],
   # DEPRECATED PARAMETERS
   $topic                  = undef,
   $all_tcp                = undef,
   $xfr_timeout            = undef,
+  $storage_driver         = undef,
 ) inherits designate::params {
 
   include designate::deps
@@ -99,22 +99,26 @@ Use the designate::worker::${opt} parameter instead.")
     }
   }
 
+  if $storage_driver {
+    warning('The storage driver parameter is deprecated and has no effect')
+  }
+
   designate_config {
     'service:mdns/workers'            : value => $workers;
     'service:mdns/threads'            : value => $threads;
     'service:mdns/tcp_backlog'        : value => $tcp_backlog;
     'service:mdns/tcp_recv_timeout'   : value => $tcp_recv_timeout;
     'service:mdns/query_enforce_tsig' : value => $query_enforce_tsig;
-    'service:mdns/storage_driver'     : value => $storage_driver;
     'service:mdns/max_message_size'   : value => $max_message_size;
     'service:mdns/listen'             : value => join(any2array($listen), ',');
   }
 
   # TODO(tkajinam): Remove this after 2024.1 release.
   designate_config {
-    'service:mdns/all_tcp'     : ensure => absent;
-    'service:mdns/topic'       : ensure => absent;
-    'service:mdns/xfr_timeout' : ensure => absent;
+    'service:mdns/all_tcp'       : ensure => absent;
+    'service:mdns/topic'         : ensure => absent;
+    'service:mdns/xfr_timeout'   : ensure => absent;
+    'service:mdns/storage_driver': ensure => absent;
   }
 
   designate::generic_service { 'mdns':

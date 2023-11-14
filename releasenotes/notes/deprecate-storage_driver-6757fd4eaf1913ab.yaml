@@ -1,0 +1,5 @@
+---
+deprecations:
+  - |
+    The ``designate::mdns::storage_driver`` parameter has been deprecated and
+    has no effect.
