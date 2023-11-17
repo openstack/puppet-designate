@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    The new ``designate::backend::clean_zonefile`` parameter has been added.

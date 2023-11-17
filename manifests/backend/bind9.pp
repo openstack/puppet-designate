@@ -45,6 +45,10 @@
 #  (Optional) TCP Port to connect to designate-mdns service.
 #  Defaults to 5354.
 #
+# [*clean_zonefile*]
+#  (Optional) Removes zone files when a zone is deleted.
+#  Defaults to false
+#
 # [*also_notifies*]
 #  (Optional) Array of hosts for which designate-mdns will send DNS notify
 #  packets to.
@@ -72,6 +76,7 @@ class designate::backend::bind9 (
   $dns_port                         = 53,
   Array[String[1], 1] $mdns_hosts   = ['127.0.0.1'],
   $mdns_port                        = 5354,
+  Boolean $clean_zonefile           = false,
   Array[String[1]] $also_notifies   = [],
   # DEPRECATED PARAMETERS
   Boolean $configure_bind           = true,

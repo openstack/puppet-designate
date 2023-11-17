@@ -33,6 +33,9 @@
         rndc_port: <%= @rndc_port %>
         rndc_config_file: <%= @rndc_config_file %>
         rndc_key_file: <%= @rndc_key_file %>
+<% if @clean_zonefile -%>
+        clean_zonefile: true
+<% end -%>
 <% end -%>
 <% if !(@also_notifies.empty?) -%>
   also_notifies:
