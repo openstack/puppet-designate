@@ -4,9 +4,6 @@
 require 'spec_helper'
 
 describe 'designate::client' do
-  let :params do
-    { }
-  end
 
   shared_examples 'designate-client' do
 
@@ -18,7 +15,7 @@ describe 'designate::client' do
         is_expected.to contain_package('python-designateclient').with(
           :ensure => 'present',
           :name   => platform_params[:client_package_name],
-          :tag    => 'openstack'
+          :tag    => ['openstack', 'openstackclient']
         )
       end
 
@@ -26,15 +23,15 @@ describe 'designate::client' do
     end
 
     context 'with custom package name' do
-      before do
-        params.merge!({ :client_package_name => 'designate-client-custom-name' })
+      let :params do
+        { :client_package_name => 'designate-client-custom-name' }
       end
 
       it 'configures using custom name' do
         is_expected.to contain_package('python-designateclient').with(
           :ensure    => 'present',
           :name      => 'designate-client-custom-name',
-          :tag       => 'openstack',
+          :tag       => ['openstack', 'openstackclient'],
         )
       end
     end

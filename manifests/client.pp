@@ -13,7 +13,7 @@
 #  Defaults to $::designate::params::client_package_name
 #
 class designate::client (
-  $package_ensure = 'present',
+  $package_ensure      = 'present',
   $client_package_name = $::designate::params::client_package_name,
 ) inherits designate::params {
 
@@ -22,7 +22,7 @@ class designate::client (
   package { 'python-designateclient':
     ensure => $package_ensure,
     name   => $client_package_name,
-    tag    => 'openstack',
+    tag    => ['openstack', 'openstackclient'],
   }
 
   include openstacklib::openstackclient
