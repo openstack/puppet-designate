@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    The following classes have been added.
+
+    - ``designate::sink::neutron_fixedip``
+    - ``designate::sink::nova_fixed``

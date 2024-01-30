@@ -1,6 +1,3 @@
-#
-# Unit tests for designate::sink
-#
 require 'spec_helper'
 
 describe 'designate::sink' do
