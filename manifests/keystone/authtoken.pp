@@ -284,4 +284,6 @@ class designate::keystone::authtoken(
       service_type                   => $service_type,
       interface                      => $interface;
   }
+
+  Keystone::Resource::Authtoken['designate_config'] -> Anchor['designate::config::end']
 }

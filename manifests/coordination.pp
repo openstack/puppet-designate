@@ -34,4 +34,8 @@ class designate::coordination (
     'coordination/heartbeat_interval':    value => $heartbeat_interval;
     'coordination/run_watchers_interval': value => $run_watchers_interval;
   }
+
+  # all coordination settings should be applied and all packages should be
+  # installed before service startup
+  Oslo::Coordination['designate_config'] -> Anchor['designate::service::begin']
 }

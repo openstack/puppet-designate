@@ -176,8 +176,17 @@ class designate::api (
       Service['designate-api'] -> Service[$service_name]
       $service_name_real = false
       Service <| title == 'httpd' |> { tag +> 'designate-service' }
+
+      # On any paste-api.ini config change, we must restart Designate API.
+      Designate_api_paste_ini<||> ~> Service[$service_name]
+
     } else {
       $service_name_real = $service_name
+
+      # On any paste-api.ini config change, we must restart Designate API.
+      Designate_api_paste_ini<||> ~> Service['designate-api']
+      # On any uwsgi config change, we must restart Designate API.
+      Designate_api_uwsgi_config<||> ~> Service['designate-api']
     }
   } else {
     $service_name_real = $service_name
