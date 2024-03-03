@@ -24,24 +24,13 @@ class designate::deps {
   ~> Service<| tag == 'designate-service' |>
   ~> anchor { 'designate::service::end': }
 
-  # all coordination settings should be applied and all packages should be
-  # installed before service startup
-  Oslo::Coordination<||> -> Anchor['designate::service::begin']
-
-  # paste-api.ini config should occur in the config block also.
   Anchor['designate::config::begin']
   -> Designate_api_paste_ini<||>
-  ~> Anchor['designate::config::end']
-
-  # policy config should occur in the config block also.
-  Anchor['designate::config::begin']
-  -> Openstacklib::Policy<| tag == 'designate' |>
   -> Anchor['designate::config::end']
 
-  # On any uwsgi config change, we must restart Designate APIs.
   Anchor['designate::config::begin']
   -> Designate_api_uwsgi_config<||>
-  ~> Anchor['designate::config::end']
+  -> Anchor['designate::config::end']
 
   # Installation or config changes will always restart services.
   Anchor['designate::install::end'] ~> Anchor['designate::service::begin']

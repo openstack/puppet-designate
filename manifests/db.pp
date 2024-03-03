@@ -82,4 +82,7 @@ class designate::db (
     include designate::db::sync
   }
 
+  # all db settings should be applied and all packages should be installed
+  # before dbsync starts
+  Oslo::Db['designate_config'] -> Anchor['designate::dbsync::begin']
 }
