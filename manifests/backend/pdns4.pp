@@ -37,6 +37,10 @@
 #  packets to.
 #  Defaults to [].
 #
+# [*attributes*]
+#  (Optional) Pool attribtes used by scheduling.
+#  Defaults to {}
+#
 # DEPRECATED PARAMETERS
 #
 # [*manage_pool*]
@@ -45,15 +49,16 @@
 #
 class designate::backend::pdns4 (
   String[1] $api_token,
-  Array[String[1], 1] $pdns4_hosts  = ['127.0.0.1'],
-  $pdns4_port                       = 53,
-  Array[String[1], 1] $mdns_hosts   = ['127.0.0.1'],
-  $mdns_port                        = 5354,
-  String[1] $api_endpoint           = 'http://127.0.0.1:8081',
-  Optional[String[1]] $tsigkey_name = undef,
-  Array[String[1]] $also_notifies   = [],
+  Array[String[1], 1] $pdns4_hosts       = ['127.0.0.1'],
+  $pdns4_port                            = 53,
+  Array[String[1], 1] $mdns_hosts        = ['127.0.0.1'],
+  $mdns_port                             = 5354,
+  String[1] $api_endpoint                = 'http://127.0.0.1:8081',
+  Optional[String[1]] $tsigkey_name      = undef,
+  Array[String[1]] $also_notifies        = [],
+  Hash[String[1], String[1]] $attributes = {},
   # DEPRECATED PARAMETERS
-  Boolean $manage_pool              = true,
+  Boolean $manage_pool                   = true,
 ) {
 
   include designate::deps

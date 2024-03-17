@@ -1,7 +1,14 @@
 ---
 - name: default
   description: Default pool
+<% if @attributes.empty? -%>
   attributes: {}
+<% else -%>
+  attributes:
+<% @attributes.sort.each do |key, val| -%>
+    <%= key %>: <%= val %>
+<% end -%>
+<% end -%>
 
   ns_records:
 <% @ns_records.sort.each do |priority, hostname| -%>

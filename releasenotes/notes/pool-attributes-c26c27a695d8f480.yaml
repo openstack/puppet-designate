@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    The ``attributes`` parameter has been added to the following classes.
+
+    - ``designate::backend::bind9``
+    - ``designate::backend::pdns4``

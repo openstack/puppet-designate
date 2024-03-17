@@ -54,6 +54,10 @@
 #  packets to.
 #  Defaults to [].
 #
+# [*attributes*]
+#  (Optional) Pool attribtes used by scheduling.
+#  Defaults to {}
+#
 # DEPRECATED PARAMETERS
 #
 # [*configure_bind*]
@@ -66,21 +70,22 @@
 #  Defaults to true
 #
 class designate::backend::bind9 (
-  $rndc_config_file                 = '/etc/rndc.conf',
-  $rndc_key_file                    = '/etc/rndc.key',
-  $rndc_controls                    = undef,
-  $rndc_port                        = 953,
-  Hash[Integer, String] $ns_records = {1 => 'ns1.example.org.'},
-  Array[String[1], 1] $nameservers  = ['127.0.0.1'],
-  Array[String[1], 1] $bind9_hosts  = ['127.0.0.1'],
-  $dns_port                         = 53,
-  Array[String[1], 1] $mdns_hosts   = ['127.0.0.1'],
-  $mdns_port                        = 5354,
-  Boolean $clean_zonefile           = false,
-  Array[String[1]] $also_notifies   = [],
+  $rndc_config_file                      = '/etc/rndc.conf',
+  $rndc_key_file                         = '/etc/rndc.key',
+  $rndc_controls                         = undef,
+  $rndc_port                             = 953,
+  Hash[Integer, String] $ns_records      = {1 => 'ns1.example.org.'},
+  Array[String[1], 1] $nameservers       = ['127.0.0.1'],
+  Array[String[1], 1] $bind9_hosts       = ['127.0.0.1'],
+  $dns_port                              = 53,
+  Array[String[1], 1] $mdns_hosts        = ['127.0.0.1'],
+  $mdns_port                             = 5354,
+  Boolean $clean_zonefile                = false,
+  Array[String[1]] $also_notifies        = [],
+  Hash[String[1], String[1]] $attributes = {},
   # DEPRECATED PARAMETERS
-  Boolean $configure_bind           = true,
-  Boolean $manage_pool              = true,
+  Boolean $configure_bind                = true,
+  Boolean $manage_pool                   = true,
 ) {
 
   include designate::deps
