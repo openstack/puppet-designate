@@ -1,0 +1,10 @@
+---
+upgrade:
+  - |
+    The following deprecated parameters of the ``designate::mdns`` class have
+    been removed.
+
+    - ``topic``
+    - ``all_tcp``
+    - ``xfr_timeout``
+    - ``storage_driver``
