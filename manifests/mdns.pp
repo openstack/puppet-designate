@@ -48,24 +48,6 @@
 #   (Optional) mDNS host:port pairs to listen on.
 #   Defaults to $facts['os_service_default'].
 #
-# DEPRECATED PARAMETERS
-#
-# [*topic*]
-#   (Optional) RPC topic name for mdns.
-#   Defaults to undef.
-#
-# [*all_tcp*]
-#   (Optional) Send all traffic over TCP.
-#   Defaults to undef.
-#
-# [*xfr_timeout*]
-#   (Optional) Timeout in seconds for XFR's.
-#   Defaults to undef.
-#
-# [*storage_driver*]
-#   (Optional) The storage driver to use.
-#   Defaults to undef.
-#
 class designate::mdns (
   $package_ensure         = present,
   $mdns_package_name      = $::designate::params::mdns_package_name,
@@ -78,30 +60,10 @@ class designate::mdns (
   $query_enforce_tsig     = $facts['os_service_default'],
   $max_message_size       = $facts['os_service_default'],
   $listen                 = $facts['os_service_default'],
-  # DEPRECATED PARAMETERS
-  $topic                  = undef,
-  $all_tcp                = undef,
-  $xfr_timeout            = undef,
-  $storage_driver         = undef,
 ) inherits designate::params {
 
   include designate::deps
   include designate::db
-
-  if $topic != undef {
-    warning('The topic parameter is deprecated and has no effect')
-  }
-
-  ['all_tcp', 'xfr_timeout'].each |$opt| {
-    if getvar($opt) != undef {
-      warning("The designate::mdns::${opt} parameter is deprecated and has no effect. \
-Use the designate::worker::${opt} parameter instead.")
-    }
-  }
-
-  if $storage_driver {
-    warning('The storage driver parameter is deprecated and has no effect')
-  }
 
   designate_config {
     'service:mdns/workers'            : value => $workers;
@@ -111,14 +73,6 @@ Use the designate::worker::${opt} parameter instead.")
     'service:mdns/query_enforce_tsig' : value => $query_enforce_tsig;
     'service:mdns/max_message_size'   : value => $max_message_size;
     'service:mdns/listen'             : value => join(any2array($listen), ',');
-  }
-
-  # TODO(tkajinam): Remove this after 2024.1 release.
-  designate_config {
-    'service:mdns/all_tcp'       : ensure => absent;
-    'service:mdns/topic'         : ensure => absent;
-    'service:mdns/xfr_timeout'   : ensure => absent;
-    'service:mdns/storage_driver': ensure => absent;
   }
 
   designate::generic_service { 'mdns':
