@@ -28,19 +28,6 @@ describe 'designate::backend::pdns4' do
         )
       end
     end
-
-    context 'with pool management disabled' do
-      before do
-        params.merge!({
-          :manage_pool => false
-        })
-      end
-      it 'does not configure pool' do
-        is_expected.to_not contain_file('/etc/designate/pools.yaml')
-        is_expected.to_not contain_exec('designate-manage pool update')
-      end
-    end
-
   end
 
   on_supported_os({

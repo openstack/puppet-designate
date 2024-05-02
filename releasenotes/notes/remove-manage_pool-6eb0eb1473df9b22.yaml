@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    The following deprecated parameters have been removed.
+
+    - ``designate::backend::bind9::manage_pool``
+    - ``designate::backend::pdns4::manage_pool``

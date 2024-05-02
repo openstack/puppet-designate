@@ -41,17 +41,6 @@ describe 'designate::backend::bind9' do
         is_expected.to_not contain_class('dns')
       end
     end
-
-    context 'with pool management disabled' do
-      let :params do
-        { :manage_pool => false }
-      end
-      it 'does not configure pool' do
-        is_expected.to_not contain_file('/etc/designate/pools.yaml')
-        is_expected.to_not contain_exec('designate-manage pool update')
-      end
-    end
-
   end
 
   on_supported_os({

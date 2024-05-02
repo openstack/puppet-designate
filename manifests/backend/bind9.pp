@@ -65,10 +65,6 @@
 #  designate and designate bind services are collocated.
 #  Defaults to true
 #
-# [*manage_pool*]
-#  (Optional) Manage pools.yaml and update pools by designate-manage command
-#  Defaults to true
-#
 class designate::backend::bind9 (
   $rndc_config_file                      = '/etc/rndc.conf',
   $rndc_key_file                         = '/etc/rndc.key',
@@ -85,7 +81,6 @@ class designate::backend::bind9 (
   Hash[String[1], String[1]] $attributes = {},
   # DEPRECATED PARAMETERS
   Boolean $configure_bind                = true,
-  Boolean $manage_pool                   = true,
 ) {
 
   include designate::deps
@@ -115,27 +110,23 @@ and will be removed in a future release.")
     }
   }
 
-  if $manage_pool {
-    file { '/etc/designate/pools.yaml':
-      ensure  => present,
-      path    => '/etc/designate/pools.yaml',
-      owner   => $designate::params::user,
-      group   => $designate::params::group,
-      mode    => '0640',
-      content => template('designate/bind9-pools.yaml.erb'),
-      require => Anchor['designate::config::begin'],
-      before  => Anchor['designate::config::end'],
-    }
+  file { '/etc/designate/pools.yaml':
+    ensure  => present,
+    path    => '/etc/designate/pools.yaml',
+    owner   => $designate::params::user,
+    group   => $designate::params::group,
+    mode    => '0640',
+    content => template('designate/bind9-pools.yaml.erb'),
+    require => Anchor['designate::config::begin'],
+    before  => Anchor['designate::config::end'],
+  }
 
-    exec { 'designate-manage pool update':
-      command     => 'designate-manage pool update',
-      path        => '/usr/bin',
-      user        => $designate::params::user,
-      refreshonly => true,
-      require     => Anchor['designate::service::end'],
-      subscribe   => File['/etc/designate/pools.yaml'],
-    }
-  } else {
-    warning('The manage_pool parameter is deprecated and will be removed in a future release')
+  exec { 'designate-manage pool update':
+    command     => 'designate-manage pool update',
+    path        => '/usr/bin',
+    user        => $designate::params::user,
+    refreshonly => true,
+    require     => Anchor['designate::service::end'],
+    subscribe   => File['/etc/designate/pools.yaml'],
   }
 }

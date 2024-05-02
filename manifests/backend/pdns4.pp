@@ -41,12 +41,6 @@
 #  (Optional) Pool attribtes used by scheduling.
 #  Defaults to {}
 #
-# DEPRECATED PARAMETERS
-#
-# [*manage_pool*]
-#  (Optional) Manage pools.yaml and update pools by designate-manage command
-#  Defaults to true
-#
 class designate::backend::pdns4 (
   String[1] $api_token,
   Array[String[1], 1] $pdns4_hosts       = ['127.0.0.1'],
@@ -57,35 +51,29 @@ class designate::backend::pdns4 (
   Optional[String[1]] $tsigkey_name      = undef,
   Array[String[1]] $also_notifies        = [],
   Hash[String[1], String[1]] $attributes = {},
-  # DEPRECATED PARAMETERS
-  Boolean $manage_pool                   = true,
 ) {
 
   include designate::deps
   include designate::params
 
-  if $manage_pool {
-    file { '/etc/designate/pools.yaml':
-      ensure    => present,
-      path      => '/etc/designate/pools.yaml',
-      owner     => $designate::params::user,
-      group     => $designate::params::group,
-      mode      => '0640',
-      content   => template('designate/pdns4-pools.yaml.erb'),
-      show_diff => false,
-      require   => Anchor['designate::config::begin'],
-      before    => Anchor['designate::config::end'],
-    }
+  file { '/etc/designate/pools.yaml':
+    ensure    => present,
+    path      => '/etc/designate/pools.yaml',
+    owner     => $designate::params::user,
+    group     => $designate::params::group,
+    mode      => '0640',
+    content   => template('designate/pdns4-pools.yaml.erb'),
+    show_diff => false,
+    require   => Anchor['designate::config::begin'],
+    before    => Anchor['designate::config::end'],
+  }
 
-    exec { 'designate-manage pool update':
-      command     => 'designate-manage pool update',
-      path        => '/usr/bin',
-      user        => $designate::params::user,
-      refreshonly => true,
-      require     => Anchor['designate::service::end'],
-      subscribe   => File['/etc/designate/pools.yaml'],
-    }
-  } else {
-    warning('The manage_pool parameter is deprecated and will be removed in a future release')
+  exec { 'designate-manage pool update':
+    command     => 'designate-manage pool update',
+    path        => '/usr/bin',
+    user        => $designate::params::user,
+    refreshonly => true,
+    require     => Anchor['designate::service::end'],
+    subscribe   => File['/etc/designate/pools.yaml'],
   }
 }
