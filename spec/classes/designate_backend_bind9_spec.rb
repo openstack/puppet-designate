@@ -10,13 +10,7 @@ describe 'designate::backend::bind9' do
       let :params do
         {}
       end
-      it 'configures named and pool' do
-        is_expected.to contain_class('dns').with(
-          :additional_options => {
-            'allow-new-zones'   => 'yes',
-            'minimal-responses' => 'yes'
-          },
-        )
+      it 'configures the bind9 pool' do
         is_expected.to contain_file('/etc/designate/pools.yaml').with(
           :ensure => 'present',
           :path   => '/etc/designate/pools.yaml',
@@ -32,15 +26,6 @@ describe 'designate::backend::bind9' do
         )
       end
     end
-
-    context 'with named configuration disabled' do
-      let :params do
-        { :configure_bind => false }
-      end
-      it 'does not configure named' do
-        is_expected.to_not contain_class('dns')
-      end
-    end
   end
 
   on_supported_os({
@@ -51,18 +36,6 @@ describe 'designate::backend::bind9' do
         facts.merge!(OSDefaults.get_facts())
       end
 
-      let(:platform_params) do
-        case facts[:os]['family']
-        when 'Debian'
-          {
-            :dns_optionspath => '/etc/bind/named.conf.options'
-          }
-        when 'RedHat'
-          {
-            :dns_optionspath => '/etc/named/options.conf'
-          }
-        end
-      end
       it_behaves_like 'designate-backend-bind9'
     end
   end

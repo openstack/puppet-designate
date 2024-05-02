@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    The ``designate::backend::bind9`` class no longer supports configuration of
+    the BIND 9 service. Because of this change, setting the ``configure_bind``
+    parameter to ``true`` now fails.

@@ -63,7 +63,8 @@
 # [*configure_bind*]
 #  (Optional) Enables running bind9/named configuration for hosts where
 #  designate and designate bind services are collocated.
-#  Defaults to true
+#  Note that this parameter has no effect now.
+#  Defaults to undef
 #
 class designate::backend::bind9 (
   $rndc_config_file                      = '/etc/rndc.conf',
@@ -80,34 +81,16 @@ class designate::backend::bind9 (
   Array[String[1]] $also_notifies        = [],
   Hash[String[1], String[1]] $attributes = {},
   # DEPRECATED PARAMETERS
-  Boolean $configure_bind                = true,
+  Optional[Boolean] $configure_bind      = undef,
 ) {
 
   include designate::deps
   include designate::params
 
   if $configure_bind {
-    warning("Configuragion of BIND 9 by designate::backend::bind9 is deprecated \
-and will be removed in a future release.")
-
-    $dns_additional_options = {
-      'allow-new-zones'   => 'yes',
-      # Recommended by Designate docs as a mitigation for potential cache
-      # poisoning attacks:
-      # https://docs.openstack.org/designate/latest/admin/production-guidelines.html#bind9-mitigation
-      'minimal-responses' => 'yes',
-    }
-
-    if $rndc_controls {
-      class { 'dns':
-        controls           => $rndc_controls,
-        additional_options => $dns_additional_options,
-      }
-    } else {
-      class { 'dns':
-        additional_options => $dns_additional_options,
-      }
-    }
+    fail('Configuration of BIND 9 is no longer supported')
+  } elsif $configure_bind != undef {
+    warning('The configure_bind parameter is deprecated and has no effect.')
   }
 
   file { '/etc/designate/pools.yaml':
