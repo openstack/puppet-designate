@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The new ``designate::producer_task::increment_serial`` class has been
+    added.
