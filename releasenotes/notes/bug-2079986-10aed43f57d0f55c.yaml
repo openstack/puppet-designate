@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    The ``designate::notification_driver`` parameter now defaults to
+    the os_service_default fact, which is the default value more globally used
+    by the other Puppet OpenStack modules. Set the parameter to ``messaging``
+    to keep using the previous default value.

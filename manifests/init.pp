@@ -44,11 +44,6 @@
 #   (Optional) Size of executor thread pool when executor is threading or eventlet.
 #   Defaults to $facts['os_service_default'].
 #
-# [*notification_transport_url*]
-#   (optional) Connection url for oslo messaging notification backend. An
-#   example rabbit url would be, rabbit://user:pass@host:port/virtual_host
-#   Defaults to $facts['os_service_default']
-#
 # [*rabbit_use_ssl*]
 #   (optional) Connect over SSL for RabbitMQ
 #   Defaults to $facts['os_service_default']
@@ -121,7 +116,12 @@
 #
 # [*notification_driver*]
 #   (optional) Driver used for issuing notifications
-#   Defaults to 'messaging'
+#   Defaults to $facts['os_service_default']
+#
+# [*notification_transport_url*]
+#   (optional) Connection url for oslo messaging notification backend. An
+#   example rabbit url would be, rabbit://user:pass@host:port/virtual_host
+#   Defaults to $facts['os_service_default']
 #
 # [*notification_topics*]
 #   (optional) Notification Topics
@@ -150,7 +150,6 @@ class designate(
   $host                            = $facts['os_service_default'],
   $root_helper                     = 'sudo designate-rootwrap /etc/designate/rootwrap.conf',
   $state_path                      = $::designate::params::state_path,
-  $notification_transport_url      = $facts['os_service_default'],
   $rabbit_use_ssl                  = $facts['os_service_default'],
   $rabbit_ha_queues                = $facts['os_service_default'],
   $rabbit_heartbeat_in_pthread     = $facts['os_service_default'],
@@ -165,11 +164,12 @@ class designate(
   $kombu_ssl_version               = $facts['os_service_default'],
   $kombu_reconnect_delay           = $facts['os_service_default'],
   $kombu_failover_strategy         = $facts['os_service_default'],
-  $notification_driver             = 'messaging',
   $default_transport_url           = $facts['os_service_default'],
   $rpc_response_timeout            = $facts['os_service_default'],
   $control_exchange                = $facts['os_service_default'],
   $executor_thread_pool_size       = $facts['os_service_default'],
+  $notification_driver             = $facts['os_service_default'],
+  $notification_transport_url      = $facts['os_service_default'],
   $notification_topics             = $facts['os_service_default'],
   Boolean $purge_config            = false,
   $amqp_durable_queues             = $facts['os_service_default'],

@@ -102,7 +102,7 @@ describe 'designate' do
         :control_exchange          => '<SERVICE DEFAULT>'
       )
       is_expected.to contain_oslo__messaging__notifications('designate_config').with(
-        :driver        => 'messaging',
+        :driver        => '<SERVICE DEFAULT>',
         :transport_url => '<SERVICE DEFAULT>',
         :topics        => '<SERVICE DEFAULT>'
       )
