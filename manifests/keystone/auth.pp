@@ -37,7 +37,7 @@
 #
 # [*service_description*]
 #   (Optional) Description for keystone service.
-#   Defaults to 'OpenStack DNSaas Service'.
+#   Defaults to 'OpenStack DNS Service'.
 #
 # [*region*]
 #   (Optional) Region for endpoint.
@@ -88,7 +88,7 @@ class designate::keystone::auth (
   String[1] $auth_name                    = 'designate',
   String[1] $service_name                 = 'designate',
   String[1] $service_type                 = 'dns',
-  String[1] $service_description          = 'OpenStack DNSaas Service',
+  String[1] $service_description          = 'OpenStack DNS Service',
   String[1] $region                       = 'RegionOne',
   String[1] $tenant                       = 'services',
   Array[String[1]] $roles                 = ['admin'],
