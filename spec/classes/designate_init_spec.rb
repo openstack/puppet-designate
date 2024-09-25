@@ -115,6 +115,8 @@ describe 'designate' do
         :kombu_failover_strategy         => '<SERVICE DEFAULT>',
         :rabbit_use_ssl                  => '<SERVICE DEFAULT>',
         :rabbit_ha_queues                => '<SERVICE DEFAULT>',
+        :heartbeat_timeout_threshold     => '<SERVICE DEFAULT>',
+        :heartbeat_rate                  => '<SERVICE DEFAULT>',
         :heartbeat_in_pthread            => '<SERVICE DEFAULT>',
         :rabbit_qos_prefetch_count       => '<SERVICE DEFAULT>',
         :amqp_durable_queues             => '<SERVICE DEFAULT>',
@@ -131,17 +133,19 @@ describe 'designate' do
   shared_examples_for 'rabbit transport' do
     before do
       params.merge!({
-        :default_transport_url           => 'rabbit://designate:secret@127.0.0.1:5672/designate',
-        :rabbit_ha_queues                => true,
-        :rabbit_heartbeat_in_pthread     => true,
-        :rabbit_qos_prefetch_count       => 0,
-        :rabbit_quorum_queue             => true,
-        :rabbit_transient_quorum_queue   => true,
-        :rabbit_quorum_delivery_limit    => 3,
-        :rabbit_quorum_max_memory_length => 5,
-        :rabbit_quorum_max_memory_bytes  => 1073741824,
-        :kombu_reconnect_delay           => '1.0',
-        :kombu_failover_strategy         => 'shuffle',
+        :default_transport_url              => 'rabbit://designate:secret@127.0.0.1:5672/designate',
+        :rabbit_ha_queues                   => true,
+        :rabbit_heartbeat_timeout_threshold => '60',
+        :rabbit_heartbeat_rate              => '10',
+        :rabbit_heartbeat_in_pthread        => true,
+        :rabbit_qos_prefetch_count          => 0,
+        :rabbit_quorum_queue                => true,
+        :rabbit_transient_quorum_queue      => true,
+        :rabbit_quorum_delivery_limit       => 3,
+        :rabbit_quorum_max_memory_length    => 5,
+        :rabbit_quorum_max_memory_bytes     => 1073741824,
+        :kombu_reconnect_delay              => '1.0',
+        :kombu_failover_strategy            => 'shuffle',
       })
     end
 
@@ -150,6 +154,8 @@ describe 'designate' do
     ) }
     it { is_expected.to contain_oslo__messaging__rabbit('designate_config').with(
       :rabbit_ha_queues                => true,
+      :heartbeat_timeout_threshold     => '60',
+      :heartbeat_rate                  => '10',
       :heartbeat_in_pthread            => true,
       :rabbit_qos_prefetch_count       => 0,
       :rabbit_quorum_queue             => true,

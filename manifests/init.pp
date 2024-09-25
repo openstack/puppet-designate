@@ -53,6 +53,21 @@
 #   option, you must wipe the RabbitMQ database. (boolean value).
 #   Defaults to $facts['os_service_default']
 #
+# [*rabbit_heartbeat_timeout_threshold*]
+#   (optional) Number of seconds after which the RabbitMQ broker is considered
+#   down if the heartbeat keepalive fails.  Any value >0 enables heartbeats.
+#   Heartbeating helps to ensure the TCP connection to RabbitMQ isn't silently
+#   closed, resulting in missed or lost messages from the queue.
+#   (Requires kombu >= 3.0.7 and amqp >= 1.4.0)
+#   Defaults to $facts['os_service_default']
+#
+# [*rabbit_heartbeat_rate*]
+#   (optional) How often during the rabbit_heartbeat_timeout_threshold period to
+#   check the heartbeat on RabbitMQ connection.  (i.e. rabbit_heartbeat_rate=2
+#   when rabbit_heartbeat_timeout_threshold=60, the heartbeat will be checked
+#   every 30 seconds.
+#   Defaults to $facts['os_service_default']
+#
 # [*rabbit_heartbeat_in_pthread*]
 #   (Optional) EXPERIMENTAL: Run the health check heartbeat thread
 #   through a native python thread. By default if this
@@ -149,37 +164,39 @@
 #   Defaults to $facts['os_service_default'].
 #
 class designate(
-  $package_ensure                  = present,
-  $common_package_name             = $::designate::params::common_package_name,
-  $host                            = $facts['os_service_default'],
-  $root_helper                     = 'sudo designate-rootwrap /etc/designate/rootwrap.conf',
-  $state_path                      = $::designate::params::state_path,
-  $rabbit_use_ssl                  = $facts['os_service_default'],
-  $rabbit_ha_queues                = $facts['os_service_default'],
-  $rabbit_heartbeat_in_pthread     = $facts['os_service_default'],
-  $rabbit_qos_prefetch_count       = $facts['os_service_default'],
-  $rabbit_quorum_queue             = $facts['os_service_default'],
-  $rabbit_transient_quorum_queue   = $facts['os_service_default'],
-  $rabbit_quorum_delivery_limit    = $facts['os_service_default'],
-  $rabbit_quorum_max_memory_length = $facts['os_service_default'],
-  $rabbit_quorum_max_memory_bytes  = $facts['os_service_default'],
-  $kombu_ssl_ca_certs              = $facts['os_service_default'],
-  $kombu_ssl_certfile              = $facts['os_service_default'],
-  $kombu_ssl_keyfile               = $facts['os_service_default'],
-  $kombu_ssl_version               = $facts['os_service_default'],
-  $kombu_reconnect_delay           = $facts['os_service_default'],
-  $kombu_failover_strategy         = $facts['os_service_default'],
-  $default_transport_url           = $facts['os_service_default'],
-  $rpc_response_timeout            = $facts['os_service_default'],
-  $control_exchange                = $facts['os_service_default'],
-  $executor_thread_pool_size       = $facts['os_service_default'],
-  $notification_driver             = $facts['os_service_default'],
-  $notification_transport_url      = $facts['os_service_default'],
-  $notification_topics             = $facts['os_service_default'],
-  Boolean $purge_config            = false,
-  $amqp_durable_queues             = $facts['os_service_default'],
-  $default_ttl                     = $facts['os_service_default'],
-  $supported_record_type           = $facts['os_service_default'],
+  $package_ensure                     = present,
+  $common_package_name                = $::designate::params::common_package_name,
+  $host                               = $facts['os_service_default'],
+  $root_helper                        = 'sudo designate-rootwrap /etc/designate/rootwrap.conf',
+  $state_path                         = $::designate::params::state_path,
+  $rabbit_use_ssl                     = $facts['os_service_default'],
+  $rabbit_ha_queues                   = $facts['os_service_default'],
+  $rabbit_heartbeat_timeout_threshold = $facts['os_service_default'],
+  $rabbit_heartbeat_rate              = $facts['os_service_default'],
+  $rabbit_heartbeat_in_pthread        = $facts['os_service_default'],
+  $rabbit_qos_prefetch_count          = $facts['os_service_default'],
+  $rabbit_quorum_queue                = $facts['os_service_default'],
+  $rabbit_transient_quorum_queue      = $facts['os_service_default'],
+  $rabbit_quorum_delivery_limit       = $facts['os_service_default'],
+  $rabbit_quorum_max_memory_length    = $facts['os_service_default'],
+  $rabbit_quorum_max_memory_bytes     = $facts['os_service_default'],
+  $kombu_ssl_ca_certs                 = $facts['os_service_default'],
+  $kombu_ssl_certfile                 = $facts['os_service_default'],
+  $kombu_ssl_keyfile                  = $facts['os_service_default'],
+  $kombu_ssl_version                  = $facts['os_service_default'],
+  $kombu_reconnect_delay              = $facts['os_service_default'],
+  $kombu_failover_strategy            = $facts['os_service_default'],
+  $default_transport_url              = $facts['os_service_default'],
+  $rpc_response_timeout               = $facts['os_service_default'],
+  $control_exchange                   = $facts['os_service_default'],
+  $executor_thread_pool_size          = $facts['os_service_default'],
+  $notification_driver                = $facts['os_service_default'],
+  $notification_transport_url         = $facts['os_service_default'],
+  $notification_topics                = $facts['os_service_default'],
+  Boolean $purge_config               = false,
+  $amqp_durable_queues                = $facts['os_service_default'],
+  $default_ttl                        = $facts['os_service_default'],
+  $supported_record_type              = $facts['os_service_default'],
 ) inherits designate::params {
 
   include designate::deps
@@ -203,6 +220,8 @@ class designate(
     kombu_failover_strategy         => $kombu_failover_strategy,
     rabbit_use_ssl                  => $rabbit_use_ssl,
     rabbit_ha_queues                => $rabbit_ha_queues,
+    heartbeat_timeout_threshold     => $rabbit_heartbeat_timeout_threshold,
+    heartbeat_rate                  => $rabbit_heartbeat_rate,
     heartbeat_in_pthread            => $rabbit_heartbeat_in_pthread,
     rabbit_qos_prefetch_count       => $rabbit_qos_prefetch_count,
     amqp_durable_queues             => $amqp_durable_queues,

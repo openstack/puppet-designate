@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    The following parameters have been added to the ``designate`` class.
+
+    - ``rabbit_heartbeat_timeout_threshold``
+    - ``rabbit_heartbeat_rate``
