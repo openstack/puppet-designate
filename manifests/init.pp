@@ -151,6 +151,11 @@
 #   (optional) Notification Topics
 #   Defaults to $facts['os_service_default']
 #
+# [*notification_retry*]
+#   (Optional) The maximum number of attempts to re-sent a notification
+#   message, which failed to be delivered due to a recoverable error.
+#   Defaults to $facts['os_service_default'].
+#
 # [*purge_config*]
 #   (optional) Whether to set only the specified config options
 #   in the designate config.
@@ -199,6 +204,7 @@ class designate(
   $notification_driver                = $facts['os_service_default'],
   $notification_transport_url         = $facts['os_service_default'],
   $notification_topics                = $facts['os_service_default'],
+  $notification_retry                 = $facts['os_service_default'],
   Boolean $purge_config               = false,
   $amqp_durable_queues                = $facts['os_service_default'],
   $default_ttl                        = $facts['os_service_default'],
@@ -250,6 +256,7 @@ class designate(
     driver        => $notification_driver,
     transport_url => $notification_transport_url,
     topics        => $notification_topics,
+    retry         => $notification_retry,
   }
 
   # default setting

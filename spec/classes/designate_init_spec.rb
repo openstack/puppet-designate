@@ -104,7 +104,8 @@ describe 'designate' do
       is_expected.to contain_oslo__messaging__notifications('designate_config').with(
         :driver        => '<SERVICE DEFAULT>',
         :transport_url => '<SERVICE DEFAULT>',
-        :topics        => '<SERVICE DEFAULT>'
+        :topics        => '<SERVICE DEFAULT>',
+        :retry         => '<SERVICE DEFAULT>',
       )
       is_expected.to contain_oslo__messaging__rabbit('designate_config').with(
         :kombu_ssl_version               => '<SERVICE DEFAULT>',
