@@ -27,6 +27,10 @@
 #   (Optional) Should designate user_role be configured?
 #   Defaults to true
 #
+# [*configure_service*]
+#   (Optional) Should the service be configurd?
+#   Defaults to True
+#
 # [*service_name*]
 #   (Optional) Name of the service.
 #   Defaults to 'designate'.
@@ -97,6 +101,7 @@ class designate::keystone::auth (
   Boolean $configure_user                 = true,
   Boolean $configure_user_role            = true,
   Boolean $configure_endpoint             = true,
+  Boolean $configure_service              = true,
   Keystone::PublicEndpointUrl $public_url = 'http://127.0.0.1:9001',
   Keystone::EndpointUrl $admin_url        = 'http://127.0.0.1:9001',
   Keystone::EndpointUrl $internal_url     = 'http://127.0.0.1:9001',
@@ -110,6 +115,7 @@ class designate::keystone::auth (
     configure_user      => $configure_user,
     configure_user_role => $configure_user_role,
     configure_endpoint  => $configure_endpoint,
+    configure_service   => $configure_service,
     service_name        => $service_name,
     service_type        => $service_type,
     service_description => $service_description,
