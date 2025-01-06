@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    The new ``designate::mdns::tcp_keepidle`` parameter has been added.

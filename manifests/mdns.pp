@@ -32,6 +32,10 @@
 #   (Optional) mDNS TCP Backlog.
 #   Defaults to $facts['os_service_default'].
 #
+# [*tcp_keepidle*]
+#   (Optional) mDNS TCP Keepidle in seconds.
+#   Defaults to $facts['os_service_default'].
+#
 # [*tcp_recv_timeout*]
 #   (Optional) mDNS TCP Receive Timeout.
 #   Defaults to $facts['os_service_default'].
@@ -56,6 +60,7 @@ class designate::mdns (
   $workers                = $facts['os_workers'],
   $threads                = $facts['os_service_default'],
   $tcp_backlog            = $facts['os_service_default'],
+  $tcp_keepidle           = $facts['os_service_default'],
   $tcp_recv_timeout       = $facts['os_service_default'],
   $query_enforce_tsig     = $facts['os_service_default'],
   $max_message_size       = $facts['os_service_default'],
@@ -69,6 +74,7 @@ class designate::mdns (
     'service:mdns/workers'            : value => $workers;
     'service:mdns/threads'            : value => $threads;
     'service:mdns/tcp_backlog'        : value => $tcp_backlog;
+    'service:mdns/tcp_keepidle'       : value => $tcp_keepidle;
     'service:mdns/tcp_recv_timeout'   : value => $tcp_recv_timeout;
     'service:mdns/query_enforce_tsig' : value => $query_enforce_tsig;
     'service:mdns/max_message_size'   : value => $max_message_size;
