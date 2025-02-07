@@ -35,6 +35,7 @@ describe 'designate::mdns' do
         is_expected.to contain_designate_config('service:mdns/workers').with_value(8)
         is_expected.to contain_designate_config('service:mdns/threads').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:mdns/tcp_backlog').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_designate_config('service:mdns/tcp_keepidle').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:mdns/tcp_recv_timeout').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:mdns/query_enforce_tsig').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_designate_config('service:mdns/max_message_size').with_value('<SERVICE DEFAULT>')
@@ -47,6 +48,7 @@ describe 'designate::mdns' do
             :workers            => 2,
             :threads            => 4,
             :tcp_backlog        => 100,
+            :tcp_keepidle       => 10,
             :tcp_recv_timeout   => 0.5,
             :query_enforce_tsig => true,
             :max_message_size   => 65535,
@@ -57,6 +59,7 @@ describe 'designate::mdns' do
           is_expected.to contain_designate_config('service:mdns/workers').with_value(2)
           is_expected.to contain_designate_config('service:mdns/threads').with_value(4)
           is_expected.to contain_designate_config('service:mdns/tcp_backlog').with_value(100)
+          is_expected.to contain_designate_config('service:mdns/tcp_keepidle').with_value(10)
           is_expected.to contain_designate_config('service:mdns/tcp_recv_timeout').with_value(0.5)
           is_expected.to contain_designate_config('service:mdns/query_enforce_tsig').with_value(true)
           is_expected.to contain_designate_config('service:mdns/max_message_size').with_value(65535)
