@@ -37,9 +37,15 @@
         host: <%= bind9_host %>
         port: <%= @dns_port.to_s %>
         rndc_host: <%= bind9_host %>
+<% if !@rndc_port.nil? -%>
         rndc_port: <%= @rndc_port %>
+<% end -%>
+<% if !@rndc_config_file.nil? -%>
         rndc_config_file: <%= @rndc_config_file %>
+<% end -%>
+<% if !@rndc_key_file.nil? -%>
         rndc_key_file: <%= @rndc_key_file %>
+<% end -%>
 <% if @clean_zonefile -%>
         clean_zonefile: true
 <% end -%>

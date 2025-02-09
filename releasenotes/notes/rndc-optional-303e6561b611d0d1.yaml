@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    Now the ``rndc_config_file`` option and the ``rndc_key_file`` of BIND9
+    backend are not set by default, to avoid unnecessarily require these
+    files.
+    Set the parameters of the ``desingate::backend::bind9`` class in case
+    the previous default values need to be used.

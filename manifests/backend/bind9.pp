@@ -6,11 +6,11 @@
 #
 # [*rndc_config_file*]
 #  (Optional) Location of the rndc configuration file.
-#  Defaults to '/etc/rndc.conf'
+#  Defaults to undef
 #
 # [*rndc_key_file*]
 #  (Optional) Location of the rndc key file.
-#  Defaults to '/etc/rndc.key'
+#  Defaults to undef
 #
 # [*rndc_port*]
 #  (Optional) RNDC Port.
@@ -67,10 +67,10 @@
 #  Defaults to undef
 #
 class designate::backend::bind9 (
-  $rndc_config_file                      = '/etc/rndc.conf',
-  $rndc_key_file                         = '/etc/rndc.key',
+  $rndc_config_file                      = undef,
+  $rndc_key_file                         = undef,
   $rndc_controls                         = undef,
-  $rndc_port                             = 953,
+  $rndc_port                             = undef,
   Hash[Integer, String] $ns_records      = {1 => 'ns1.example.org.'},
   Array[String[1], 1] $nameservers       = ['127.0.0.1'],
   Array[String[1], 1] $bind9_hosts       = ['127.0.0.1'],
