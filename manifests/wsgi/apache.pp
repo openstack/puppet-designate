@@ -156,7 +156,7 @@ class designate::wsgi::apache (
 
   Anchor['designate::install::end'] -> Class['apache']
 
-  ::openstacklib::wsgi::apache { 'designate_wsgi':
+  openstacklib::wsgi::apache { 'designate_wsgi':
     bind_host                   => $bind_host,
     bind_port                   => $port,
     group                       => $::designate::params::group,

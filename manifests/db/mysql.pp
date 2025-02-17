@@ -43,7 +43,7 @@ class designate::db::mysql(
 
   include designate::deps
 
-  ::openstacklib::db::mysql { 'designate':
+  openstacklib::db::mysql { 'designate':
     user          => $user,
     password      => $password,
     dbname        => $dbname,

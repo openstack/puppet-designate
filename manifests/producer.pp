@@ -10,7 +10,7 @@
 #
 # [*package_name*]
 #  (optional) Name of the package
-#  Defaults to producer_package_name from ::designate::params
+#  Defaults to $::designate::params::producer_package_name
 #
 # [*enabled*]
 #  (optional) Whether to enable the service.

@@ -34,7 +34,7 @@ class designate::db::postgresql(
 
   include designate::deps
 
-  ::openstacklib::db::postgresql { 'designate':
+  openstacklib::db::postgresql { 'designate':
     password   => $password,
     dbname     => $dbname,
     user       => $user,
