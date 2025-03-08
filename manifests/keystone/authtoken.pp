@@ -244,7 +244,7 @@ class designate::keystone::authtoken(
 
   keystone::resource::authtoken {
     'designate_config':
-      *                              => $params;
+      * => $params;
     default:
       username                       => $username,
       password                       => $password,
