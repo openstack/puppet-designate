@@ -29,7 +29,7 @@ node /designate/ {
   }
 
   class {'designate::db':
-    database_connection   => "mysql://designate:${designate_db_password}@${db_host}/designate"
+    database_connection => "mysql://designate:${designate_db_password}@${db_host}/designate"
   }
 
   class {'designate::api':
