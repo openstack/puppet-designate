@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The ``designate::backend::bind9::configure_bind`` parameter has been
+    removed.
