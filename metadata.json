@@ -69,5 +69,5 @@
     ],
     "source": "https://opendev.org/openstack/puppet-designate.git",
     "summary": "Puppet module for OpenStack Designate",
-    "version": "23.0.0"
+    "version": "23.1.0"
 }
