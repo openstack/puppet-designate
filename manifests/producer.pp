@@ -10,7 +10,7 @@
 #
 # [*package_name*]
 #  (optional) Name of the package
-#  Defaults to $::designate::params::producer_package_name
+#  Defaults to $designate::params::producer_package_name
 #
 # [*enabled*]
 #  (optional) Whether to enable the service.
@@ -34,7 +34,7 @@
 #
 class designate::producer (
   $package_ensure         = 'present',
-  $package_name           = $::designate::params::producer_package_name,
+  $package_name           = $designate::params::producer_package_name,
   Boolean $enabled        = true,
   Boolean $manage_service = true,
   $workers                = $facts['os_workers'],
@@ -55,6 +55,6 @@ class designate::producer (
     enabled        => $enabled,
     package_name   => $package_name,
     manage_service => $manage_service,
-    service_name   => $::designate::params::producer_service_name,
+    service_name   => $designate::params::producer_service_name,
   }
 }

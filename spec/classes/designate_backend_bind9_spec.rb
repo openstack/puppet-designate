@@ -12,7 +12,7 @@ describe 'designate::backend::bind9' do
       end
       it 'configures the bind9 pool' do
         is_expected.to contain_file('/etc/designate/pools.yaml').with(
-          :ensure => 'present',
+          :ensure => 'file',
           :path   => '/etc/designate/pools.yaml',
           :owner  => 'designate',
           :group  => 'designate',

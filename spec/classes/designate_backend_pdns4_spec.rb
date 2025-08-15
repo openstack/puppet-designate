@@ -14,7 +14,7 @@ describe 'designate::backend::pdns4' do
     context 'with default params' do
       it 'configures named and pool' do
         is_expected.to contain_file('/etc/designate/pools.yaml').with(
-          :ensure => 'present',
+          :ensure => 'file',
           :path   => '/etc/designate/pools.yaml',
           :owner  => 'designate',
           :group  => 'designate',

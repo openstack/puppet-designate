@@ -10,7 +10,7 @@
 #
 # [*api_package_name*]
 #  (optional) Name of the package containing api resources
-#  Defaults to $::designate::params::api_package_name
+#  Defaults to $designate::params::api_package_name
 #
 # [*enabled*]
 #   (optional) Whether to enable services.
@@ -103,11 +103,11 @@
 #   functionality of the designate API. If the value is 'httpd',
 #   designate will be run as web service and configuration of the
 #   web server will be required (e.g designate::wsgi::apache)
-#   Defaults to $::designate::params::api_service_name
+#   Defaults to $designate::params::api_service_name
 #
 class designate::api (
   $package_ensure               = present,
-  $api_package_name             = $::designate::params::api_package_name,
+  $api_package_name             = $designate::params::api_package_name,
   Boolean $enabled              = true,
   Boolean $manage_service       = true,
   $auth_strategy                = $facts['os_service_default'],
@@ -129,7 +129,7 @@ class designate::api (
   $quotas_verify_project_id     = $facts['os_service_default'],
   $enable_proxy_headers_parsing = $facts['os_service_default'],
   $max_request_body_size        = $facts['os_service_default'],
-  $service_name                 = $::designate::params::api_service_name,
+  $service_name                 = $designate::params::api_service_name,
 ) inherits designate {
 
   include designate::deps
@@ -169,7 +169,7 @@ class designate::api (
     if $service_name == 'httpd' {
       service { 'designate-api':
         ensure => 'stopped',
-        name   => $::designate::params::api_service_name,
+        name   => $designate::params::api_service_name,
         enable => false,
         tag    => ['designate-service'],
       }

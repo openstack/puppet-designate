@@ -10,7 +10,7 @@
 #
 # [*sink_package_name*]
 #  (optional) Name of the package containing sink resources
-#  Defaults to $::designate::params::sink_package_name
+#  Defaults to $designate::params::sink_package_name
 #
 # [*enabled*]
 #  (optional) Whether to enable services.
@@ -36,7 +36,7 @@
 #
 class designate::sink (
   $package_ensure                = present,
-  $sink_package_name             = $::designate::params::sink_package_name,
+  $sink_package_name             = $designate::params::sink_package_name,
   Boolean $enabled               = true,
   Boolean $manage_service        = true,
   $workers                       = $facts['os_service_default'],
@@ -51,7 +51,7 @@ class designate::sink (
     manage_service => $manage_service,
     package_ensure => $package_ensure,
     package_name   => $sink_package_name,
-    service_name   => $::designate::params::sink_service_name,
+    service_name   => $designate::params::sink_service_name,
   }
 
   designate_config {
@@ -60,6 +60,6 @@ class designate::sink (
   }
 
   designate_config {
-    'service:sink/enabled_notification_handlers': value => join(any2array($enabled_notification_handlers), ',')
+    'service:sink/enabled_notification_handlers': value => join(any2array($enabled_notification_handlers), ','),
   }
 }

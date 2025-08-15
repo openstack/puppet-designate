@@ -62,7 +62,7 @@ class designate::policy (
     policies     => $policies,
     policy_path  => $policy_path,
     file_user    => 'root',
-    file_group   => $::designate::params::group,
+    file_group   => $designate::params::group,
     file_format  => 'yaml',
     purge_config => $purge_config,
     tag          => 'designate',

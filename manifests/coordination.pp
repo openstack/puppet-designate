@@ -27,7 +27,7 @@ class designate::coordination (
   include designate::deps
 
   oslo::coordination{ 'designate_config':
-    backend_url => $backend_url
+    backend_url => $backend_url,
   }
 
   designate_config {

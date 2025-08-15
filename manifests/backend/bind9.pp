@@ -78,7 +78,7 @@ class designate::backend::bind9 (
   include designate::params
 
   file { '/etc/designate/pools.yaml':
-    ensure  => present,
+    ensure  => file,
     path    => '/etc/designate/pools.yaml',
     owner   => $designate::params::user,
     group   => $designate::params::group,

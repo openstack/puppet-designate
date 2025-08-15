@@ -10,7 +10,7 @@
 #
 # [*common_package_name*]
 #  (optional) Name of the package containing shared resources
-#  Defaults to $::designate::params::common_package_name
+#  Defaults to $designate::params::common_package_name
 #
 # [*host*]
 #   (Optional) Name of this node.
@@ -22,7 +22,7 @@
 #
 # [*state_path*]
 #   (optional) Directory for storing state.
-#   Defaults to $::designate::params::state_path
+#   Defaults to $designate::params::state_path
 #
 # [*default_transport_url*]
 #   (optional) A URL representing the messaging driver to use and its full
@@ -197,10 +197,10 @@
 #
 class designate(
   $package_ensure                     = present,
-  $common_package_name                = $::designate::params::common_package_name,
+  $common_package_name                = $designate::params::common_package_name,
   $host                               = $facts['os_service_default'],
   $root_helper                        = 'sudo designate-rootwrap /etc/designate/rootwrap.conf',
-  $state_path                         = $::designate::params::state_path,
+  $state_path                         = $designate::params::state_path,
   $rabbit_use_ssl                     = $facts['os_service_default'],
   $rabbit_ha_queues                   = $facts['os_service_default'],
   $rabbit_heartbeat_timeout_threshold = $facts['os_service_default'],

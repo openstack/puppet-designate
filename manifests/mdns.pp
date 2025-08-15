@@ -54,7 +54,7 @@
 #
 class designate::mdns (
   $package_ensure         = present,
-  $mdns_package_name      = $::designate::params::mdns_package_name,
+  $mdns_package_name      = $designate::params::mdns_package_name,
   Boolean $enabled        = true,
   Boolean $manage_service = true,
   $workers                = $facts['os_workers'],
@@ -86,6 +86,6 @@ class designate::mdns (
     manage_service => $manage_service,
     package_ensure => $package_ensure,
     package_name   => $mdns_package_name,
-    service_name   => $::designate::params::mdns_service_name,
+    service_name   => $designate::params::mdns_service_name,
   }
 }

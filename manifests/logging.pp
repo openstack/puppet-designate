@@ -31,7 +31,7 @@
 # [*log_dir*]
 #   (Optional) Directory where logs should be stored.
 #   If set to $facts['os_service_default'], it will not log to any directory.
-#   Defaults to $::designate::params::log_dir
+#   Defaults to $designate::params::log_dir
 #
 # [*log_file*]
 #   (Optional) File where logs should be stored.
@@ -103,7 +103,7 @@ class designate::logging(
   $use_journal                   = $facts['os_service_default'],
   $use_stderr                    = $facts['os_service_default'],
   $log_facility                  = $facts['os_service_default'],
-  $log_dir                       = $::designate::params::log_dir,
+  $log_dir                       = $designate::params::log_dir,
   $log_file                      = $facts['os_service_default'],
   $debug                         = $facts['os_service_default'],
   $logging_context_format_string = $facts['os_service_default'],

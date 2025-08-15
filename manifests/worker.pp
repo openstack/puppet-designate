@@ -78,7 +78,7 @@
 #
 class designate::worker(
   $package_ensure         = present,
-  $worker_package_name    = $::designate::params::worker_package_name,
+  $worker_package_name    = $designate::params::worker_package_name,
   Boolean $enabled        = true,
   Boolean $manage_service = true,
   $workers                = $facts['os_workers'],
@@ -104,7 +104,7 @@ class designate::worker(
     enabled        => $enabled,
     package_name   => $worker_package_name,
     manage_service => $manage_service,
-    service_name   => $::designate::params::worker_service_name,
+    service_name   => $designate::params::worker_service_name,
   }
 
   designate_config {

@@ -10,7 +10,7 @@
 #
 # [*central_package_name*]
 #  (optional) Name of the package containing central resources
-#  Defaults to $::designate::params::central_package_name
+#  Defaults to $designate::params::central_package_name
 #
 # [*enabled*]
 #   (optional) Whether to enable services.
@@ -58,7 +58,7 @@
 #
 class designate::central (
   $package_ensure             = present,
-  $central_package_name       = $::designate::params::central_package_name,
+  $central_package_name       = $designate::params::central_package_name,
   Boolean $enabled            = true,
   Boolean $manage_service     = true,
   $managed_resource_email     = 'hostmaster@example.com',
@@ -92,6 +92,6 @@ class designate::central (
     manage_service => $manage_service,
     package_ensure => $package_ensure,
     package_name   => $central_package_name,
-    service_name   => $::designate::params::central_service_name,
+    service_name   => $designate::params::central_service_name,
   }
 }
