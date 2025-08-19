@@ -27,7 +27,6 @@ class designate::producer_task::zone_purge (
   $time_threshold = $facts['os_service_default'],
   $batch_size     = $facts['os_service_default'],
 ) {
-
   include designate::deps
 
   designate_config {

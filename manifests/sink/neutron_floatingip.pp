@@ -31,7 +31,6 @@ class designate::sink::neutron_floatingip (
   $formatv4            = $facts['os_service_default'],
   $formatv6            = $facts['os_service_default'],
 ) {
-
   include designate::deps
 
   designate_config {

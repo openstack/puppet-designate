@@ -66,7 +66,6 @@ class designate::mdns (
   $max_message_size       = $facts['os_service_default'],
   $listen                 = $facts['os_service_default'],
 ) inherits designate::params {
-
   include designate::deps
   include designate::db
 

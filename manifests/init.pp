@@ -195,7 +195,7 @@
 #   will be run through a green thread.
 #   Defaults to undef
 #
-class designate(
+class designate (
   $package_ensure                     = present,
   $common_package_name                = $designate::params::common_package_name,
   $host                               = $facts['os_service_default'],
@@ -237,7 +237,6 @@ class designate(
   # DEPRECATED PARAMETERS
   $rabbit_heartbeat_in_pthread        = undef,
 ) inherits designate::params {
-
   include designate::deps
 
   package { 'designate-common':
@@ -298,5 +297,4 @@ class designate(
     'DEFAULT/default_ttl':           value => $default_ttl;
     'DEFAULT/supported_record_type': value => join(any2array($supported_record_type), ',');
   }
-
 }

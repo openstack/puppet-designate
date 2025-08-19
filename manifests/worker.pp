@@ -76,7 +76,7 @@
 #   (Optional) Send all traffic over TCP.
 #   Defaults to $facts['os_service_default']
 #
-class designate::worker(
+class designate::worker (
   $package_ensure         = present,
   $worker_package_name    = $designate::params::worker_package_name,
   Boolean $enabled        = true,
@@ -96,7 +96,6 @@ class designate::worker(
   $serial_timeout         = $facts['os_service_default'],
   $all_tcp                = $facts['os_service_default'],
 ) inherits designate::params {
-
   include designate::deps
 
   designate::generic_service { 'worker':

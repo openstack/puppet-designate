@@ -31,14 +31,13 @@
 #   (optional) Control the ensure parameter for the package resource.
 #   Defaults to 'present'.
 #
-define designate::generic_service(
+define designate::generic_service (
   $package_name,
   $service_name,
   Boolean $enabled        = false,
   Boolean $manage_service = true,
   $package_ensure         = 'present',
 ) {
-
   include designate::deps
   include designate::params
 

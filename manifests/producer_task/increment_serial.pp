@@ -21,7 +21,6 @@ class designate::producer_task::increment_serial (
   $per_page   = $facts['os_service_default'],
   $batch_size = $facts['os_service_default'],
 ) {
-
   include designate::deps
 
   designate_config {

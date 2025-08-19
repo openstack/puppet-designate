@@ -14,11 +14,10 @@
 #   (Optional) Timeout for the execution of the db_sync
 #   Defaults to 300
 #
-class designate::db::sync(
+class designate::db::sync (
   $extra_params    = undef,
   $db_sync_timeout = 300,
 ) {
-
   include designate::deps
   include designate::params
 
@@ -39,5 +38,4 @@ class designate::db::sync(
     notify      => Anchor['designate::dbsync::end'],
     tag         => 'openstack-db',
   }
-
 }

@@ -150,7 +150,6 @@ class designate::wsgi::apache (
   $request_headers             = undef,
   $vhost_custom_fragment       = undef,
 ) {
-
   include designate::deps
   include designate::params
 

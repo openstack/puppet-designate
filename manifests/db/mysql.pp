@@ -31,7 +31,7 @@
 #   (Optional) Additional hosts that are allowed to access this DB
 #   Defaults to undef
 #
-class designate::db::mysql(
+class designate::db::mysql (
   $password,
   $dbname        = 'designate',
   $user          = 'designate',
@@ -40,7 +40,6 @@ class designate::db::mysql(
   $collate       = 'utf8_general_ci',
   $allowed_hosts = undef,
 ) {
-
   include designate::deps
 
   openstacklib::db::mysql { 'designate':
@@ -56,5 +55,4 @@ class designate::db::mysql(
   Anchor['designate::db::begin']
   ~> Class['designate::db::mysql']
   ~> Anchor['designate::db::end']
-
 }

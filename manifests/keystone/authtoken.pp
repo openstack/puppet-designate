@@ -199,7 +199,7 @@
 #  (Optional) Hash of additional parameters to pass through to the keystone
 #  authtoken class. Values set here override the individual parameters above.
 #
-class designate::keystone::authtoken(
+class designate::keystone::authtoken (
   String[1] $password,
   $username                       = 'designate',
   $auth_url                       = 'http://localhost:5000',
@@ -239,7 +239,6 @@ class designate::keystone::authtoken(
   $interface                      = $facts['os_service_default'],
   $params                         = {}
 ) {
-
   include designate::deps
 
   keystone::resource::authtoken {

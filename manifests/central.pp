@@ -71,7 +71,6 @@ class designate::central (
   $default_pool_id            = $facts['os_service_default'],
   $scheduler_filters          = $facts['os_service_default'],
 ) inherits designate::params {
-
   include designate::deps
   include designate::db
 

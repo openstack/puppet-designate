@@ -56,7 +56,6 @@ class designate::keystone (
   $status_code_retries     = $facts['os_service_default'],
   $status_code_retry_delay = $facts['os_service_default'],
 ) {
-
   include designate::deps
 
   designate_config {

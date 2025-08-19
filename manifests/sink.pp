@@ -43,7 +43,6 @@ class designate::sink (
   $threads                       = $facts['os_service_default'],
   $enabled_notification_handlers = $facts['os_service_default'],
 ) inherits designate::params {
-
   include designate::deps
 
   designate::generic_service { 'sink':

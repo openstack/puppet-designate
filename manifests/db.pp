@@ -62,7 +62,6 @@ class designate::db (
   $mysql_enable_ndb                 = $facts['os_service_default'],
   Boolean $sync_db                  = true,
 ) {
-
   include designate::deps
 
   oslo::db { 'designate_config':

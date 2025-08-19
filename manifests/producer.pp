@@ -41,7 +41,6 @@ class designate::producer (
   $threads                = $facts['os_service_default'],
   $enabled_tasks          = $facts['os_service_default'],
 ) inherits designate::params {
-
   include designate::deps
 
   designate_config {
