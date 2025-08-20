@@ -161,7 +161,7 @@ describe 'designate::wsgi::apache' do
         when 'RedHat'
           {
             :wsgi_script_path   => '/var/www/cgi-bin/designate',
-            :wsgi_script_source => '/usr/bin/designate-api-wsgi'
+            :wsgi_script_source => '/usr/lib/python3.9/site-packages/designate/wsgi/api.py',
           }
 
         end

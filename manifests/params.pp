@@ -5,6 +5,8 @@
 class designate::params {
   include openstacklib::defaults
 
+  $pyver3 = $openstacklib::defaults::pyver3
+
   $state_path                = '/var/lib/designate'
   $log_dir                   = '/var/log/designate'
   $client_package_name       = 'python3-designateclient'
@@ -28,7 +30,7 @@ class designate::params {
       $producer_package_name        = 'openstack-designate-producer'
       $worker_package_name          = 'openstack-designate-worker'
       $designate_wsgi_script_path   = '/var/www/cgi-bin/designate'
-      $designate_wsgi_script_source = '/usr/bin/designate-api-wsgi'
+      $designate_wsgi_script_source = "/usr/lib/python${pyver3}/site-packages/designate/wsgi/api.py"
     }
     'Debian': {
       # package name
