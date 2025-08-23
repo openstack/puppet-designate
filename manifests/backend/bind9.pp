@@ -63,7 +63,7 @@ class designate::backend::bind9 (
   $rndc_key_file                         = undef,
   $rndc_controls                         = undef,
   $rndc_port                             = undef,
-  Hash[Integer, String] $ns_records      = {1 => 'ns1.example.org.'},
+  Hash[Integer, String] $ns_records      = { 1 => 'ns1.example.org.' },
   Array[String[1], 1] $nameservers       = ['127.0.0.1'],
   Array[String[1], 1] $bind9_hosts       = ['127.0.0.1'],
   $dns_port                              = 53,
@@ -73,7 +73,6 @@ class designate::backend::bind9 (
   Array[String[1]] $also_notifies        = [],
   Hash[String[1], String[1]] $attributes = {},
 ) {
-
   include designate::deps
   include designate::params
 

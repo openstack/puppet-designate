@@ -35,7 +35,6 @@ class designate::config (
   Hash $api_paste_ini_config = {},
   Hash $rootwrap_config      = {},
 ) {
-
   include designate::deps
 
   create_resources('designate_config', $designate_config)

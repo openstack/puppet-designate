@@ -46,7 +46,6 @@ class designate::healthcheck (
   $disable_by_file_paths   = $facts['os_service_default'],
   $enable_by_file_paths    = $facts['os_service_default'],
 ) {
-
   include designate::deps
 
   oslo::healthcheck { 'designate_config':

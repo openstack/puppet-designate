@@ -21,7 +21,6 @@ class designate::producer_task::delayed_notify (
   $per_page   = $facts['os_service_default'],
   $batch_size = $facts['os_service_default'],
 ) {
-
   include designate::deps
 
   designate_config {

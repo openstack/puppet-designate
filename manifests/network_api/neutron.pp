@@ -29,5 +29,4 @@ class designate::network_api::neutron (
     'network_api:neutron/endpoint_type': value => $endpoint_type;
     'network_api:neutron/timeout':       value => $timeout;
   }
-
 }

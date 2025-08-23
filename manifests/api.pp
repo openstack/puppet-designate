@@ -131,7 +131,6 @@ class designate::api (
   $max_request_body_size        = $facts['os_service_default'],
   $service_name                 = $designate::params::api_service_name,
 ) inherits designate {
-
   include designate::deps
   include designate::policy
 
@@ -179,7 +178,6 @@ class designate::api (
 
       # On any paste-api.ini config change, we must restart Designate API.
       Designate_api_paste_ini<||> ~> Service[$service_name]
-
     } else {
       $service_name_real = $service_name
 

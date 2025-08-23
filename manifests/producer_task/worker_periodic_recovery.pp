@@ -16,7 +16,6 @@ class designate::producer_task::worker_periodic_recovery (
   $interval = $facts['os_service_default'],
   $per_page = $facts['os_service_default'],
 ) {
-
   include designate::deps
 
   designate_config {

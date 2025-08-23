@@ -24,14 +24,13 @@
 #   (Optional) Privileges given to the database user.
 #   Default to 'ALL'
 #
-class designate::db::postgresql(
+class designate::db::postgresql (
   $password,
   $dbname      = 'designate',
   $user        = 'designate',
   $encoding    = undef,
   $privileges  = 'ALL',
 ) {
-
   include designate::deps
 
   openstacklib::db::postgresql { 'designate':
@@ -41,7 +40,6 @@ class designate::db::postgresql(
     encoding   => $encoding,
     privileges => $privileges,
   }
-
 
   Anchor['designate::db::begin']
   ~> Class['designate::db::postgresql']

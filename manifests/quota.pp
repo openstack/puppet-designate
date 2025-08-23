@@ -36,7 +36,6 @@ class designate::quota (
   $quota_driver            = $facts['os_service_default'],
   $quota_recordset_records = $facts['os_service_default'],
 ) {
-
   include designate::deps
 
   designate_config {

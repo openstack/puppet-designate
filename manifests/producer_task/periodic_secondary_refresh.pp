@@ -16,7 +16,6 @@ class designate::producer_task::periodic_secondary_refresh (
   $interval = $facts['os_service_default'],
   $per_page = $facts['os_service_default'],
 ) {
-
   include designate::deps
 
   designate_config {

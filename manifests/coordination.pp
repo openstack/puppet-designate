@@ -23,10 +23,9 @@ class designate::coordination (
   $heartbeat_interval    = $facts['os_service_default'],
   $run_watchers_interval = $facts['os_service_default'],
 ) {
-
   include designate::deps
 
-  oslo::coordination{ 'designate_config':
+  oslo::coordination { 'designate_config':
     backend_url => $backend_url,
   }
 

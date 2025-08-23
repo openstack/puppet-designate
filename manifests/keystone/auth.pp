@@ -106,7 +106,6 @@ class designate::keystone::auth (
   Keystone::EndpointUrl $admin_url        = 'http://127.0.0.1:9001',
   Keystone::EndpointUrl $internal_url     = 'http://127.0.0.1:9001',
 ) {
-
   include designate::deps
 
   Keystone::Resource::Service_identity['designate'] -> Anchor['designate::service::end']
@@ -131,5 +130,4 @@ class designate::keystone::auth (
     internal_url        => $internal_url,
     admin_url           => $admin_url,
   }
-
 }

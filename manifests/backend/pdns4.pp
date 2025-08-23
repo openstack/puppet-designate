@@ -52,7 +52,6 @@ class designate::backend::pdns4 (
   Array[String[1]] $also_notifies        = [],
   Hash[String[1], String[1]] $attributes = {},
 ) {
-
   include designate::deps
   include designate::params
 
