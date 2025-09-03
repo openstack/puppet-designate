@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    The ``designate::rabbit_heartbeat_in_pthread`` parameter has been removed.
