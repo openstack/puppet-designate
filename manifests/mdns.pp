@@ -53,18 +53,18 @@
 #   Defaults to $facts['os_service_default'].
 #
 class designate::mdns (
-  $package_ensure         = present,
-  $mdns_package_name      = $designate::params::mdns_package_name,
-  Boolean $enabled        = true,
-  Boolean $manage_service = true,
-  $workers                = $facts['os_workers'],
-  $threads                = $facts['os_service_default'],
-  $tcp_backlog            = $facts['os_service_default'],
-  $tcp_keepidle           = $facts['os_service_default'],
-  $tcp_recv_timeout       = $facts['os_service_default'],
-  $query_enforce_tsig     = $facts['os_service_default'],
-  $max_message_size       = $facts['os_service_default'],
-  $listen                 = $facts['os_service_default'],
+  Stdlib::Ensure::Package $package_ensure = present,
+  $mdns_package_name                      = $designate::params::mdns_package_name,
+  Boolean $enabled                        = true,
+  Boolean $manage_service                 = true,
+  $workers                                = $facts['os_workers'],
+  $threads                                = $facts['os_service_default'],
+  $tcp_backlog                            = $facts['os_service_default'],
+  $tcp_keepidle                           = $facts['os_service_default'],
+  $tcp_recv_timeout                       = $facts['os_service_default'],
+  $query_enforce_tsig                     = $facts['os_service_default'],
+  $max_message_size                       = $facts['os_service_default'],
+  $listen                                 = $facts['os_service_default'],
 ) inherits designate::params {
   include designate::deps
   include designate::db

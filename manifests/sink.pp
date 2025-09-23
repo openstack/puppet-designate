@@ -35,13 +35,13 @@
 #  Defaults to $facts['os_service_default']
 #
 class designate::sink (
-  $package_ensure                = present,
-  $sink_package_name             = $designate::params::sink_package_name,
-  Boolean $enabled               = true,
-  Boolean $manage_service        = true,
-  $workers                       = $facts['os_service_default'],
-  $threads                       = $facts['os_service_default'],
-  $enabled_notification_handlers = $facts['os_service_default'],
+  Stdlib::Ensure::Package $package_ensure = present,
+  $sink_package_name                      = $designate::params::sink_package_name,
+  Boolean $enabled                        = true,
+  Boolean $manage_service                 = true,
+  $workers                                = $facts['os_service_default'],
+  $threads                                = $facts['os_service_default'],
+  $enabled_notification_handlers          = $facts['os_service_default'],
 ) inherits designate::params {
   include designate::deps
 

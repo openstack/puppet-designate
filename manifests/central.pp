@@ -57,19 +57,19 @@
 #  Defaults to $facts['os_service_default']
 #
 class designate::central (
-  $package_ensure             = present,
-  $central_package_name       = $designate::params::central_package_name,
-  Boolean $enabled            = true,
-  Boolean $manage_service     = true,
-  $managed_resource_email     = 'hostmaster@example.com',
-  $managed_resource_tenant_id = $facts['os_service_default'],
-  $max_zone_name_len          = $facts['os_service_default'],
-  $max_recordset_name_len     = $facts['os_service_default'],
-  $min_ttl                    = $facts['os_service_default'],
-  $workers                    = $facts['os_workers'],
-  $threads                    = $facts['os_service_default'],
-  $default_pool_id            = $facts['os_service_default'],
-  $scheduler_filters          = $facts['os_service_default'],
+  Stdlib::Ensure::Package $package_ensure = present,
+  $central_package_name                   = $designate::params::central_package_name,
+  Boolean $enabled                        = true,
+  Boolean $manage_service                 = true,
+  $managed_resource_email                 = 'hostmaster@example.com',
+  $managed_resource_tenant_id             = $facts['os_service_default'],
+  $max_zone_name_len                      = $facts['os_service_default'],
+  $max_recordset_name_len                 = $facts['os_service_default'],
+  $min_ttl                                = $facts['os_service_default'],
+  $workers                                = $facts['os_workers'],
+  $threads                                = $facts['os_service_default'],
+  $default_pool_id                        = $facts['os_service_default'],
+  $scheduler_filters                      = $facts['os_service_default'],
 ) inherits designate::params {
   include designate::deps
   include designate::db
