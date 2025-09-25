@@ -13,8 +13,8 @@
 #  Defaults to $designate::params::client_package_name
 #
 class designate::client (
-  $package_ensure      = 'present',
-  $client_package_name = $designate::params::client_package_name,
+  Stdlib::Ensure::Package $package_ensure = present,
+  $client_package_name                    = $designate::params::client_package_name,
 ) inherits designate::params {
   include designate::deps
 
