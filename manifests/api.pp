@@ -20,6 +20,13 @@
 #   (Optional) Whether the designate api service will be managed.
 #   Defaults to true
 #
+# [*service_name*]
+#   (Optional) Name of the service that will be providing the server
+#   functionality of the designate API. If the value is 'httpd',
+#   designate will be run as web service and configuration of the
+#   web server will be required (e.g designate::wsgi::apache)
+#   Defaults to $designate::params::api_service_name
+#
 # [*auth_strategy*]
 #  (optional) Authentication strategy to use, can be either "noauth" or
 #  "keystone".
@@ -98,18 +105,12 @@
 #   (Optional) Set max request body size
 #   Defaults to $facts['os_service_default'].
 #
-# [*service_name*]
-#   (Optional) Name of the service that will be providing the server
-#   functionality of the designate API. If the value is 'httpd',
-#   designate will be run as web service and configuration of the
-#   web server will be required (e.g designate::wsgi::apache)
-#   Defaults to $designate::params::api_service_name
-#
 class designate::api (
   Stdlib::Ensure::Package $package_ensure = present,
   $api_package_name                       = $designate::params::api_package_name,
   Boolean $enabled                        = true,
   Boolean $manage_service                 = true,
+  String[1] $service_name                 = $designate::params::api_service_name,
   $auth_strategy                          = $facts['os_service_default'],
   $enable_api_v2                          = $facts['os_service_default'],
   $enable_api_admin                       = $facts['os_service_default'],
@@ -129,7 +130,6 @@ class designate::api (
   $quotas_verify_project_id               = $facts['os_service_default'],
   $enable_proxy_headers_parsing           = $facts['os_service_default'],
   $max_request_body_size                  = $facts['os_service_default'],
-  $service_name                           = $designate::params::api_service_name,
 ) inherits designate {
   include designate::deps
   include designate::policy
@@ -165,29 +165,31 @@ class designate::api (
   }
 
   if $manage_service {
-    if $service_name == 'httpd' {
-      service { 'designate-api':
-        ensure => 'stopped',
-        name   => $designate::params::api_service_name,
-        enable => false,
-        tag    => ['designate-service'],
+    case $service_name {
+      'httpd': {
+        $service_name_real = false
+
+        Service <| title == 'httpd' |> { tag +> 'designate-service' }
+
+        service { 'designate-api':
+          ensure => 'stopped',
+          name   => $designate::params::api_service_name,
+          enable => false,
+          tag    => ['designate-service'],
+        }
+        Service['designate-api'] -> Service['httpd']
+        # On any paste-api.ini config change, we must restart Designate API.
+        Designate_api_paste_ini<||> ~> Service['httpd']
       }
-      Service['designate-api'] -> Service[$service_name]
-      $service_name_real = false
-      Service <| title == 'httpd' |> { tag +> 'designate-service' }
+      default: {
+        $service_name_real = $service_name
 
-      # On any paste-api.ini config change, we must restart Designate API.
-      Designate_api_paste_ini<||> ~> Service[$service_name]
-    } else {
-      $service_name_real = $service_name
-
-      # On any paste-api.ini config change, we must restart Designate API.
-      Designate_api_paste_ini<||> ~> Service['designate-api']
-      # On any uwsgi config change, we must restart Designate API.
-      Designate_api_uwsgi_config<||> ~> Service['designate-api']
+        # On any paste-api.ini config change, we must restart Designate API.
+        Designate_api_paste_ini<||> ~> Service['designate-api']
+        # On any uwsgi config change, we must restart Designate API.
+        Designate_api_uwsgi_config<||> ~> Service['designate-api']
+      }
     }
-  } else {
-    $service_name_real = $service_name
   }
 
   designate::generic_service { 'api':
