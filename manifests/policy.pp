@@ -46,13 +46,13 @@
 #    Defaults to false.
 #
 class designate::policy (
-  $enforce_scope        = $facts['os_service_default'],
-  $enforce_new_defaults = $facts['os_service_default'],
-  Hash $policies        = {},
-  $policy_path          = '/etc/designate/policy.yaml',
-  $policy_default_rule  = $facts['os_service_default'],
-  $policy_dirs          = $facts['os_service_default'],
-  Boolean $purge_config = false,
+  $enforce_scope                    = $facts['os_service_default'],
+  $enforce_new_defaults             = $facts['os_service_default'],
+  Openstacklib::Policies $policies  = {},
+  Stdlib::Absolutepath $policy_path = '/etc/designate/policy.yaml',
+  $policy_default_rule              = $facts['os_service_default'],
+  $policy_dirs                      = $facts['os_service_default'],
+  Boolean $purge_config             = false,
 ) {
   include designate::deps
   include designate::params
@@ -64,7 +64,6 @@ class designate::policy (
     file_group   => $designate::params::group,
     file_format  => 'yaml',
     purge_config => $purge_config,
-    tag          => 'designate',
   }
 
   create_resources('openstacklib::policy', { $policy_path => $policy_parameters })
