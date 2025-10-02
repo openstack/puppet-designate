@@ -18,15 +18,27 @@
 #   has changed.
 #   Defaults to $facts['os_service_default']
 #
+# [*manage_backend_package*]
+#   (Optional) Whether to install the backend package.
+#   Defaults to true.
+#
+# [*package_ensure*]
+#   (Optional) ensure state for package.
+#   Defaults to 'present'
+#
 class designate::coordination (
-  $backend_url           = $facts['os_service_default'],
-  $heartbeat_interval    = $facts['os_service_default'],
-  $run_watchers_interval = $facts['os_service_default'],
+  $backend_url                            = $facts['os_service_default'],
+  $heartbeat_interval                     = $facts['os_service_default'],
+  $run_watchers_interval                  = $facts['os_service_default'],
+  Boolean $manage_backend_package         = true,
+  Stdlib::Ensure::Package $package_ensure = present,
 ) {
   include designate::deps
 
   oslo::coordination { 'designate_config':
-    backend_url => $backend_url,
+    backend_url            => $backend_url,
+    manage_backend_package => $manage_backend_package,
+    package_ensure         => $package_ensure,
   }
 
   designate_config {
