@@ -8,7 +8,6 @@ class designate::params {
   $pyver3 = $openstacklib::defaults::pyver3
 
   $state_path                = '/var/lib/designate'
-  $log_dir                   = '/var/log/designate'
   $client_package_name       = 'python3-designateclient'
   $api_service_name          = 'designate-api'
   $central_service_name      = 'designate-central'
