@@ -45,7 +45,7 @@
 #  Defaults to $facts['os_workers']
 #
 # [*threads*]
-#  (optional) Number of central greenthreads to spawn.
+#  (optional) Number of central threads to spawn.
 #  Defaults to $facts['os_service_default']
 #
 # [*default_pool_id*]

@@ -25,7 +25,7 @@
 #  Defaults to $facts['os_service_default']
 #
 # [*threads*]
-#  (optional) Number of sink greenthreads to spawn.
+#  (optional) Number of sink threads to spawn.
 #  Defaults to $facts['os_service_default']
 #
 # [*enabled_notification_handlers*]

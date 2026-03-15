@@ -25,7 +25,7 @@
 #  Defaults to $facts['os_workers'].
 #
 # [*threads*]
-#  (optional) Number of greenthreads to spawn
+#  (optional) Number of threads to spawn
 #  Defaults to $facts['os_service_default'].
 #
 # [*enabled_tasks*]

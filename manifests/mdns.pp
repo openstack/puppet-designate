@@ -25,7 +25,7 @@
 #   Defaults to $facts['os_workers'].
 #
 # [*threads*]
-#   (Optional) Number of mdns greenthreads to spawn.
+#   (Optional) Number of mdns threads to spawn.
 #   Defaults to $facts['os_service_default'].
 #
 # [*tcp_backlog*]

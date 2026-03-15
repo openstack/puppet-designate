@@ -25,7 +25,7 @@
 #   Defaults to $facts['os_workers']
 #
 # [*threads*]
-#   (optional) Number of Pool Manager greenthreads to spawn
+#   (optional) Number of Pool Manager threads to spawn
 #   Defaults to $facts['os_service_default']
 #
 # [*threshold_percentage*]

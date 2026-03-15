@@ -52,7 +52,7 @@
 #  Defaults to $facts['os_workers']
 #
 # [*threads*]
-#  (optional) Number of api greenthreads to spawn.
+#  (optional) Number of api threads to spawn.
 #  Defaults to $facts['os_service_default']
 #
 # [*enable_host_header*]
