@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    The following classes have been added to manage producer tasks to check and
+    cleanup service status.
+
+    - ``designate::producer_task::periodic_check_service_status``
+    - ``designate::producer_task::periodic_cleanup_stopped_service_status``
