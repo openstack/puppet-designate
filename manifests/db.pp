@@ -41,14 +41,16 @@
 #   (Optional) If set, use this value for pool_timeout with SQLAlchemy.
 #   Defaults to $facts['os_service_default']
 #
-# [*mysql_enable_ndb*]
-#   (Optional) If True, transparently enables support for handling MySQL
-#   Cluster (NDB).
-#   Defaults to $facts['os_service_default']
-#
 # [*sync_db*]
 #   (Optional) Run db sync on nodes after connection setting has been set.
 #   Defaults to true
+#
+# DEPRECATED PARAMETERS
+#
+# [*mysql_enable_ndb*]
+#   (Optional) If True, transparently enables support for handling MySQL
+#   Cluster (NDB).
+#   Defaults to undef
 #
 class designate::db (
   $database_db_max_retries          = $facts['os_service_default'],
@@ -59,8 +61,9 @@ class designate::db (
   $database_retry_interval          = $facts['os_service_default'],
   $database_max_overflow            = $facts['os_service_default'],
   $database_pool_timeout            = $facts['os_service_default'],
-  $mysql_enable_ndb                 = $facts['os_service_default'],
   Boolean $sync_db                  = true,
+  # DEPRECATED PARAMETERS
+  $mysql_enable_ndb                 = undef,
 ) {
   include designate::deps
 
