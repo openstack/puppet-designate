@@ -139,6 +139,16 @@ describe 'designate::api' do
         )
       end
     end
+
+    context 'with manage_service false' do
+      before do
+        params.merge!({ :manage_service => false })
+      end
+
+      it 'does not manage the service' do
+        is_expected.to_not contain_service('designate-api')
+      end
+    end
   end
 
   shared_examples 'designate-api wsgi' do

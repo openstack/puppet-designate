@@ -190,6 +190,8 @@ class designate::api (
         Designate_api_uwsgi_config<||> ~> Service['designate-api']
       }
     }
+  } else {
+    $service_name_real = $service_name
   }
 
   designate::generic_service { 'api':

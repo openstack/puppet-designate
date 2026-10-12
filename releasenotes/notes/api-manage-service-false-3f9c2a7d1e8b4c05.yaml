@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    The ``designate::api`` class no longer fails with an unknown variable
+    error when ``manage_service`` is ``false``.
